@@ -31,10 +31,10 @@ book:
     - part: Conclusion
 
 
-    - summary.qmd
-    - references.qmd
+    # - summary.qmd
+    # - references.qmd
 
-bibliography: references.bib
+#bibliography: references.bib
 
 format:
   html:
