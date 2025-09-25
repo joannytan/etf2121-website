@@ -1,0 +1,32 @@
+# Power BI {.unnumbered}
+
+## Why Power BI?
+
+Power BI is a powerful business intelligence tool that can handle large datasets and perform complex calculations quickly. It can connect to a wide variety of data sources, including databases, cloud services, and Excel files. The user-friendly interface allows users to create interactive reports and dashboards with ease. Additionally, Power BI enables the creation of custom visualizations and reports using DAX (Data Analysis Expressions) and M (Power Query Formula Language). With built-in collaboration features, users can easily share reports and dashboards with others, making it an ideal choice for organizations looking to enhance their data analysis capabilities.
+
+## Power BI vs. Excel 
+
+Power BI and Excel are both powerful tools for data analysis, but they serve different purposes and have different strengths. Here are some key differences:
+
+1. **Data Handling**: Power BI is designed to handle large datasets and can connect to a wide variety of data sources, while Excel is more suited for smaller datasets and manual data entry.
+2. **Data Visualization**: Power BI offers a wide range of interactive visualizations and dashboards, while Excel has more limited charting capabilities.
+3. **Collaboration**: Power BI allows for easy sharing and collaboration on reports and dashboards, while Excel requires more manual effort to share files.
+4. **Data Modeling**: Power BI has advanced data modeling capabilities, including relationships between tables and DAX calculations, while Excel is more focused on spreadsheet calculations.
+5. **Real-time Data**: Power BI can connect to real-time data sources, allowing for up-to-date reporting, while Excel requires manual updates.
+6. **Cost**: Power BI has a subscription-based pricing model, while Excel is typically purchased as part of the Microsoft Office suite.
+
+![Power BI vs Excel](https://media.licdn.com/dms/image/v2/D4D22AQGsVK-RMj2hKw/feedshare-shrink_1280/feedshare-shrink_1280/0/1726331375467?e=1749081600&v=beta&t=kCsgcXflW1W2qsHWCw5q3t8lKl2WzS5W1fmlHV7_kCo)
+
+## Power BI vs. Tableau
+
+Power BI and Tableau are both powerful data visualization tools, but they have some key differences:
+
+1. **Ease of Use**: Power BI is generally considered more user-friendly, especially for those already familiar with Microsoft products. Tableau has a steeper learning curve but offers more advanced features for experienced users.
+2. **Data Handling**: Power BI is better suited for handling large datasets and can connect to a wider variety of data sources, while Tableau is more focused on visualizations and may struggle with very large datasets.
+
+3. **Cost**: Power BI is typically more affordable, with a subscription-based pricing model, while Tableau can be more expensive, especially for larger teams.
+4. **Collaboration**: Power BI has built-in collaboration features that make it easy to share reports and dashboards, while Tableau requires more manual effort to share visualizations.
+5. **Customization**: Tableau offers more customization options for visualizations, while Power BI has a more standardized set of visualizations.
+6. **Integration**: Power BI integrates seamlessly with other Microsoft products, while Tableau has a wider range of third-party integrations.
+7. **Community and Support**: Both tools have strong user communities and support resources, but Power BI has a larger user base due to its integration with Microsoft products.
+

@@ -1,9 +1,33 @@
-# Introduction
+# Course Structure {.unnumbered}
 
-This is a book created from markdown and executable code.
+This unit provides an overview of fundamental tools of data and statistical analysis used in the Business and Economics disciplines. The methods covered are widely used in industry and academia, providing the necessary foundation for more advanced approaches as you advance your training and career.
 
-See @knuth84 for additional discussion of literate programming.
+This course delves deeper into basic statistical concepts, with a focus on their application in finance, accounting, and other sectors. It introduces cutting-edge software and programming languages such as R, Power-BI, SQL and Excel for robust data analysis and predictive modelling. Students will engage with modern data sources and advanced sampling techniques, learn to perform hypothesis testing, and apply modelling techniques such as regression and time series analysis in business contexts. The course places a strong emphasis on practical applications, aiming to equip students with the skills to interpret and leverage statistical data for solving business problems and making informed decisions in industry.
 
-```{r}
-1 + 1
-```
+This unit equips students with statistical techniques and the use of modern business software, including R, Excel, Power BI, for business applications. Students will learn to process and analyse extensive datasets using methods such as regression, time series analysis and classification. Key topics include modeling, regression analysis, and time series analysis in the business context.
+
+## Learning Objectives {.unnumbered}
+
+## Unit Outline {.unnumbered}
+
+## Textbooks {.unnumbered}
+
+## Assessment {.unnumbered}
+
+The assessment for this unit is designed to evaluate your understanding of the course material and your ability to apply the concepts learned in practical scenarios. The assessment consists of the following components:
+- **Quizzes**: There will be a series of quizzes throughout the semester to test your understanding of the material covered in the lectures and readings. These quizzes will be conducted online and will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The quizzes will be timed and will be available for a limited period.
+- **Individual Assignments**: You will be required to complete a series of individual assignments that will involve applying the concepts learned in the course to real-world scenarios. These assignments will require you to analyze data, interpret results, and present your findings in a clear and concise manner. The assignments will be submitted online and will be graded based on the quality of your analysis and presentation.
+- **Group Project**: You will be required to work in groups to complete a project that involves analyzing a dataset and presenting your findings. The project will require you to apply the concepts learned in the course to a real-world problem and will involve data collection, analysis, and presentation. The project will be graded based on the quality of your analysis, the effectiveness of your presentation, and your ability to work as a team.
+- **Final Exam**: The final exam will be a comprehensive assessment of the material covered in the course. The exam will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The exam will be conducted in person and will be timed.
+
+| **Assessments**         | **Weight** | **Due Date**   | **Learning Outcomes** |
+|--------------------------|------------|----------------|------------------------|
+| Quizzes                 | 10%        | Weekly         | Weeks 2-12            |
+| Individual Assignment   | 20%        | Week 7         | Weeks 1-5             |
+| Group Assignment*       | 20%        | Week 11        | Weeks 1-10            |
+| Final Exam              | 50%        | Exam period    | Weeks 1-11            |
+
+## Communication {.unnumbered}
+
+## Where to get help {.unnumbered}
+

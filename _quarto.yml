@@ -2,12 +2,38 @@ project:
   type: book
 
 book:
-  title: "etf2121-website"
-  author: "Norah Jones"
-  date: "9/25/2025"
+  title: "Data Analysis in Business (First edition)"
+  reader-mode: true
+  cover-image: cover.png
+  description: "A beginner guide to SQL, Power BI, data analysis, and data visualization."
+  author: "Dr. Joan Tan"
+  date: "4/29/2025"
   chapters:
     - index.qmd
+
+    - part: Course Overview
+      chapters:
+        - intro.qmd
+        - team.qmd
+        - schedule.qmd
+        - assign1.qmd
+        - assign2.qmd
     - intro.qmd
+    - part: Database Management System
+      chapters:
+        - dbms.qmd
+    - part: Power BI
+      chapters:
+        - powerbi.qmd
+    - part: Data Analysis
+
+
+    - part: Data Visualization
+
+
+    - part: Conclusion
+
+
     - summary.qmd
     - references.qmd
 

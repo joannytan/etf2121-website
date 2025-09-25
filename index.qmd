@@ -1,9 +1,15 @@
-# Preface {.unnumbered}
+# Welcome {.unnumbered}
 
-This is a Quarto book.
+This is a the website for ETF2121/5912 Handbook (1e). The handbook is a comprehensive guide to the ETF2121/5912 course, covering the course content and resources. The handbook is designed to be a valuable resource for students, providing them with the information they need to succeed in the course.
+In this book, you will find a practicum of skills for data analysis, including data manipulation, data visualization, and data modeling. The book is designed to be a practical guide, with hands-on exercises and examples to help you learn the skills you need to succeed in the course. The book is also designed to be a reference guide, with clear explanations and examples of the key concepts and techniques used in data analysis.
+The book is organized into chapters, each covering a specific topic in data analysis. Each chapter includes a summary of the key concepts, hands-on exercises, and examples to help you learn the material. The book also includes a glossary of key terms and concepts, as well as a list of additional resources for further reading.
+The book is designed to be used in conjunction with the ETF2121/5912 course, but it can also be used as a standalone resource for anyone interested in learning about data analysis. The book is suitable for students, professionals, and anyone interested in learning about data analysis and its applications.
+This book is solely authored by Dr. Joan Tan and is affiliated with Monash University. The book is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which allows you to share and adapt the material for non-commercial purposes, as long as you give appropriate credit to the original authors and license your contributions under the same terms. All the mistakes are mine, and I welcome any feedback or suggestions for improvement. You can contact me at [Joan Tan](mailto:joan.tan@monash.edu).
 
-To learn more about Quarto books visit <https://quarto.org/docs/books>.
+Yours sincerely,
 
-```{r}
-1 + 1
-```
+Joan Tan
+
+@copyright 2025 Joan Tan
+
+Monash University
