@@ -8,8 +8,8 @@ This book is solely authored by Dr. Joan Tan and is affiliated with Monash Unive
 
 Yours sincerely,
 
-Joan Tan
-
-@copyright 2025 Joan Tan
+Dr. Joan Tan
 
 Monash University
+
+&copy; 2025 Joan Tan. All rights reserved.
