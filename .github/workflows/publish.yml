@@ -37,3 +37,7 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Show Quarto log
+        if: failure()
+        run: cat /home/runner/work/etf2121-website/etf2121-website/index.log
