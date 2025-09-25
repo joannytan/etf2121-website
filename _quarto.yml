@@ -16,9 +16,6 @@ book:
         - intro.qmd
         - team.qmd
         - schedule.qmd
-        - assign1.qmd
-        - assign2.qmd
-    - intro.qmd
     - part: Database Management System
       chapters:
         - dbms.qmd
