@@ -4,7 +4,7 @@ project:
 book:
   title: "Data Analysis in Business (First edition)"
   reader-mode: true
-  cover-image: cover.png
+  cover-image: "images/cover.png"
   description: "A beginner guide to SQL, Power BI, data analysis, and data visualization."
   author: "Dr. Joan Tan"
   date: "4/29/2025"
