@@ -40,6 +40,8 @@ format:
   html:
     theme: cosmo
   pdf:
+    fig-fromat: png
+    keep-tex: true
     documentclass: scrreprt
 
 
