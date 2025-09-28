@@ -2,41 +2,110 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "etf2121-website",
+    "title": "Data Analysis in Business (First edition)",
     "section": "",
-    "text": "Preface\nThis is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books.\n\n1 + 1\n\n[1] 2",
+    "text": "Welcome\nThis is a the website for ETF2121/5912 Handbook (1e). The handbook is a comprehensive guide to the ETF2121/5912 course, covering the course content and resources. The handbook is designed to be a valuable resource for students, providing them with the information they need to succeed in the course. In this book, you will find a practicum of skills for data analysis, including data manipulation, data visualization, and data modeling. The book is designed to be a practical guide, with hands-on exercises and examples to help you learn the skills you need to succeed in the course. The book is also designed to be a reference guide, with clear explanations and examples of the key concepts and techniques used in data analysis. The book is organized into chapters, each covering a specific topic in data analysis. Each chapter includes a summary of the key concepts, hands-on exercises, and examples to help you learn the material. The book also includes a glossary of key terms and concepts, as well as a list of additional resources for further reading. The book is designed to be used in conjunction with the ETF2121/5912 course, but it can also be used as a standalone resource for anyone interested in learning about data analysis. The book is suitable for students, professionals, and anyone interested in learning about data analysis and its applications. This book is solely authored by Dr. Joan Tan and is affiliated with Monash University. The book is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which allows you to share and adapt the material for non-commercial purposes, as long as you give appropriate credit to the original authors and license your contributions under the same terms. All the mistakes are mine, and I welcome any feedback or suggestions for improvement. You can contact me at Joan Tan.\nYours sincerely,\nDr. Joan Tan\nMonash University\n2025 Joan Tan. All rights reserved.",
     "crumbs": [
-      "Preface"
+      "Welcome"
     ]
   },
   {
     "objectID": "intro.html",
     "href": "intro.html",
-    "title": "1  Introduction",
+    "title": "Course Structure",
     "section": "",
-    "text": "This is a book created from markdown and executable code.\nSee Knuth (1984) for additional discussion of literate programming.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n\nKnuth, Donald E. 1984. “Literate Programming.” Comput. J. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "text": "Learning Objectives\nThis unit provides an overview of fundamental tools of data and statistical analysis used in the Business and Economics disciplines. The methods covered are widely used in industry and academia, providing the necessary foundation for more advanced approaches as you advance your training and career.\nThis course delves deeper into basic statistical concepts, with a focus on their application in finance, accounting, and other sectors. It introduces cutting-edge software and programming languages such as R, Power-BI, SQL and Excel for robust data analysis and predictive modelling. Students will engage with modern data sources and advanced sampling techniques, learn to perform hypothesis testing, and apply modelling techniques such as regression and time series analysis in business contexts. The course places a strong emphasis on practical applications, aiming to equip students with the skills to interpret and leverage statistical data for solving business problems and making informed decisions in industry.\nThis unit equips students with statistical techniques and the use of modern business software, including R, Excel, Power BI, for business applications. Students will learn to process and analyse extensive datasets using methods such as regression, time series analysis and classification. Key topics include modeling, regression analysis, and time series analysis in the business context.",
     "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+      "Course Overview",
+      "Course Structure"
     ]
   },
   {
-    "objectID": "summary.html",
-    "href": "summary.html",
-    "title": "2  Summary",
-    "section": "",
-    "text": "In summary, this book has no content whatsoever.\n\n1 + 1\n\n[1] 2",
+    "objectID": "intro.html#unit-outline",
+    "href": "intro.html#unit-outline",
+    "title": "Course Structure",
+    "section": "Unit Outline",
+    "text": "Unit Outline",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Summary</span>"
+      "Course Overview",
+      "Course Structure"
     ]
   },
   {
-    "objectID": "references.html",
-    "href": "references.html",
-    "title": "References",
-    "section": "",
-    "text": "Knuth, Donald E. 1984. “Literate Programming.” Comput.\nJ. 27 (2): 97–111. https://doi.org/10.1093/comjnl/27.2.97.",
+    "objectID": "intro.html#textbooks",
+    "href": "intro.html#textbooks",
+    "title": "Course Structure",
+    "section": "Textbooks",
+    "text": "Textbooks",
     "crumbs": [
-      "References"
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#assessment",
+    "href": "intro.html#assessment",
+    "title": "Course Structure",
+    "section": "Assessment",
+    "text": "Assessment\nThe assessment for this unit is designed to evaluate your understanding of the course material and your ability to apply the concepts learned in practical scenarios. The assessment consists of the following components: - Quizzes: There will be a series of quizzes throughout the semester to test your understanding of the material covered in the lectures and readings. These quizzes will be conducted online and will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The quizzes will be timed and will be available for a limited period. - Individual Assignments: You will be required to complete a series of individual assignments that will involve applying the concepts learned in the course to real-world scenarios. These assignments will require you to analyze data, interpret results, and present your findings in a clear and concise manner. The assignments will be submitted online and will be graded based on the quality of your analysis and presentation. - Group Project: You will be required to work in groups to complete a project that involves analyzing a dataset and presenting your findings. The project will require you to apply the concepts learned in the course to a real-world problem and will involve data collection, analysis, and presentation. The project will be graded based on the quality of your analysis, the effectiveness of your presentation, and your ability to work as a team. - Final Exam: The final exam will be a comprehensive assessment of the material covered in the course. The exam will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The exam will be conducted in person and will be timed.\n\n\n\n\n\n\n\n\n\nAssessments\nWeight\nDue Date\nLearning Outcomes\n\n\n\n\nQuizzes\n10%\nWeekly\nWeeks 2-12\n\n\nIndividual Assignment\n20%\nWeek 7\nWeeks 1-5\n\n\nGroup Assignment*\n20%\nWeek 11\nWeeks 1-10\n\n\nFinal Exam\n50%\nExam period\nWeeks 1-11",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#communication",
+    "href": "intro.html#communication",
+    "title": "Course Structure",
+    "section": "Communication",
+    "text": "Communication",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#where-to-get-help",
+    "href": "intro.html#where-to-get-help",
+    "title": "Course Structure",
+    "section": "Where to get help",
+    "text": "Where to get help",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "powerbi.html",
+    "href": "powerbi.html",
+    "title": "Power BI",
+    "section": "",
+    "text": "Why Power BI?\nPower BI is a powerful business intelligence tool that can handle large datasets and perform complex calculations quickly. It can connect to a wide variety of data sources, including databases, cloud services, and Excel files. The user-friendly interface allows users to create interactive reports and dashboards with ease. Additionally, Power BI enables the creation of custom visualizations and reports using DAX (Data Analysis Expressions) and M (Power Query Formula Language). With built-in collaboration features, users can easily share reports and dashboards with others, making it an ideal choice for organizations looking to enhance their data analysis capabilities.",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
+    ]
+  },
+  {
+    "objectID": "powerbi.html#power-bi-vs.-excel",
+    "href": "powerbi.html#power-bi-vs.-excel",
+    "title": "Power BI",
+    "section": "Power BI vs. Excel",
+    "text": "Power BI vs. Excel\nPower BI and Excel are both powerful tools for data analysis, but they serve different purposes and have different strengths. Here are some key differences:\n\nData Handling: Power BI is designed to handle large datasets and can connect to a wide variety of data sources, while Excel is more suited for smaller datasets and manual data entry.\nData Visualization: Power BI offers a wide range of interactive visualizations and dashboards, while Excel has more limited charting capabilities.\nCollaboration: Power BI allows for easy sharing and collaboration on reports and dashboards, while Excel requires more manual effort to share files.\nData Modeling: Power BI has advanced data modeling capabilities, including relationships between tables and DAX calculations, while Excel is more focused on spreadsheet calculations.\nReal-time Data: Power BI can connect to real-time data sources, allowing for up-to-date reporting, while Excel requires manual updates.\nCost: Power BI has a subscription-based pricing model, while Excel is typically purchased as part of the Microsoft Office suite.\n\n\n\n\nPower BI vs Excel",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
+    ]
+  },
+  {
+    "objectID": "powerbi.html#power-bi-vs.-tableau",
+    "href": "powerbi.html#power-bi-vs.-tableau",
+    "title": "Power BI",
+    "section": "Power BI vs. Tableau",
+    "text": "Power BI vs. Tableau\nPower BI and Tableau are both powerful data visualization tools, but they have some key differences:\n\nEase of Use: Power BI is generally considered more user-friendly, especially for those already familiar with Microsoft products. Tableau has a steeper learning curve but offers more advanced features for experienced users.\nData Handling: Power BI is better suited for handling large datasets and can connect to a wider variety of data sources, while Tableau is more focused on visualizations and may struggle with very large datasets.\nCost: Power BI is typically more affordable, with a subscription-based pricing model, while Tableau can be more expensive, especially for larger teams.\nCollaboration: Power BI has built-in collaboration features that make it easy to share reports and dashboards, while Tableau requires more manual effort to share visualizations.\nCustomization: Tableau offers more customization options for visualizations, while Power BI has a more standardized set of visualizations.\nIntegration: Power BI integrates seamlessly with other Microsoft products, while Tableau has a wider range of third-party integrations.\nCommunity and Support: Both tools have strong user communities and support resources, but Power BI has a larger user base due to its integration with Microsoft products.",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
     ]
   }
 ]
