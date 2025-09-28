@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Data Analysis in Business (First edition)",
     "section": "",
-    "text": "Welcome\nThis is a the website for ETF2121/5912 Handbook (1e). The handbook is a comprehensive guide to the ETF2121/5912 course, covering the course content and resources. The handbook is designed to be a valuable resource for students, providing them with the information they need to succeed in the course. In this book, you will find a practicum of skills for data analysis, including data manipulation, data visualization, and data modeling. The book is designed to be a practical guide, with hands-on exercises and examples to help you learn the skills you need to succeed in the course. The book is also designed to be a reference guide, with clear explanations and examples of the key concepts and techniques used in data analysis. The book is organized into chapters, each covering a specific topic in data analysis. Each chapter includes a summary of the key concepts, hands-on exercises, and examples to help you learn the material. The book also includes a glossary of key terms and concepts, as well as a list of additional resources for further reading. The book is designed to be used in conjunction with the ETF2121/5912 course, but it can also be used as a standalone resource for anyone interested in learning about data analysis. The book is suitable for students, professionals, and anyone interested in learning about data analysis and its applications. This book is solely authored by Dr. Joan Tan and is affiliated with Monash University. The book is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which allows you to share and adapt the material for non-commercial purposes, as long as you give appropriate credit to the original authors and license your contributions under the same terms. All the mistakes are mine, and I welcome any feedback or suggestions for improvement. You can contact me at Joan Tan.\nYours sincerely,\nDr. Joan Tan\nMonash University\n2025 Joan Tan. All rights reserved.",
+    "text": "Welcome\nThis is a the website for ETF2121/5912 Handbook (1e). The handbook is a comprehensive guide to the ETF2121/5912 course, covering the course content and resources. The handbook is designed to be a valuable resource for students, providing them with the information they need to succeed in the course. In this book, you will find a practicum of skills for data analysis, including data manipulation, data visualization, and data modeling. The book is designed to be a practical guide, with hands-on exercises and examples to help you learn the skills you need to succeed in the course. The book is also designed to be a reference guide, with clear explanations and examples of the key concepts and techniques used in data analysis. The book is organized into chapters, each covering a specific topic in data analysis. Each chapter includes a summary of the key concepts, hands-on exercises, and examples to help you learn the material. The book also includes a glossary of key terms and concepts, as well as a list of additional resources for further reading. The book is designed to be used in conjunction with the ETF2121/5912 course, but it can also be used as a standalone resource for anyone interested in learning about data analysis. The book is suitable for students, professionals, and anyone interested in learning about data analysis and its applications. This book is solely authored by Dr. Joan Tan and is affiliated with Monash University. The book is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which allows you to share and adapt the material for non-commercial purposes, as long as you give appropriate credit to the original authors and license your contributions under the same terms. All the mistakes are mine, and I welcome any feedback or suggestions for improvement. You can contact me at Joan Tan.\nYours sincerely,\nDr. Joan Tan\nMonash University\n© 2025 Joan Tan. All rights reserved.",
     "crumbs": [
       "Welcome"
     ]
@@ -73,6 +73,116 @@
     "crumbs": [
       "Course Overview",
       "Course Structure"
+    ]
+  },
+  {
+    "objectID": "dbms.html",
+    "href": "dbms.html",
+    "title": "3  Database Management System",
+    "section": "",
+    "text": "3.1 Introduction\nA database management system (DBMS) is a software application that interacts with users, applications, and the database itself to capture and analyze data. A DBMS provides a systematic way to create, retrieve, update, and manage data. It allows users to define, create, maintain, and control access to the database.\nWhy databases are important?:",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#introduction",
+    "href": "dbms.html#introduction",
+    "title": "3  Database Management System",
+    "section": "",
+    "text": "Data Storage: Databases provide a structured way to store large amounts of data efficiently.\nData Retrieval: They allow for quick and easy retrieval of data using queries.\nData Integrity: Databases enforce data integrity and consistency through constraints and rules.\nData Security: They provide mechanisms for securing data and controlling access to it.\nData Sharing: Databases enable multiple users to access and share data simultaneously.\nData Backup and Recovery: They provide tools for backing up data and recovering it in case of failure.\nData Relationships: Databases allow for the establishment of relationships between different data entities, enabling complex data modeling.\nData Analysis: They support advanced data analysis and reporting capabilities.\nData Scalability: Databases can handle large volumes of data and can be scaled to accommodate growth.\nData Transactions: They support transactions, ensuring that data operations are completed successfully or rolled back in case of failure.\nData Standards: Databases adhere to industry standards, making it easier to integrate with other systems and applications.\nData Performance: They optimize data access and retrieval for better performance.\nData Maintenance: Databases provide tools for maintaining data quality and consistency over time.\nData Auditing: They support auditing and tracking of data changes for compliance and accountability.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-use-a-dbms-and-not-a-spreadsheettable",
+    "href": "dbms.html#why-use-a-dbms-and-not-a-spreadsheettable",
+    "title": "3  Database Management System",
+    "section": "3.2 Why use a DBMS and not a spreadsheet/table?",
+    "text": "3.2 Why use a DBMS and not a spreadsheet/table?\nSpreadsheets are great for small datasets and simple calculations, but they have limitations when it comes to handling large amounts of data, complex relationships, and multi-user access. A DBMS is designed to handle these challenges and provides a more robust solution for data management.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-not-excel",
+    "href": "dbms.html#why-not-excel",
+    "title": "3  Database Management System",
+    "section": "3.3 Why not Excel?",
+    "text": "3.3 Why not Excel?\nExcel is a powerful tool for data analysis and visualization, but it is not designed to be a full-fledged database management system. It has limitations in terms of data integrity, multi-user access, and scalability. While Excel can be used for small datasets and simple calculations, a DBMS is a better choice for larger datasets and more complex data management needs. For example, in a large banking system, a DBMS would be used to manage customer accounts, transactions, and other data, while Excel might be used for simple reporting or analysis tasks. Additionally, Excel is not designed to handle concurrent access by multiple users, which can lead to data corruption and inconsistencies. A DBMS provides mechanisms for managing concurrent access and ensuring data integrity.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#difference-between-using-dbms-and-excel",
+    "href": "dbms.html#difference-between-using-dbms-and-excel",
+    "title": "3  Database Management System",
+    "section": "3.4 Difference between using DBMS and Excel",
+    "text": "3.4 Difference between using DBMS and Excel\n\n\n\n\n\n\n\n\nFeature\nDBMS\nExcel\n\n\n\n\nData Storage\nStructured and efficient\nFlat and less efficient\n\n\nData Retrieval\nFast and optimized\nSlower for large datasets\n\n\nData Integrity\nEnforced through constraints\nLimited data validation\n\n\nData Security\nAdvanced security features\nBasic password protection\n\n\nData Sharing\nMulti-user access\nLimited multi-user support\n\n\nData Relationships\nSupports complex relationships\nLimited to simple relationships\n\n\nData Analysis\nAdvanced analysis capabilities\nBasic analysis features\n\n\nData Scalability\nScalable for large datasets\nLimited scalability\n\n\nData Transactions\nSupports transactions\nNo transaction support\n\n\nData Maintenance\nTools for data quality\nManual maintenance\n\n\nData Auditing\nSupports auditing\nNo built-in auditing\n\n\nData Performance\nOptimized for performance\nSlower for large datasets\n\n\nData Standards\nAdheres to industry standards\nNo standardization\n\n\nData Backup\nAutomated backup options\nManual backup required\n\n\nData Recovery\nAutomated recovery options\nManual recovery required",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-the-relationship-between-sql-vs.-dbms",
+    "href": "dbms.html#what-is-the-relationship-between-sql-vs.-dbms",
+    "title": "3  Database Management System",
+    "section": "3.5 What is the relationship between SQL vs. DBMS?",
+    "text": "3.5 What is the relationship between SQL vs. DBMS?\nSQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a DBMS. SQL allows users to create, read, update, and delete data in a database. A DBMS is the software that implements the database and provides the interface for users to interact with it using SQL.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-sql-is-important-for-a-data-analyst",
+    "href": "dbms.html#why-sql-is-important-for-a-data-analyst",
+    "title": "3  Database Management System",
+    "section": "3.6 Why SQL is important for a data analyst?",
+    "text": "3.6 Why SQL is important for a data analyst?\nSQL is important because it provides a standardized way to interact with relational databases. It allows users to perform complex queries, retrieve data, and manipulate data in a consistent manner. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS). Learning SQL is essential for anyone working with databases, as it enables them to effectively manage and analyze data. Additionally, SQL skills are highly sought after in the job market, making it a valuable asset for data analysts.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-sql",
+    "href": "dbms.html#what-is-sql",
+    "title": "3  Database Management System",
+    "section": "4.1 What is SQL?",
+    "text": "4.1 What is SQL?\nSQL (Structured Query Language) is a standard programming language used to manage and manipulate relational databases. It is used to perform various operations on the data stored in a database, such as querying, updating, inserting, and deleting data. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS), including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server.\nSQL is a declarative language, meaning that users specify what they want to do with the data, rather than how to do it. This allows for more efficient and optimized execution of queries by the database engine. SQL is also a powerful language that supports complex queries, joins, aggregations, and subqueries, making it suitable for a wide range of data analysis tasks.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#basic-sql-commands",
+    "href": "dbms.html#basic-sql-commands",
+    "title": "3  Database Management System",
+    "section": "4.2 Basic SQL Commands",
+    "text": "4.2 Basic SQL Commands\nThere are several types of SQL commands, each serving a different purpose. The main categories of SQL commands are: - Data Manipulation Language (DML): Used to manipulate data in the database. - Data Definition Language (DDL): Used to define and manage the structure of the database. - Data Control Language (DCL): Used to control access to the data in the database. - Transaction Control Language (TCL): Used to manage transactions in the database. - Data Query Language (DQL): Used to query and retrieve data from the database. - Data Control Language (DCL): Used to control access to the data in the database. It includes commands for granting and revoking permissions to users and roles.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#data-manipulation-language-dml",
+    "href": "dbms.html#data-manipulation-language-dml",
+    "title": "3  Database Management System",
+    "section": "4.3 Data Manipulation Language (DML)",
+    "text": "4.3 Data Manipulation Language (DML)\nDML commands are used to manipulate data in the database. They include commands for inserting, updating, deleting, and retrieving data.\n\n4.3.1 Data Definition Language (DDL)\nDDL commands are used to define and manage the structure of the database. They include commands for creating, altering, and dropping database objects such as tables, indexes, and views.\n\nCREATE: Used to create a new database object (e.g., table, index).\nALTER: Used to modify an existing database object (e.g., add or drop columns).\nDROP: Used to delete an existing database object (e.g., table, index).\nTRUNCATE: Used to delete all rows from a table without removing the table itself.\nRENAME: Used to rename an existing database object (e.g., table, column).\nCOMMENT: Used to add comments to database objects (e.g., tables, columns).\nCREATE INDEX: Used to create an index on a table to improve query performance.\nDROP INDEX: Used to delete an existing index from a table.\nCREATE VIEW: Used to create a virtual table based on the result of a query.\nDROP VIEW: Used to delete an existing view from the database.\nCREATE TABLE: Used to create a new table in the database.\nALTER TABLE: Used to modify the structure of an existing table (e.g., add or drop columns).\nDROP TABLE: Used to delete an existing table from the database.\nCREATE SCHEMA: Used to create a new schema in the database.\nALTER SCHEMA: Used to modify an existing schema in the database.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Database Management System</span>"
     ]
   },
   {

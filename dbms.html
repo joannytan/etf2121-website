@@ -8,7 +8,7 @@
 
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
-<title>Power BI – Data Analysis in Business (First edition)</title>
+<title>3&nbsp; Database Management System – Data Analysis in Business (First edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dbms.html" rel="prev">
+<link href="./powerbi.html" rel="next">
+<link href="./schedule.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -83,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dbms.html">Database Management System</a></li><li class="breadcrumb-item"><a href="./dbms.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Management System</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -163,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./dbms.html" class="sidebar-item-text sidebar-link">
+  <a href="./dbms.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
   </div>
 </li>
@@ -180,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link active">
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Power BI</span></a>
   </div>
 </li>
@@ -208,18 +209,30 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-power-bi" id="toc-why-power-bi" class="nav-link active" data-scroll-target="#why-power-bi">Why Power BI?</a></li>
-  <li><a href="#power-bi-vs.-excel" id="toc-power-bi-vs.-excel" class="nav-link" data-scroll-target="#power-bi-vs.-excel">Power BI vs.&nbsp;Excel</a></li>
-  <li><a href="#power-bi-vs.-tableau" id="toc-power-bi-vs.-tableau" class="nav-link" data-scroll-target="#power-bi-vs.-tableau">Power BI vs.&nbsp;Tableau</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a></li>
+  <li><a href="#why-use-a-dbms-and-not-a-spreadsheettable" id="toc-why-use-a-dbms-and-not-a-spreadsheettable" class="nav-link" data-scroll-target="#why-use-a-dbms-and-not-a-spreadsheettable"><span class="header-section-number">3.2</span> Why use a DBMS and not a spreadsheet/table?</a></li>
+  <li><a href="#why-not-excel" id="toc-why-not-excel" class="nav-link" data-scroll-target="#why-not-excel"><span class="header-section-number">3.3</span> Why not Excel?</a></li>
+  <li><a href="#difference-between-using-dbms-and-excel" id="toc-difference-between-using-dbms-and-excel" class="nav-link" data-scroll-target="#difference-between-using-dbms-and-excel"><span class="header-section-number">3.4</span> Difference between using DBMS and Excel</a></li>
+  <li><a href="#what-is-the-relationship-between-sql-vs.-dbms" id="toc-what-is-the-relationship-between-sql-vs.-dbms" class="nav-link" data-scroll-target="#what-is-the-relationship-between-sql-vs.-dbms"><span class="header-section-number">3.5</span> What is the relationship between SQL vs.&nbsp;DBMS?</a></li>
+  <li><a href="#why-sql-is-important-for-a-data-analyst" id="toc-why-sql-is-important-for-a-data-analyst" class="nav-link" data-scroll-target="#why-sql-is-important-for-a-data-analyst"><span class="header-section-number">3.6</span> Why SQL is important for a data analyst?</a></li>
+  <li><a href="#structured-query-language-sql" id="toc-structured-query-language-sql" class="nav-link" data-scroll-target="#structured-query-language-sql"><span class="header-section-number">4</span> Structured Query Language (SQL)</a>
+  <ul class="collapse">
+  <li><a href="#what-is-sql" id="toc-what-is-sql" class="nav-link" data-scroll-target="#what-is-sql"><span class="header-section-number">4.1</span> What is SQL?</a></li>
+  <li><a href="#basic-sql-commands" id="toc-basic-sql-commands" class="nav-link" data-scroll-target="#basic-sql-commands"><span class="header-section-number">4.2</span> Basic SQL Commands</a></li>
+  <li><a href="#data-manipulation-language-dml" id="toc-data-manipulation-language-dml" class="nav-link" data-scroll-target="#data-manipulation-language-dml"><span class="header-section-number">4.3</span> Data Manipulation Language (DML)</a>
+  <ul class="collapse">
+  <li><a href="#data-definition-language-ddl" id="toc-data-definition-language-ddl" class="nav-link" data-scroll-target="#data-definition-language-ddl"><span class="header-section-number">4.3.1</span> Data Definition Language (DDL)</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./dbms.html">Database Management System</a></li><li class="breadcrumb-item"><a href="./dbms.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Management System</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Power BI</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Management System</span></h1>
 </div>
 
 
@@ -236,42 +249,175 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="why-power-bi" class="level2">
-<h2 class="anchored" data-anchor-id="why-power-bi">Why Power BI?</h2>
-<p>Power BI is a powerful business intelligence tool that can handle large datasets and perform complex calculations quickly. It can connect to a wide variety of data sources, including databases, cloud services, and Excel files. The user-friendly interface allows users to create interactive reports and dashboards with ease. Additionally, Power BI enables the creation of custom visualizations and reports using DAX (Data Analysis Expressions) and M (Power Query Formula Language). With built-in collaboration features, users can easily share reports and dashboards with others, making it an ideal choice for organizations looking to enhance their data analysis capabilities.</p>
+<section id="introduction" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3.1</span> Introduction</h2>
+<p>A database management system (DBMS) is a software application that interacts with users, applications, and the database itself to capture and analyze data. A DBMS provides a systematic way to create, retrieve, update, and manage data. It allows users to define, create, maintain, and control access to the database.</p>
+<p><strong>Why databases are important?:</strong></p>
+<ul>
+<li><strong>Data Storage</strong>: Databases provide a structured way to store large amounts of data efficiently.</li>
+<li><strong>Data Retrieval</strong>: They allow for quick and easy retrieval of data using queries.</li>
+<li><strong>Data Integrity</strong>: Databases enforce data integrity and consistency through constraints and rules.</li>
+<li><strong>Data Security</strong>: They provide mechanisms for securing data and controlling access to it.</li>
+<li><strong>Data Sharing</strong>: Databases enable multiple users to access and share data simultaneously.</li>
+<li><strong>Data Backup and Recovery</strong>: They provide tools for backing up data and recovering it in case of failure.</li>
+<li><strong>Data Relationships</strong>: Databases allow for the establishment of relationships between different data entities, enabling complex data modeling.</li>
+<li><strong>Data Analysis</strong>: They support advanced data analysis and reporting capabilities.</li>
+<li><strong>Data Scalability</strong>: Databases can handle large volumes of data and can be scaled to accommodate growth.</li>
+<li><strong>Data Transactions</strong>: They support transactions, ensuring that data operations are completed successfully or rolled back in case of failure.</li>
+<li><strong>Data Standards</strong>: Databases adhere to industry standards, making it easier to integrate with other systems and applications.</li>
+<li><strong>Data Performance</strong>: They optimize data access and retrieval for better performance.</li>
+<li><strong>Data Maintenance</strong>: Databases provide tools for maintaining data quality and consistency over time.</li>
+<li><strong>Data Auditing</strong>: They support auditing and tracking of data changes for compliance and accountability.</li>
+</ul>
 </section>
-<section id="power-bi-vs.-excel" class="level2">
-<h2 class="anchored" data-anchor-id="power-bi-vs.-excel">Power BI vs.&nbsp;Excel</h2>
-<p>Power BI and Excel are both powerful tools for data analysis, but they serve different purposes and have different strengths. Here are some key differences:</p>
-<ol type="1">
-<li><strong>Data Handling</strong>: Power BI is designed to handle large datasets and can connect to a wide variety of data sources, while Excel is more suited for smaller datasets and manual data entry.</li>
-<li><strong>Data Visualization</strong>: Power BI offers a wide range of interactive visualizations and dashboards, while Excel has more limited charting capabilities.</li>
-<li><strong>Collaboration</strong>: Power BI allows for easy sharing and collaboration on reports and dashboards, while Excel requires more manual effort to share files.</li>
-<li><strong>Data Modeling</strong>: Power BI has advanced data modeling capabilities, including relationships between tables and DAX calculations, while Excel is more focused on spreadsheet calculations.</li>
-<li><strong>Real-time Data</strong>: Power BI can connect to real-time data sources, allowing for up-to-date reporting, while Excel requires manual updates.</li>
-<li><strong>Cost</strong>: Power BI has a subscription-based pricing model, while Excel is typically purchased as part of the Microsoft Office suite.</li>
-</ol>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://media.licdn.com/dms/image/v2/D4D22AQGsVK-RMj2hKw/feedshare-shrink_1280/feedshare-shrink_1280/0/1726331375467?e=1749081600&amp;v=beta&amp;t=kCsgcXflW1W2qsHWCw5q3t8lKl2WzS5W1fmlHV7_kCo.png" class="img-fluid figure-img"></p>
-<figcaption>Power BI vs Excel</figcaption>
-</figure>
-</div>
+<section id="why-use-a-dbms-and-not-a-spreadsheettable" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="why-use-a-dbms-and-not-a-spreadsheettable"><span class="header-section-number">3.2</span> Why use a DBMS and not a spreadsheet/table?</h2>
+<p>Spreadsheets are great for small datasets and simple calculations, but they have limitations when it comes to handling large amounts of data, complex relationships, and multi-user access. A DBMS is designed to handle these challenges and provides a more robust solution for data management.</p>
 </section>
-<section id="power-bi-vs.-tableau" class="level2">
-<h2 class="anchored" data-anchor-id="power-bi-vs.-tableau">Power BI vs.&nbsp;Tableau</h2>
-<p>Power BI and Tableau are both powerful data visualization tools, but they have some key differences:</p>
-<ol type="1">
-<li><p><strong>Ease of Use</strong>: Power BI is generally considered more user-friendly, especially for those already familiar with Microsoft products. Tableau has a steeper learning curve but offers more advanced features for experienced users.</p></li>
-<li><p><strong>Data Handling</strong>: Power BI is better suited for handling large datasets and can connect to a wider variety of data sources, while Tableau is more focused on visualizations and may struggle with very large datasets.</p></li>
-<li><p><strong>Cost</strong>: Power BI is typically more affordable, with a subscription-based pricing model, while Tableau can be more expensive, especially for larger teams.</p></li>
-<li><p><strong>Collaboration</strong>: Power BI has built-in collaboration features that make it easy to share reports and dashboards, while Tableau requires more manual effort to share visualizations.</p></li>
-<li><p><strong>Customization</strong>: Tableau offers more customization options for visualizations, while Power BI has a more standardized set of visualizations.</p></li>
-<li><p><strong>Integration</strong>: Power BI integrates seamlessly with other Microsoft products, while Tableau has a wider range of third-party integrations.</p></li>
-<li><p><strong>Community and Support</strong>: Both tools have strong user communities and support resources, but Power BI has a larger user base due to its integration with Microsoft products.</p></li>
-</ol>
+<section id="why-not-excel" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="why-not-excel"><span class="header-section-number">3.3</span> Why not Excel?</h2>
+<p>Excel is a powerful tool for data analysis and visualization, but it is not designed to be a full-fledged database management system. It has limitations in terms of data integrity, multi-user access, and scalability. While Excel can be used for small datasets and simple calculations, a DBMS is a better choice for larger datasets and more complex data management needs. For example, in a large banking system, a DBMS would be used to manage customer accounts, transactions, and other data, while Excel might be used for simple reporting or analysis tasks. Additionally, Excel is not designed to handle concurrent access by multiple users, which can lead to data corruption and inconsistencies. A DBMS provides mechanisms for managing concurrent access and ensuring data integrity.</p>
+</section>
+<section id="difference-between-using-dbms-and-excel" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="difference-between-using-dbms-and-excel"><span class="header-section-number">3.4</span> Difference between using DBMS and Excel</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 27%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>DBMS</th>
+<th>Excel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data Storage</td>
+<td>Structured and efficient</td>
+<td>Flat and less efficient</td>
+</tr>
+<tr class="even">
+<td>Data Retrieval</td>
+<td>Fast and optimized</td>
+<td>Slower for large datasets</td>
+</tr>
+<tr class="odd">
+<td>Data Integrity</td>
+<td>Enforced through constraints</td>
+<td>Limited data validation</td>
+</tr>
+<tr class="even">
+<td>Data Security</td>
+<td>Advanced security features</td>
+<td>Basic password protection</td>
+</tr>
+<tr class="odd">
+<td>Data Sharing</td>
+<td>Multi-user access</td>
+<td>Limited multi-user support</td>
+</tr>
+<tr class="even">
+<td>Data Relationships</td>
+<td>Supports complex relationships</td>
+<td>Limited to simple relationships</td>
+</tr>
+<tr class="odd">
+<td>Data Analysis</td>
+<td>Advanced analysis capabilities</td>
+<td>Basic analysis features</td>
+</tr>
+<tr class="even">
+<td>Data Scalability</td>
+<td>Scalable for large datasets</td>
+<td>Limited scalability</td>
+</tr>
+<tr class="odd">
+<td>Data Transactions</td>
+<td>Supports transactions</td>
+<td>No transaction support</td>
+</tr>
+<tr class="even">
+<td>Data Maintenance</td>
+<td>Tools for data quality</td>
+<td>Manual maintenance</td>
+</tr>
+<tr class="odd">
+<td>Data Auditing</td>
+<td>Supports auditing</td>
+<td>No built-in auditing</td>
+</tr>
+<tr class="even">
+<td>Data Performance</td>
+<td>Optimized for performance</td>
+<td>Slower for large datasets</td>
+</tr>
+<tr class="odd">
+<td>Data Standards</td>
+<td>Adheres to industry standards</td>
+<td>No standardization</td>
+</tr>
+<tr class="even">
+<td>Data Backup</td>
+<td>Automated backup options</td>
+<td>Manual backup required</td>
+</tr>
+<tr class="odd">
+<td>Data Recovery</td>
+<td>Automated recovery options</td>
+<td>Manual recovery required</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-is-the-relationship-between-sql-vs.-dbms" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="what-is-the-relationship-between-sql-vs.-dbms"><span class="header-section-number">3.5</span> What is the relationship between SQL vs.&nbsp;DBMS?</h2>
+<p>SQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a DBMS. SQL allows users to create, read, update, and delete data in a database. A DBMS is the software that implements the database and provides the interface for users to interact with it using SQL.</p>
+</section>
+<section id="why-sql-is-important-for-a-data-analyst" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="why-sql-is-important-for-a-data-analyst"><span class="header-section-number">3.6</span> Why SQL is important for a data analyst?</h2>
+<p>SQL is important because it provides a standardized way to interact with relational databases. It allows users to perform complex queries, retrieve data, and manipulate data in a consistent manner. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS). Learning SQL is essential for anyone working with databases, as it enables them to effectively manage and analyze data. Additionally, SQL skills are highly sought after in the job market, making it a valuable asset for data analysts.</p>
+</section>
+<section id="structured-query-language-sql" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Structured Query Language (SQL)</h1>
+<section id="what-is-sql" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="what-is-sql"><span class="header-section-number">4.1</span> What is SQL?</h2>
+<p>SQL (Structured Query Language) is a standard programming language used to manage and manipulate relational databases. It is used to perform various operations on the data stored in a database, such as querying, updating, inserting, and deleting data. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS), including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server.</p>
+<p>SQL is a declarative language, meaning that users specify what they want to do with the data, rather than how to do it. This allows for more efficient and optimized execution of queries by the database engine. SQL is also a powerful language that supports complex queries, joins, aggregations, and subqueries, making it suitable for a wide range of data analysis tasks.</p>
+</section>
+<section id="basic-sql-commands" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="basic-sql-commands"><span class="header-section-number">4.2</span> Basic SQL Commands</h2>
+<p>There are several types of SQL commands, each serving a different purpose. The main categories of SQL commands are: - <strong>Data Manipulation Language (DML)</strong>: Used to manipulate data in the database. - <strong>Data Definition Language (DDL)</strong>: Used to define and manage the structure of the database. - <strong>Data Control Language (DCL)</strong>: Used to control access to the data in the database. - <strong>Transaction Control Language (TCL)</strong>: Used to manage transactions in the database. - <strong>Data Query Language (DQL)</strong>: Used to query and retrieve data from the database. - <strong>Data Control Language (DCL)</strong>: Used to control access to the data in the database. It includes commands for granting and revoking permissions to users and roles.</p>
+</section>
+<section id="data-manipulation-language-dml" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="data-manipulation-language-dml"><span class="header-section-number">4.3</span> Data Manipulation Language (DML)</h2>
+<p>DML commands are used to manipulate data in the database. They include commands for inserting, updating, deleting, and retrieving data.</p>
+<section id="data-definition-language-ddl" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="data-definition-language-ddl"><span class="header-section-number">4.3.1</span> Data Definition Language (DDL)</h3>
+<p>DDL commands are used to define and manage the structure of the database. They include commands for creating, altering, and dropping database objects such as tables, indexes, and views.</p>
+<ul>
+<li><strong>CREATE</strong>: Used to create a new database object (e.g., table, index).</li>
+<li><strong>ALTER</strong>: Used to modify an existing database object (e.g., add or drop columns).</li>
+<li><strong>DROP</strong>: Used to delete an existing database object (e.g., table, index).</li>
+<li><strong>TRUNCATE</strong>: Used to delete all rows from a table without removing the table itself.</li>
+<li><strong>RENAME</strong>: Used to rename an existing database object (e.g., table, column).</li>
+<li><strong>COMMENT</strong>: Used to add comments to database objects (e.g., tables, columns).</li>
+<li><strong>CREATE INDEX</strong>: Used to create an index on a table to improve query performance.</li>
+<li><strong>DROP INDEX</strong>: Used to delete an existing index from a table.</li>
+<li><strong>CREATE VIEW</strong>: Used to create a virtual table based on the result of a query.</li>
+<li><strong>DROP VIEW</strong>: Used to delete an existing view from the database.</li>
+<li><strong>CREATE TABLE</strong>: Used to create a new table in the database.</li>
+<li><strong>ALTER TABLE</strong>: Used to modify the structure of an existing table (e.g., add or drop columns).</li>
+<li><strong>DROP TABLE</strong>: Used to delete an existing table from the database.</li>
+<li><strong>CREATE SCHEMA</strong>: Used to create a new schema in the database.</li>
+<li><strong>ALTER SCHEMA</strong>: Used to modify an existing schema in the database.</li>
+</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -677,11 +823,14 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./dbms.html" class="pagination-link" aria-label="Database Management System">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Database Management System</span></span>
+      <a href="./schedule.html" class="pagination-link" aria-label="schedule.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">schedule.html</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
+        <span class="nav-page-text">Power BI</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
