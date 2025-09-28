@@ -14,11 +14,11 @@ book:
     - part: Course Overview
       chapters:
         - intro.qmd
-        # - team.qmd
-        # - schedule.qmd
+        - team.qmd
+        - schedule.qmd
     - part: Database Management System
-      # chapters:
-      #   - dbms.qmd
+      chapters:
+        - dbms.qmd
     - part: Power BI
       chapters:
         - powerbi.qmd
@@ -31,10 +31,10 @@ book:
     - part: Conclusion
 
 
-    # - summary.qmd
-    # - references.qmd
-
-#bibliography: references.bib
+#     # - summary.qmd
+#     # - references.qmd
+# 
+# #bibliography: references.bib
 
 format:
   html:
