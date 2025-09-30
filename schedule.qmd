@@ -1,1 +1,9 @@
 # Course Schedule {.unnumbered}
+
+This page outlines the schedule for the course, including important dates and deadlines for each week. Please note that the schedule is subject to updates, so be sure to check back regularly for any changes. In the event of any discrepancies between the information on this website and the exam timetable or course handbook, the exam timetable and course handbook will serve as the authoritative sources.
+
+
+| Week | Date       | Topic                     | Slides                | Quiz                  | Reading               | Notes                |
+|------|------------|---------------------------|-----------------------|-----------------------|-----------------------|----------------------|
+| 1    | Tue, Jul 23 | Business Analytics & Database Management System   | [Slides](link_to_slides) | [Quiz 1](link_to_quiz) | Chapter 1-2         |                      |
+| 2    | Tue, Jul 30 | Database Query Language: SQL   | [Slides](link_to_slides) | [Quiz 2](link_to_quiz) | Chapter 3-4         |                      |
