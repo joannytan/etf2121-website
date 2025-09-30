@@ -27,8 +27,7 @@ book:
         - introR.qmd
 
     - part: Data Visualization
-      chapters:
-        # - dataviz.qmd
+
 
     - part: Conclusion
 
