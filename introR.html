@@ -8,7 +8,7 @@
 
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
-<title>Course Schedule – Data Analysis in Business (First edition)</title>
+<title>2&nbsp; Introduction to R – Data Analysis in Business (First edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,8 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./dbms.html" rel="next">
-<link href="./team.html" rel="prev">
+<link href="./powerbi.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -84,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Course Overview</a></li><li class="breadcrumb-item"><a href="./schedule.html">Course Schedule</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -147,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./schedule.html" class="sidebar-item-text sidebar-link active">
+  <a href="./schedule.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Course Schedule</span></a>
   </div>
 </li>
@@ -198,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
+  <a href="./introR.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
   </div>
 </li>
@@ -217,15 +216,25 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r"><span class="header-section-number">2.1</span> What is R?</a></li>
+  <li><a href="#why-r" id="toc-why-r" class="nav-link" data-scroll-target="#why-r"><span class="header-section-number">2.2</span> Why R?</a></li>
+  <li><a href="#posit-rstudio-desktop" id="toc-posit-rstudio-desktop" class="nav-link" data-scroll-target="#posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</a></li>
+  <li><a href="#installing-r-and-posit-rstudio-desktop" id="toc-installing-r-and-posit-rstudio-desktop" class="nav-link" data-scroll-target="#installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">2.5</span> Getting Started</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Course Overview</a></li><li class="breadcrumb-item"><a href="./schedule.html">Course Schedule</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Course Schedule</h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></h1>
 </div>
 
 
@@ -242,8 +251,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="what-is-r" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-r"><span class="header-section-number">2.1</span> What is R?</h2>
+<p>R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis.</p>
+</section>
+<section id="why-r" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="why-r"><span class="header-section-number">2.2</span> Why R?</h2>
+<ul>
+<li>R is open-source and free</li>
+<li>R is a powerful tool for data analysis</li>
+<li>R has a large and active community</li>
+<li>R has a large number of packages for data analysis</li>
+<li>R is a great tool for reproducible research</li>
+</ul>
+</section>
+<section id="posit-rstudio-desktop" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</h2>
+<p>Posit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.</p>
+<p>::: note “R vs.&nbsp;RStudio”</p>
+<p>R is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient. :::</p>
+</section>
+<section id="installing-r-and-posit-rstudio-desktop" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</h2>
+<p>Insert a video here.</p>
+</section>
+<section id="getting-started" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">2.5</span> Getting Started</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -648,14 +684,11 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./team.html" class="pagination-link" aria-label="Team">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Team</span>
+      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Power BI</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./dbms.html" class="pagination-link" aria-label="Database Management System">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
