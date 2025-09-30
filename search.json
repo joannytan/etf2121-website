@@ -113,7 +113,7 @@
     "href": "team.html",
     "title": "Team",
     "section": "",
-    "text": "Instructor\nDr. Joan Tan (she/her) works as Senior Teaching Fellow at the Department of Business Statistics and Econometrics at Monash University and also currently working in a bank as an Associate Director. Joan’s work focuses on bringing industry experience into teaching with student centered innovative learning.\nEmail me\n☎️ Consultation hours: 12-1pm Tuesday, H4.76 / Zoom",
+    "text": "Instructor\nDr. Joan Tan (she/her) works as Senior Lecturer at the Department of Business Statistics and Econometrics at Monash University and also currently working in a bank as a Credit Risk Manager. Joan’s work focuses on bringing industry experience into teaching with student centered innovative learning.\nEmail me\n☎️ Consultation hours: 12-1pm Tuesday, H4.76 / Zoom",
     "crumbs": [
       "Course Overview",
       "Team"
@@ -139,6 +139,17 @@
     "crumbs": [
       "Course Overview",
       "Team"
+    ]
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Course Schedule",
+    "section": "",
+    "text": "This page outlines the schedule for the course, including important dates and deadlines for each week. Please note that the schedule is subject to updates, so be sure to check back regularly for any changes. In the event of any discrepancies between the information on this website and the exam timetable or course handbook, the exam timetable and course handbook will serve as the authoritative sources.\n\n\n\nWeek\nDate\nTopic\nSlides\nQuiz\nReading\nNotes\n\n\n\n\n1\nTue, Jul 23\nBusiness Analytics & Database Management System\nSlides\nQuiz 1\nChapter 1-2\n\n\n\n2\nTue, Jul 30\nDatabase Query Language: SQL\nSlides\nQuiz 2\nChapter 3-4",
+    "crumbs": [
+      "Course Overview",
+      "Course Schedule"
     ]
   },
   {
