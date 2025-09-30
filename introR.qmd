@@ -21,5 +21,12 @@ Posit (formerly RStudio) is an integrated development environment (IDE) for R. I
 R is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient.
 :::
 
+## Installing R and Posit (RStudio Desktop)
+
+Insert a video here.
+
+## Getting Started
+
+
 
 

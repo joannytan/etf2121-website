@@ -24,9 +24,7 @@ book:
         - powerbi.qmd
     - part: Data Analysis
       chapters:
-        - installR.qmd
         - introR.qmd
-
 
     - part: Data Visualization
       chapters:
