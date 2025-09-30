@@ -16,7 +16,8 @@ R is a programming language and free software environment for statistical comput
 
 Posit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.
 
-::: note "R vs. RStudio"
+:::{.callout-note}
+## "R vs. RStudio"
 
 R is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient.
 :::

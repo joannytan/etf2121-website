@@ -8,11 +8,35 @@ This unit equips students with statistical techniques and the use of modern busi
 
 ## Learning Objectives {.unnumbered}
 
+On successful completion of this unit, you should be able to:
 
+1.  Gain proficiency in business reporting tools and data analysis tool.
+2.  Learn to perform complex statistical analyses, including hypothesis testing and confidence intervals.
+3.  Use various predictive modeling technique to enhance forecasting and decision-making in business context.
+4.  Acquire skills to analyze and interpret real-time data for better business strategic planning and decision.
 
 ## Unit Outline {.unnumbered}
 
+1.  Business Analytics & Database Management System
+2.  Structured Query Language
+3.  Data Wrangling with R and Power BI
+4.  Data Visualization with Power BI
+5.  Descriptive Statistics with R and Power BI
+6.  Modelling Uncertainty
+7.  Descriptive Analytics
+8.  Linear Regression
+9.  Time Series Analysis
+10. Predictive Analytics: Continuous Outcome Variables
+11. Predictive Analytics: Binary Outcome Variables
+12. Revision
+
 ## Textbooks {.unnumbered}
+
+The textbook for this course is just a supplement to the lectures and labs. The main resources for this course are the lecture notes, lab materials, and the course website. However, the following textbooks are recommended for additional reading:
+
+-   [Business Analytics](https://au.cengage.com/c/mindtap-for-camm-cochran-fry-ohlmann-s-business-analytics-2-terms-instant-access-5e-camm-cochran-fry-ohlmann/9780357902240/) by Camm, Cochran, Fry, Ohlmann, Anderson & Sweeney, 2024, 5th Edition.
+
+-   [Advanced Analytics with Power BI and R](https://radacad.com/online-book-analytics-with-power-bi-and-r) by Dr. Leila Etaati, 2020.
 
 ## Assessment {.unnumbered}
 
@@ -26,10 +50,56 @@ The assessment for this unit is designed to evaluate your understanding of the c
 |--------------------------|------------|----------------|------------------------|
 | Quizzes                 | 10%        | Weekly         | Weeks 2-12            |
 | Individual Assignment   | 20%        | Week 7         | Weeks 1-5             |
-| Group Assignment*       | 20%        | Week 11        | Weeks 1-10            |
+| Group Assignment\*       | 20%        | Week 11        | Weeks 1-10            |
 | Final Exam              | 50%        | Exam period    | Weeks 1-11            |
+
+-   *The lowest quiz grade will be dropped at the end of the semester.*
+-   It is your responsibility to check your assignment grading and to report any discrepancies within one week of the grade being posted.
+-   \*Maximum of 3 persons and minimum of 2 per group.
 
 ## Communication {.unnumbered}
 
+All lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website or moodle page.
+
+I will regularly send course announcements via Ed discussion board, make sure to check one or the other of these regularly. It is your responsibility to stay informed about the course progress and any changes to the schedule.
+
 ## Where to get help {.unnumbered}
 
+
+-   If you have a question during lecture or tutorial, feel free to ask your teaching team or post your question in the discussion board. There are likely other students with the same question, and it is helpful to have the answer available to everyone.
+-   The teaching team is here to help you be successful in the course. You are encouraged to attend the designated consultation hours to ask questions about the course content and assignments. Those consultation hours are available every day except weekend!
+-   Outside of class and office hours, any general questions about course content or assignments should be posted on the Ed discussion board [here](link%20here!!!). Please check whether your question has already been answered before posting. Please help each others by answering other questions, you will notice that you learn a lot by posting/responding to others. Do not expect the teaching team to answer questions that are posted during the weekend in the discussion board.
+-   Emails should be reserved for personal questions that are not appropriate to be discuss in the forum. **Please include "ETF2121/5912" in the email subject line.** Response time may be slower for emails with 24 hours being the maximum response time except weekend.
+
+## Lectures and tutorials
+
+Our goal in both lectures and labs is to encourage maximum interaction. As your instructor, I will introduce you to new tools and techniques, but it's up to you to apply them effectively. Coding is best learned through practice, so much of our coursework will involve hands-on coding tasks. Each session will include various activities and assignments designed to enhance your skills.
+
+Attendance and active participation in both lectures and tutorials are expected. Attending lectures and tutorials in person will provide the best learning experience. Some lectures will feature application exercises and periodic activities to foster a supportive learning community. These activities will be brief and enjoyable, aimed at strengthening connections among classmates throughout the semester.
+
+### Exams
+
+**Final exam**. The exam will be held during the exam period, and it will be a closed-book exam with 5 pieces of A4 paper (10 pages) of handwritten/typed notes allowed. It is a supervised exam, and you will not be allowed to access the internet.
+
+### Software
+
+All software used in this course can be downloaded for free. However, Power BI will not be available for Mac users, so I would encourage you to access it via MOVE. Please refer to [this](https://www.monash.edu/student-academic-success/build-digital-capabilities/master-online-learning-systems/move) instruction.
+
+### Late work submission policy
+
+Assignment deadlines are set to facilitate your progression through the course content and to enable timely feedback from the teaching team. I understand that unforeseen circumstances may occasionally arise, hindering your ability to meet a deadline. In such cases, you can request an extension through the Monash extension unit for extenuating circumstances. Please note that **I do not grant individual approvals for late submissions**, and requests should **solely** be made through the Monash extension unit.
+
+-   There will be a 10% deduction for each 24-hour period the assignment is late.
+-   If you submit an assessment task more than seven days after the due date, you'll receive a mark of zero and you won't get any feedback.
+-   Strictly no late submission without approval.
+-   I will not reply to any email related to request on late submission.
+
+## Important dates
+
+-   **xxrd July 2026:** Classes begin (Tuesday)
+
+-   **Every Sunday**: Quiz closed at 11.55pm
+
+-   **xxth September 2026**: Individual assignment submission deadline
+
+-   **xxth October 2026**: Group assignment submission deadline
