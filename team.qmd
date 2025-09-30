@@ -20,10 +20,10 @@ Password: TBC
 
 ## Teaching Associates
 
-insert table here with 3 columns contact, tutorial slots and consultation hours
 
 | Name | Contact | Tutorial Slots | Consultation Hours |
 |:-----|:--------|:---------------|:-------------------|
+|ttb|[Email me](mailto: tbc)|Tuesday 2-3pm, Thursday 10-11am|Monday 3-4pm, Wednesday 1-2pm|
 <!-- | ![](images/team/ta1.jpeg){style="float:right;padding: 0 0 0 10px;" style="border-radius: 50%;" fig-alt="Photo of TA1" width="100"} **TA1 Name** | [Email me](mailto: tbc) -->
 <!-- | Tuesday 2-3pm, Thursday 10-11am | Monday 3-4pm, Wednesday 1-2pm | -->
 <!-- | ![](images/team/ta2.jpeg){style="float:right;padding: 0 0 0 10px;" style="border-radius: 50%;" fig-alt="Photo of TA2" width="100"} **TA2 Name** | [Email me](mailto: tbc) -->
