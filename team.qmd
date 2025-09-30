@@ -1,1 +1,30 @@
 # Team {.unnumbered}
+
+## Instructor
+
+![](images/team/joan.jpeg){style="float:right;padding: 0 0 0 10px;" style="border-radius: 50%;" fig-alt="Photo of Dr. Joan" width="150"}
+
+**Dr.** **Joan Tan** (she/her) works as Senior Teaching Fellow at the Department of Business Statistics and Econometrics at Monash University and also currently working in a bank as an Associate Director. Joan's work focuses on bringing industry experience into teaching with student centered innovative learning.
+
+[Email me](mailto:joan.tan@monash.edu)
+
+☎️ Consultation hours: **12-1pm Tuesday**, H4.76 / [Zoom](TBC)
+
+## Exam Consultations Hours
+
+Zoom Link : [zoom](tbc)
+
+Meeting ID: TBC
+
+Password: TBC
+
+## Teaching Associates
+
+insert table here with 3 columns contact, tutorial slots and consultation hours
+
+| Name | Contact | Tutorial Slots | Consultation Hours |
+|:-----|:--------|:---------------|:-------------------|
+<!-- | ![](images/team/ta1.jpeg){style="float:right;padding: 0 0 0 10px;" style="border-radius: 50%;" fig-alt="Photo of TA1" width="100"} **TA1 Name** | [Email me](mailto: tbc) -->
+<!-- | Tuesday 2-3pm, Thursday 10-11am | Monday 3-4pm, Wednesday 1-2pm | -->
+<!-- | ![](images/team/ta2.jpeg){style="float:right;padding: 0 0 0 10px;" style="border-radius: 50%;" fig-alt="Photo of TA2" width="100"} **TA2 Name** | [Email me](mailto: tbc) -->
+<!-- | Monday 10-11am, Wednesday 2-3pm | Tuesday 11-12pm, Thursday 3-4pm | -->

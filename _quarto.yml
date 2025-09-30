@@ -47,4 +47,5 @@ webr:
 filters:
   - webr
 
-
+execute:
+  freeze: true
