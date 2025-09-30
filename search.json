@@ -14,7 +14,18 @@
     "href": "intro.html",
     "title": "Course Structure",
     "section": "",
-    "text": "Learning Objectives\nThis unit provides an overview of fundamental tools of data and statistical analysis used in the Business and Economics disciplines. The methods covered are widely used in industry and academia, providing the necessary foundation for more advanced approaches as you advance your training and career.\nThis course delves deeper into basic statistical concepts, with a focus on their application in finance, accounting, and other sectors. It introduces cutting-edge software and programming languages such as R, Power-BI, SQL and Excel for robust data analysis and predictive modelling. Students will engage with modern data sources and advanced sampling techniques, learn to perform hypothesis testing, and apply modelling techniques such as regression and time series analysis in business contexts. The course places a strong emphasis on practical applications, aiming to equip students with the skills to interpret and leverage statistical data for solving business problems and making informed decisions in industry.\nThis unit equips students with statistical techniques and the use of modern business software, including R, Excel, Power BI, for business applications. Students will learn to process and analyse extensive datasets using methods such as regression, time series analysis and classification. Key topics include modeling, regression analysis, and time series analysis in the business context.",
+    "text": "Learning Objectives\nThis unit provides an overview of fundamental tools of data and statistical analysis used in the Business and Economics disciplines. The methods covered are widely used in industry and academia, providing the necessary foundation for more advanced approaches as you advance your training and career.\nThis course delves deeper into basic statistical concepts, with a focus on their application in finance, accounting, and other sectors. It introduces cutting-edge software and programming languages such as R, Power-BI, SQL and Excel for robust data analysis and predictive modelling. Students will engage with modern data sources and advanced sampling techniques, learn to perform hypothesis testing, and apply modelling techniques such as regression and time series analysis in business contexts. The course places a strong emphasis on practical applications, aiming to equip students with the skills to interpret and leverage statistical data for solving business problems and making informed decisions in industry.\nThis unit equips students with statistical techniques and the use of modern business software, including R, Excel, Power BI, for business applications. Students will learn to process and analyse extensive datasets using methods such as regression, time series analysis and classification. Key topics include modeling, regression analysis, and time series analysis in the business context.\nOn successful completion of this unit, you should be able to:",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#learning-objectives",
+    "href": "intro.html#learning-objectives",
+    "title": "Course Structure",
+    "section": "",
+    "text": "Gain proficiency in business reporting tools and data analysis tool.\nLearn to perform complex statistical analyses, including hypothesis testing and confidence intervals.\nUse various predictive modeling technique to enhance forecasting and decision-making in business context.\nAcquire skills to analyze and interpret real-time data for better business strategic planning and decision.",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -25,7 +36,7 @@
     "href": "intro.html#unit-outline",
     "title": "Course Structure",
     "section": "Unit Outline",
-    "text": "Unit Outline",
+    "text": "Unit Outline\n\nBusiness Analytics & Database Management System\nStructured Query Language\nData Wrangling with R and Power BI\nData Visualization with Power BI\nDescriptive Statistics with R and Power BI\nModelling Uncertainty\nDescriptive Analytics\nLinear Regression\nTime Series Analysis\nPredictive Analytics: Continuous Outcome Variables\nPredictive Analytics: Binary Outcome Variables\nRevision",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -36,7 +47,7 @@
     "href": "intro.html#textbooks",
     "title": "Course Structure",
     "section": "Textbooks",
-    "text": "Textbooks",
+    "text": "Textbooks\nThe textbook for this course is just a supplement to the lectures and labs. The main resources for this course are the lecture notes, lab materials, and the course website. However, the following textbooks are recommended for additional reading:\n\nBusiness Analytics by Camm, Cochran, Fry, Ohlmann, Anderson & Sweeney, 2024, 5th Edition.\nAdvanced Analytics with Power BI and R by Dr. Leila Etaati, 2020.",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -47,7 +58,7 @@
     "href": "intro.html#assessment",
     "title": "Course Structure",
     "section": "Assessment",
-    "text": "Assessment\nThe assessment for this unit is designed to evaluate your understanding of the course material and your ability to apply the concepts learned in practical scenarios. The assessment consists of the following components: - Quizzes: There will be a series of quizzes throughout the semester to test your understanding of the material covered in the lectures and readings. These quizzes will be conducted online and will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The quizzes will be timed and will be available for a limited period. - Individual Assignments: You will be required to complete a series of individual assignments that will involve applying the concepts learned in the course to real-world scenarios. These assignments will require you to analyze data, interpret results, and present your findings in a clear and concise manner. The assignments will be submitted online and will be graded based on the quality of your analysis and presentation. - Group Project: You will be required to work in groups to complete a project that involves analyzing a dataset and presenting your findings. The project will require you to apply the concepts learned in the course to a real-world problem and will involve data collection, analysis, and presentation. The project will be graded based on the quality of your analysis, the effectiveness of your presentation, and your ability to work as a team. - Final Exam: The final exam will be a comprehensive assessment of the material covered in the course. The exam will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The exam will be conducted in person and will be timed.\n\n\n\n\n\n\n\n\n\nAssessments\nWeight\nDue Date\nLearning Outcomes\n\n\n\n\nQuizzes\n10%\nWeekly\nWeeks 2-12\n\n\nIndividual Assignment\n20%\nWeek 7\nWeeks 1-5\n\n\nGroup Assignment*\n20%\nWeek 11\nWeeks 1-10\n\n\nFinal Exam\n50%\nExam period\nWeeks 1-11",
+    "text": "Assessment\nThe assessment for this unit is designed to evaluate your understanding of the course material and your ability to apply the concepts learned in practical scenarios. The assessment consists of the following components: - Quizzes: There will be a series of quizzes throughout the semester to test your understanding of the material covered in the lectures and readings. These quizzes will be conducted online and will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The quizzes will be timed and will be available for a limited period. - Individual Assignments: You will be required to complete a series of individual assignments that will involve applying the concepts learned in the course to real-world scenarios. These assignments will require you to analyze data, interpret results, and present your findings in a clear and concise manner. The assignments will be submitted online and will be graded based on the quality of your analysis and presentation. - Group Project: You will be required to work in groups to complete a project that involves analyzing a dataset and presenting your findings. The project will require you to apply the concepts learned in the course to a real-world problem and will involve data collection, analysis, and presentation. The project will be graded based on the quality of your analysis, the effectiveness of your presentation, and your ability to work as a team. - Final Exam: The final exam will be a comprehensive assessment of the material covered in the course. The exam will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The exam will be conducted in person and will be timed.\n\n\n\n\n\n\n\n\n\nAssessments\nWeight\nDue Date\nLearning Outcomes\n\n\n\n\nQuizzes\n10%\nWeekly\nWeeks 2-12\n\n\nIndividual Assignment\n20%\nWeek 7\nWeeks 1-5\n\n\nGroup Assignment*\n20%\nWeek 11\nWeeks 1-10\n\n\nFinal Exam\n50%\nExam period\nWeeks 1-11\n\n\n\n\nThe lowest quiz grade will be dropped at the end of the semester.\nIt is your responsibility to check your assignment grading and to report any discrepancies within one week of the grade being posted.\n*Maximum of 3 persons and minimum of 2 per group.",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -58,7 +69,7 @@
     "href": "intro.html#communication",
     "title": "Course Structure",
     "section": "Communication",
-    "text": "Communication",
+    "text": "Communication\nAll lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website or moodle page.\nI will regularly send course announcements via Ed discussion board, make sure to check one or the other of these regularly. It is your responsibility to stay informed about the course progress and any changes to the schedule.",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -69,7 +80,29 @@
     "href": "intro.html#where-to-get-help",
     "title": "Course Structure",
     "section": "Where to get help",
-    "text": "Where to get help",
+    "text": "Where to get help\n\nIf you have a question during lecture or tutorial, feel free to ask your teaching team or post your question in the discussion board. There are likely other students with the same question, and it is helpful to have the answer available to everyone.\nThe teaching team is here to help you be successful in the course. You are encouraged to attend the designated consultation hours to ask questions about the course content and assignments. Those consultation hours are available every day except weekend!\nOutside of class and office hours, any general questions about course content or assignments should be posted on the Ed discussion board here. Please check whether your question has already been answered before posting. Please help each others by answering other questions, you will notice that you learn a lot by posting/responding to others. Do not expect the teaching team to answer questions that are posted during the weekend in the discussion board.\nEmails should be reserved for personal questions that are not appropriate to be discuss in the forum. Please include “ETF2121/5912” in the email subject line. Response time may be slower for emails with 24 hours being the maximum response time except weekend.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#lectures-and-tutorials",
+    "href": "intro.html#lectures-and-tutorials",
+    "title": "Course Structure",
+    "section": "Lectures and tutorials",
+    "text": "Lectures and tutorials\nOur goal in both lectures and labs is to encourage maximum interaction. As your instructor, I will introduce you to new tools and techniques, but it’s up to you to apply them effectively. Coding is best learned through practice, so much of our coursework will involve hands-on coding tasks. Each session will include various activities and assignments designed to enhance your skills.\nAttendance and active participation in both lectures and tutorials are expected. Attending lectures and tutorials in person will provide the best learning experience. Some lectures will feature application exercises and periodic activities to foster a supportive learning community. These activities will be brief and enjoyable, aimed at strengthening connections among classmates throughout the semester.\n\nExams\nFinal exam. The exam will be held during the exam period, and it will be a closed-book exam with 5 pieces of A4 paper (10 pages) of handwritten/typed notes allowed. It is a supervised exam, and you will not be allowed to access the internet.\n\n\nSoftware\nAll software used in this course can be downloaded for free. However, Power BI will not be available for Mac users, so I would encourage you to access it via MOVE. Please refer to this instruction.\n\n\nLate work submission policy\nAssignment deadlines are set to facilitate your progression through the course content and to enable timely feedback from the teaching team. I understand that unforeseen circumstances may occasionally arise, hindering your ability to meet a deadline. In such cases, you can request an extension through the Monash extension unit for extenuating circumstances. Please note that I do not grant individual approvals for late submissions, and requests should solely be made through the Monash extension unit.\n\nThere will be a 10% deduction for each 24-hour period the assignment is late.\nIf you submit an assessment task more than seven days after the due date, you’ll receive a mark of zero and you won’t get any feedback.\nStrictly no late submission without approval.\nI will not reply to any email related to request on late submission.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#important-dates",
+    "href": "intro.html#important-dates",
+    "title": "Course Structure",
+    "section": "Important dates",
+    "text": "Important dates\n\nxxrd July 2026: Classes begin (Tuesday)\nEvery Sunday: Quiz closed at 11.55pm\nxxth September 2026: Individual assignment submission deadline\nxxth October 2026: Group assignment submission deadline",
     "crumbs": [
       "Course Overview",
       "Course Structure"
@@ -245,7 +278,7 @@
     "href": "introR.html#posit-rstudio-desktop",
     "title": "2  Introduction to R",
     "section": "2.3 Posit (RStudio Desktop)",
-    "text": "2.3 Posit (RStudio Desktop)\nPosit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.\n::: note “R vs. RStudio”\nR is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient. :::",
+    "text": "2.3 Posit (RStudio Desktop)\nPosit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.\n\n\n\n\n\n\nNote“R vs. RStudio”\n\n\n\nR is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient.",
     "crumbs": [
       "Data Analysis",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
