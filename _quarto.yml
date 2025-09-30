@@ -7,7 +7,7 @@ book:
   cover-image: images/cover.png
   description: "A beginner guide to SQL, Power BI, data analysis, and data visualization."
   author: "Dr. Joan Tan"
-  date: `r Sys.Date()`
+  date: "`r Sys.Date()`"
   chapters:
     - index.qmd
 
@@ -28,7 +28,7 @@ book:
 
     - part: Data Visualization
       chapters:
-        - dataviz.qmd
+        # - dataviz.qmd
 
     - part: Conclusion
 
