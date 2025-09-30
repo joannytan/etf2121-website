@@ -27,6 +27,9 @@ Insert a video here.
 
 ## Getting Started
 
+```{webr-r}
+print("Hello World")
+```
 
 
 

@@ -20,7 +20,7 @@ book:
       chapters:
         - dbms.qmd
     - part: Power BI
-      chapters:
+      chapters: 
         - powerbi.qmd
     - part: Data Analysis
       chapters:
@@ -40,7 +40,11 @@ book:
 format:
   html:
     theme: cosmo
-
-
+    
+webr: 
+  show-startup-message: false     # Display status of webR initialization
+  
+filters:
+  - webr
 
 
