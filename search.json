@@ -109,6 +109,39 @@
     ]
   },
   {
+    "objectID": "team.html",
+    "href": "team.html",
+    "title": "Team",
+    "section": "",
+    "text": "Instructor\nDr. Joan Tan (she/her) works as Senior Teaching Fellow at the Department of Business Statistics and Econometrics at Monash University and also currently working in a bank as an Associate Director. Joan’s work focuses on bringing industry experience into teaching with student centered innovative learning.\nEmail me\n☎️ Consultation hours: 12-1pm Tuesday, H4.76 / Zoom",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
+    "objectID": "team.html#exam-consultations-hours",
+    "href": "team.html#exam-consultations-hours",
+    "title": "Team",
+    "section": "Exam Consultations Hours",
+    "text": "Exam Consultations Hours\nZoom Link : zoom\nMeeting ID: TBC\nPassword: TBC",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
+    "objectID": "team.html#teaching-associates",
+    "href": "team.html#teaching-associates",
+    "title": "Team",
+    "section": "Teaching Associates",
+    "text": "Teaching Associates\ninsert table here with 3 columns contact, tutorial slots and consultation hours\n\n\n\nName\nContact\nTutorial Slots\nConsultation Hours",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
     "objectID": "dbms.html",
     "href": "dbms.html",
     "title": "1  Database Management System",
