@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -40,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -97,9 +97,7 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Analysis in Business (First edition)</a> 
         <div class="sidebar-tools-main">
@@ -168,12 +166,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Power BI</span></a>
+ <span class="menu-text">Data Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -181,8 +185,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./introR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
   </div>
 </li>
       </ul>
@@ -190,7 +194,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Power BI</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -198,8 +202,8 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Power BI</span></a>
   </div>
 </li>
       </ul>
@@ -223,7 +227,12 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning Objectives</a></li>
-  <li><a href="#unit-outline" id="toc-unit-outline" class="nav-link" data-scroll-target="#unit-outline">Unit Outline</a></li>
+  <li><a href="#unit-outline" id="toc-unit-outline" class="nav-link" data-scroll-target="#unit-outline">Unit Outline</a>
+  <ul class="collapse">
+  <li><a href="#section-1-data-integration-and-management." id="toc-section-1-data-integration-and-management." class="nav-link" data-scroll-target="#section-1-data-integration-and-management.">Section 1: Data Integration and Management.</a></li>
+  <li><a href="#section-2-data-analysis-and-statistical-modelling." id="toc-section-2-data-analysis-and-statistical-modelling." class="nav-link" data-scroll-target="#section-2-data-analysis-and-statistical-modelling.">Section 2: Data Analysis and Statistical Modelling.</a></li>
+  <li><a href="#section-3-reporting-and-storytelling." id="toc-section-3-reporting-and-storytelling." class="nav-link" data-scroll-target="#section-3-reporting-and-storytelling.">Section 3: Reporting and Storytelling.</a></li>
+  </ul></li>
   <li><a href="#textbooks" id="toc-textbooks" class="nav-link" data-scroll-target="#textbooks">Textbooks</a></li>
   <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a></li>
   <li><a href="#communication" id="toc-communication" class="nav-link" data-scroll-target="#communication">Communication</a></li>
@@ -275,20 +284,33 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="unit-outline" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="unit-outline">Unit Outline</h2>
+<section id="section-1-data-integration-and-management." class="level3">
+<h3 class="anchored" data-anchor-id="section-1-data-integration-and-management.">Section 1: Data Integration and Management.</h3>
 <ol type="1">
-<li>Business Analytics &amp; Database Management System</li>
-<li>Structured Query Language</li>
-<li>Data Wrangling with R and Power BI</li>
-<li>Data Visualization with Power BI</li>
-<li>Descriptive Statistics with R and Power BI</li>
-<li>Modelling Uncertainty</li>
-<li>Descriptive Analytics</li>
-<li>Linear Regression</li>
-<li>Time Series Analysis</li>
-<li>Predictive Analytics: Continuous Outcome Variables</li>
-<li>Predictive Analytics: Binary Outcome Variables</li>
-<li>Revision</li>
+<li>Database Management System &amp; Structured Query Language (SQL)</li>
+<li>SQL Joins &amp; Aggregation</li>
+<li>Advanced SQL for Analytics</li>
 </ol>
+</section>
+<section id="section-2-data-analysis-and-statistical-modelling." class="level3">
+<h3 class="anchored" data-anchor-id="section-2-data-analysis-and-statistical-modelling.">Section 2: Data Analysis and Statistical Modelling.</h3>
+<ol start="4" type="1">
+<li>Descriptive Analytics and Data Wrangling</li>
+<li>Data Visualisation</li>
+<li>Data Aggregation and Sampling Methods</li>
+<li>Regression Analysis</li>
+<li>Predictive Analytics</li>
+<li>Time Series Analysis</li>
+</ol>
+</section>
+<section id="section-3-reporting-and-storytelling." class="level3">
+<h3 class="anchored" data-anchor-id="section-3-reporting-and-storytelling.">Section 3: Reporting and Storytelling.</h3>
+<ol start="10" type="1">
+<li>Power BI Foundations</li>
+<li>Power BI Dashboard</li>
+<li>Course Review (Revision)</li>
+</ol>
+</section>
 </section>
 <section id="textbooks" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="textbooks">Textbooks</h2>

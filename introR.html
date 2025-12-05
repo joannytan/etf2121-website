@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.8.26">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
-<title>2&nbsp; Introduction to R – Data Analysis in Business (First edition)</title>
+<title>3&nbsp; Introduction to R – Data Analysis in Business (First edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./powerbi.html" rel="prev">
+<link href="./powerbi.html" rel="next">
+<link href="./sql_basics.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -39,7 +40,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -1636,7 +1637,7 @@ globalThis.qwebrExecuteCode = async function (
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -1649,9 +1650,7 @@ globalThis.qwebrExecuteCode = async function (
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      </a>
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Data Analysis in Business (First edition)</a> 
         <div class="sidebar-tools-main">
@@ -1720,12 +1719,18 @@ globalThis.qwebrExecuteCode = async function (
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Power BI</span></a>
+ <span class="menu-text">Data Analysis</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1733,8 +1738,8 @@ globalThis.qwebrExecuteCode = async function (
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./introR.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
   </div>
 </li>
       </ul>
@@ -1742,7 +1747,7 @@ globalThis.qwebrExecuteCode = async function (
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Power BI</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1750,8 +1755,8 @@ globalThis.qwebrExecuteCode = async function (
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Power BI</span></a>
   </div>
 </li>
       </ul>
@@ -1774,11 +1779,11 @@ globalThis.qwebrExecuteCode = async function (
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r"><span class="header-section-number">2.1</span> What is R?</a></li>
-  <li><a href="#why-r" id="toc-why-r" class="nav-link" data-scroll-target="#why-r"><span class="header-section-number">2.2</span> Why R?</a></li>
-  <li><a href="#posit-rstudio-desktop" id="toc-posit-rstudio-desktop" class="nav-link" data-scroll-target="#posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</a></li>
-  <li><a href="#installing-r-and-posit-rstudio-desktop" id="toc-installing-r-and-posit-rstudio-desktop" class="nav-link" data-scroll-target="#installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">2.5</span> Getting Started</a></li>
+  <li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r"><span class="header-section-number">3.1</span> What is R?</a></li>
+  <li><a href="#why-r" id="toc-why-r" class="nav-link" data-scroll-target="#why-r"><span class="header-section-number">3.2</span> Why R?</a></li>
+  <li><a href="#posit-rstudio-desktop" id="toc-posit-rstudio-desktop" class="nav-link" data-scroll-target="#posit-rstudio-desktop"><span class="header-section-number">3.3</span> Posit (RStudio Desktop)</a></li>
+  <li><a href="#installing-r-and-posit-rstudio-desktop" id="toc-installing-r-and-posit-rstudio-desktop" class="nav-link" data-scroll-target="#installing-r-and-posit-rstudio-desktop"><span class="header-section-number">3.4</span> Installing R and Posit (RStudio Desktop)</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">3.5</span> Getting Started</a></li>
   </ul>
 </nav>
     </div>
@@ -2069,9 +2074,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction to R</span></h1>
 </div>
 
 
@@ -2088,12 +2093,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </header>
 
 
-<section id="what-is-r" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-r"><span class="header-section-number">2.1</span> What is R?</h2>
+<section id="what-is-r" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="what-is-r"><span class="header-section-number">3.1</span> What is R?</h2>
 <p>R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis.</p>
 </section>
-<section id="why-r" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="why-r"><span class="header-section-number">2.2</span> Why R?</h2>
+<section id="why-r" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="why-r"><span class="header-section-number">3.2</span> Why R?</h2>
 <ul>
 <li>R is open-source and free</li>
 <li>R is a powerful tool for data analysis</li>
@@ -2102,8 +2107,8 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 <li>R is a great tool for reproducible research</li>
 </ul>
 </section>
-<section id="posit-rstudio-desktop" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</h2>
+<section id="posit-rstudio-desktop" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="posit-rstudio-desktop"><span class="header-section-number">3.3</span> Posit (RStudio Desktop)</h2>
 <p>Posit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2119,12 +2124,12 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </div>
 </div>
 </section>
-<section id="installing-r-and-posit-rstudio-desktop" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</h2>
+<section id="installing-r-and-posit-rstudio-desktop" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="installing-r-and-posit-rstudio-desktop"><span class="header-section-number">3.4</span> Installing R and Posit (RStudio Desktop)</h2>
 <p>Insert a video here.</p>
 </section>
-<section id="getting-started" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">2.5</span> Getting Started</h2>
+<section id="getting-started" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">3.5</span> Getting Started</h2>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 
@@ -2534,11 +2539,14 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Power BI</span>
+      <a href="./sql_basics.html" class="pagination-link" aria-label="SQL Basics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
+        <span class="nav-page-text">Power BI</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
