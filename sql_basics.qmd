@@ -62,7 +62,7 @@ WHERE EmployeeID = 1;
 
 1. Create a table called `Departments` with columns for `DepartmentID`, `DepartmentName`, and `Location`.
 
-```{sql}
+```sql
 CREATE TABLE Departments (
     DepartmentID INT PRIMARY KEY,
     DepartmentName VARCHAR(100),
