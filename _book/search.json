@@ -1,0 +1,464 @@
+[
+  {
+    "objectID": "dbms.html",
+    "href": "dbms.html",
+    "title": "1  Database Management System",
+    "section": "",
+    "text": "1.1 Introduction\nA database management system (DBMS) is a software application that interacts with users, applications, and the database itself to capture and analyze data. A DBMS provides a systematic way to create, retrieve, update, and manage data. It allows users to define, create, maintain, and control access to the database.\nWhy databases are important?:",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#introduction",
+    "href": "dbms.html#introduction",
+    "title": "1  Database Management System",
+    "section": "",
+    "text": "Data Storage: Databases provide a structured way to store large amounts of data efficiently.\nData Retrieval: They allow for quick and easy retrieval of data using queries.\nData Integrity: Databases enforce data integrity and consistency through constraints and rules.\nData Security: They provide mechanisms for securing data and controlling access to it.\nData Sharing: Databases enable multiple users to access and share data simultaneously.\nData Backup and Recovery: They provide tools for backing up data and recovering it in case of failure.\nData Relationships: Databases allow for the establishment of relationships between different data entities, enabling complex data modeling.\nData Analysis: They support advanced data analysis and reporting capabilities.\nData Scalability: Databases can handle large volumes of data and can be scaled to accommodate growth.\nData Transactions: They support transactions, ensuring that data operations are completed successfully or rolled back in case of failure.\nData Standards: Databases adhere to industry standards, making it easier to integrate with other systems and applications.\nData Performance: They optimize data access and retrieval for better performance.\nData Maintenance: Databases provide tools for maintaining data quality and consistency over time.\nData Auditing: They support auditing and tracking of data changes for compliance and accountability.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-use-a-dbms-and-not-a-spreadsheettable",
+    "href": "dbms.html#why-use-a-dbms-and-not-a-spreadsheettable",
+    "title": "1  Database Management System",
+    "section": "1.2 Why use a DBMS and not a spreadsheet/table?",
+    "text": "1.2 Why use a DBMS and not a spreadsheet/table?\nSpreadsheets are great for small datasets and simple calculations, but they have limitations when it comes to handling large amounts of data, complex relationships, and multi-user access. A DBMS is designed to handle these challenges and provides a more robust solution for data management.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-not-excel",
+    "href": "dbms.html#why-not-excel",
+    "title": "1  Database Management System",
+    "section": "1.3 Why not Excel?",
+    "text": "1.3 Why not Excel?\nExcel is a easy to use tool for data analysis and visualization, but it is not designed to be a full-fledged database management system. While Excel can be used for small datasets and simple calculations, a DBMS is a better choice for larger datasets and more complex data management needs. For example, in a large banking system, a DBMS would be used to manage customer accounts, transactions, and other data, while Excel might be used for simple reporting or analysis tasks. To deal with single large dataset, a DBMS is more efficient and effective than Excel. For example, a DBMS can handle millions of records and complex queries, while Excel may struggle with performance and data integrity issues. Also, when we need to joins multiple tables together, a DBMS provides powerful tools for managing relationships between tables, while Excel is limited in this regard. Imagine a bank store all the customers data in Excel, it would be very difficult to manage and retrieve the data efficiently. A DBMS would provide a more structured and efficient way to manage the data.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#difference-between-using-dbms-and-excel",
+    "href": "dbms.html#difference-between-using-dbms-and-excel",
+    "title": "1  Database Management System",
+    "section": "1.4 Difference between using DBMS and Excel",
+    "text": "1.4 Difference between using DBMS and Excel\n\n\n\n\n\n\n\n\nFeature\nDBMS\nExcel\n\n\n\n\nData Storage\nStructured and efficient\nFlat and less efficient\n\n\nData Retrieval\nFast and optimized\nSlower for large datasets\n\n\nData Integrity\nEnforced through constraints\nLimited data validation\n\n\nData Security\nAdvanced security features\nBasic password protection\n\n\nData Sharing\nMulti-user access\nLimited multi-user support\n\n\nData Relationships\nSupports complex relationships\nLimited to simple relationships\n\n\nData Scalability\nScalable for large datasets\nLimited scalability\n\n\nData Maintenance\nTools for data quality\nManual maintenance\n\n\nData Auditing\nSupports auditing\nNo built-in auditing\n\n\nData Performance\nOptimized for performance\nSlower for large datasets\n\n\nData Standards\nAdheres to industry standards\nNo standardization\n\n\nData Backup\nAutomated backup options\nManual backup required\n\n\nData Recovery\nAutomated recovery options\nManual recovery required",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-relational-database-rdbms",
+    "href": "dbms.html#what-is-relational-database-rdbms",
+    "title": "1  Database Management System",
+    "section": "1.5 What is Relational Database (RDBMS)?",
+    "text": "1.5 What is Relational Database (RDBMS)?\nA relational database is a type of database that organizes data into tables, which consist of rows and columns. Each table represents a specific entity or concept, and the columns represent the attributes or properties of that entity. The rows in the table represent individual records or instances of the entity. It allows for the establishment of relationships between different tables using keys, enabling complex data modeling and retrieval. Figure 1 illustrates a simple relational database with four tables: Drivers License, Member, Rental, Movie_Rental and Movie. Each table has its own set of columns and rows, and the relationships between the tables are established using primary and foreign keys. (we will cover keys later).\n\n\n\nFigure 1: Simple Relational Database Example.\n\n\nsource: https://www.youtube.com/watch?v=C3icLzBtg8I",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-the-relationship-between-sql-vs.-dbms",
+    "href": "dbms.html#what-is-the-relationship-between-sql-vs.-dbms",
+    "title": "1  Database Management System",
+    "section": "1.6 What is the relationship between SQL vs. DBMS?",
+    "text": "1.6 What is the relationship between SQL vs. DBMS?\nSQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a DBMS. SQL allows users to create, read, update, and delete data in a database. A DBMS is the software that implements the database and provides the interface for users to interact with it using SQL.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#why-sql-is-important-for-a-data-analyst",
+    "href": "dbms.html#why-sql-is-important-for-a-data-analyst",
+    "title": "1  Database Management System",
+    "section": "1.7 Why SQL is important for a data analyst?",
+    "text": "1.7 Why SQL is important for a data analyst?\nSQL is important because it provides a standardized way to interact with relational databases. It allows users to perform complex queries, retrieve data, and manipulate data in a consistent manner. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS). Learning SQL is essential for anyone working with databases, as it enables them to effectively manage and analyze data. Additionally, SQL skills are highly sought after in the job market, making it a valuable asset for data analysts.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-sql",
+    "href": "dbms.html#what-is-sql",
+    "title": "1  Database Management System",
+    "section": "2.1 What is SQL?",
+    "text": "2.1 What is SQL?\nSQL (Structured Query Language) is a standard programming language used to manage and manipulate relational databases. It is used to perform various operations on the data stored in a database, such as querying, updating, inserting, and deleting data. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS), including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server. The standard language for different RDBMS may have slight variations, but the core SQL syntax and functionality remain consistent across platforms. In this course, we will focus on using Oracle as our RDBMS. Oracle is chosen as it is widely used in the industry and provides a robust platform for learning SQL and database management concepts.\nSQL is a declarative language, meaning that users specify what they want to do with the data, rather than how to do it. This allows for more efficient and optimized execution of queries by the database engine. SQL is also a powerful language that supports complex queries, joins, aggregations, and subqueries, making it suitable for a wide range of data analysis tasks.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#basic-sql-commands",
+    "href": "dbms.html#basic-sql-commands",
+    "title": "1  Database Management System",
+    "section": "2.2 Basic SQL Commands",
+    "text": "2.2 Basic SQL Commands\nThere are several types of SQL commands, each serving a different purpose. The main categories of SQL commands are:\n\nData Manipulation Language (DML): Used to manipulate data in the database.\n\nData Definition Language (DDL): Used to define and manage the structure of the database.\n\nData Query Language (DQL): Used to query and retrieve data from the database.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#data-manipulation-language-dml",
+    "href": "dbms.html#data-manipulation-language-dml",
+    "title": "1  Database Management System",
+    "section": "2.3 Data Manipulation Language (DML)",
+    "text": "2.3 Data Manipulation Language (DML)\nDML commands are used to manipulate data in the database. They include commands for inserting, updating, deleting, and retrieving data.\n\nINSERT: Used to add new rows of data to a table.\nUPDATE: Used to modify existing data in a table.\nDELETE: Used to remove rows of data from a table.\n\n\n2.3.1 Data Definition Language (DDL)\nDDL commands are used to define and manage the structure of the database. They include commands for creating, altering, and dropping database objects such as tables, indexes, and views.\n\nCREATE: Used to create a new database object (e.g., table, index).\nALTER: Used to modify an existing database object (e.g., add or drop columns).\nDROP: Used to delete an existing database object (e.g., table, index).\nTRUNCATE: Used to delete all rows from a table without removing the table itself.\nRENAME: Used to rename an existing database object (e.g., table, column).\nCOMMENT: Used to add comments to database objects (e.g., tables, columns).\nCREATE INDEX: Used to create an index on a table to improve query performance.\nDROP INDEX: Used to delete an existing index from a table.\nCREATE VIEW: Used to create a virtual table based on the result of a query.\nDROP VIEW: Used to delete an existing view from the database.\nCREATE TABLE: Used to create a new table in the database.\nALTER TABLE: Used to modify the structure of an existing table (e.g., add or drop columns).\nDROP TABLE: Used to delete an existing table from the database.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "Course Structure",
+    "section": "",
+    "text": "Learning Objectives\nOn successful completion of this unit, you should be able to:",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#learning-objectives",
+    "href": "intro.html#learning-objectives",
+    "title": "Course Structure",
+    "section": "",
+    "text": "Gain proficiency in business reporting tools and data analysis tool.\nLearn to perform complex statistical analyses, including hypothesis testing and confidence intervals.\nUse various predictive modeling technique to enhance forecasting and decision-making in business context.\nAcquire skills to analyze and interpret real-time data for better business strategic planning and decision.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#unit-outline",
+    "href": "intro.html#unit-outline",
+    "title": "Course Structure",
+    "section": "Unit Outline",
+    "text": "Unit Outline\n\nSection 1: Data Integration and Management.\n\nDatabase Management System & Structured Query Language (SQL)\nSQL Joins & Aggregation\nAdvanced SQL for Analytics\n\n\n\nSection 2: Data Analysis and Statistical Modelling.\n\nDescriptive Analytics and Data Wrangling\nData Visualisation\nData Aggregation and Sampling Methods\nRegression Analysis\nPredictive Analytics\nTime Series Analysis\n\n\n\nSection 3: Reporting and Storytelling.\n\nPower BI Foundations\nPower BI Dashboard\nCourse Review (Revision)",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#textbooks",
+    "href": "intro.html#textbooks",
+    "title": "Course Structure",
+    "section": "Textbooks",
+    "text": "Textbooks\nThe textbook for this course is just a supplement to the lectures and labs. The main resources for this course are the lecture notes, lab materials, and the course website. However, the following textbooks are recommended for additional reading:\n\nBusiness Analytics by Camm, Cochran, Fry, Ohlmann, Anderson & Sweeney, 2024, 5th Edition.\nAdvanced Analytics with Power BI and R by Dr. Leila Etaati, 2020.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#assessment",
+    "href": "intro.html#assessment",
+    "title": "Course Structure",
+    "section": "Assessment",
+    "text": "Assessment\nThe assessment for this unit is designed to evaluate your understanding of the course material and your ability to apply the concepts learned in practical scenarios. The assessment consists of the following components: - Quizzes: There will be a series of quizzes throughout the semester to test your understanding of the material covered in the lectures and readings. These quizzes will be conducted online and will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The quizzes will be timed and will be available for a limited period. - Individual Assignments: You will be required to complete a series of individual assignments that will involve applying the concepts learned in the course to real-world scenarios. These assignments will require you to analyze data, interpret results, and present your findings in a clear and concise manner. The assignments will be submitted online and will be graded based on the quality of your analysis and presentation. - Group Project: You will be required to work in groups to complete a project that involves analyzing a dataset and presenting your findings. The project will require you to apply the concepts learned in the course to a real-world problem and will involve data collection, analysis, and presentation. The project will be graded based on the quality of your analysis, the effectiveness of your presentation, and your ability to work as a team. - Final Exam: The final exam will be a comprehensive assessment of the material covered in the course. The exam will consist of multiple-choice questions, short answer questions, and problem-solving exercises. The exam will be conducted in person and will be timed.\n\n\n\n\n\n\n\n\n\nAssessments\nWeight\nDue Date\nLearning Outcomes\n\n\n\n\nQuizzes\n10%\nWeekly\nWeeks 2-12\n\n\nIndividual Assignment\n20%\nWeek 7\nWeeks 1-5\n\n\nGroup Assignment*\n20%\nWeek 11\nWeeks 1-10\n\n\nFinal Exam\n50%\nExam period\nWeeks 1-11\n\n\n\n\nThe lowest quiz grade will be dropped at the end of the semester.\nIt is your responsibility to check your assignment grading and to report any discrepancies within one week of the grade being posted.\n*Maximum of 3 persons and minimum of 2 per group.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#communication",
+    "href": "intro.html#communication",
+    "title": "Course Structure",
+    "section": "Communication",
+    "text": "Communication\nAll lecture notes, assignment instructions, an up-to-date schedule, and other course materials may be found on the course website or moodle page.\nI will regularly send course announcements via Ed discussion board, make sure to check one or the other of these regularly. It is your responsibility to stay informed about the course progress and any changes to the schedule.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#where-to-get-help",
+    "href": "intro.html#where-to-get-help",
+    "title": "Course Structure",
+    "section": "Where to get help",
+    "text": "Where to get help\n\nIf you have a question during lecture or tutorial, feel free to ask your teaching team or post your question in the discussion board. There are likely other students with the same question, and it is helpful to have the answer available to everyone.\nThe teaching team is here to help you be successful in the course. You are encouraged to attend the designated consultation hours to ask questions about the course content and assignments. Those consultation hours are available every day except weekend!\nOutside of class and office hours, any general questions about course content or assignments should be posted on the Ed discussion board here. Please check whether your question has already been answered before posting. Please help each others by answering other questions, you will notice that you learn a lot by posting/responding to others. Do not expect the teaching team to answer questions that are posted during the weekend in the discussion board.\nEmails should be reserved for personal questions that are not appropriate to be discuss in the forum. Please include “ETF2121/5912” in the email subject line. Response time may be slower for emails with 24 hours being the maximum response time except weekend.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#lectures-and-tutorials",
+    "href": "intro.html#lectures-and-tutorials",
+    "title": "Course Structure",
+    "section": "Lectures and tutorials",
+    "text": "Lectures and tutorials\nOur goal in both lectures and labs is to encourage maximum interaction. As your instructor, I will introduce you to new tools and techniques, but it’s up to you to apply them effectively. Coding is best learned through practice, so much of our coursework will involve hands-on coding tasks. Each session will include various activities and assignments designed to enhance your skills.\nAttendance and active participation in both lectures and tutorials are expected. Attending lectures and tutorials in person will provide the best learning experience. Some lectures will feature application exercises and periodic activities to foster a supportive learning community. These activities will be brief and enjoyable, aimed at strengthening connections among classmates throughout the semester.\n\nExams\nFinal exam. The exam will be held during the exam period, and it will be a closed-book exam with 5 pieces of A4 paper (10 pages) of handwritten/typed notes allowed. It is a supervised exam, and you will not be allowed to access the internet.\n\n\nSoftware\nAll software used in this course can be downloaded for free. However, Power BI will not be available for Mac users, so I would encourage you to access it via MOVE. Please refer to this instruction.\n\n\nLate work submission policy\nAssignment deadlines are set to facilitate your progression through the course content and to enable timely feedback from the teaching team. I understand that unforeseen circumstances may occasionally arise, hindering your ability to meet a deadline. In such cases, you can request an extension through the Monash extension unit for extenuating circumstances. Please note that I do not grant individual approvals for late submissions, and requests should solely be made through the Monash extension unit.\n\nThere will be a 10% deduction for each 24-hour period the assignment is late.\nIf you submit an assessment task more than seven days after the due date, you’ll receive a mark of zero and you won’t get any feedback.\nStrictly no late submission without approval.\nI will not reply to any email related to request on late submission.",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "intro.html#important-dates",
+    "href": "intro.html#important-dates",
+    "title": "Course Structure",
+    "section": "Important dates",
+    "text": "Important dates\n\nxxrd July 2026: Classes begin (Tuesday)\nEvery Sunday: Quiz closed at 11.55pm\nxxth September 2026: Individual assignment submission deadline\nxxth October 2026: Group assignment submission deadline",
+    "crumbs": [
+      "Course Overview",
+      "Course Structure"
+    ]
+  },
+  {
+    "objectID": "team.html",
+    "href": "team.html",
+    "title": "Team",
+    "section": "",
+    "text": "Instructor\nDr. Joan Tan (she/her) works as Senior Lecturer at the Department of Business Statistics and Econometrics at Monash University and also currently working in a bank as a Credit Risk Manager. Joan’s work focuses on bringing industry experience into teaching with student centered innovative learning.\nEmail me\n☎️ Consultation hours: 12-1pm Tuesday, H4.76 / Zoom",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
+    "objectID": "team.html#exam-consultations-hours",
+    "href": "team.html#exam-consultations-hours",
+    "title": "Team",
+    "section": "Exam Consultations Hours",
+    "text": "Exam Consultations Hours\nZoom Link : zoom\nMeeting ID: TBC\nPassword: TBC",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
+    "objectID": "team.html#teaching-associates",
+    "href": "team.html#teaching-associates",
+    "title": "Team",
+    "section": "Teaching Associates",
+    "text": "Teaching Associates\n\n\n\nName\nContact\nTutorial Slots\nConsultation Hours\n\n\n\n\nttb\nEmail me\nTuesday 2-3pm, Thursday 10-11am\nMonday 3-4pm, Wednesday 1-2pm",
+    "crumbs": [
+      "Course Overview",
+      "Team"
+    ]
+  },
+  {
+    "objectID": "schedule.html",
+    "href": "schedule.html",
+    "title": "Course Schedule",
+    "section": "",
+    "text": "This page outlines the schedule for the course, including important dates and deadlines for each week. Please note that the schedule is subject to updates, so be sure to check back regularly for any changes. In the event of any discrepancies between the information on this website and the exam timetable or course handbook, the exam timetable and course handbook will serve as the authoritative sources.\n\n\n\nWeek\nDate\nTopic\nSlides\nQuiz\nReading\nNotes\n\n\n\n\n1\nTue, Jul 23\nBusiness Analytics & Database Management System\nSlides\nQuiz 1\nChapter 1-2\n\n\n\n2\nTue, Jul 30\nDatabase Query Language: SQL\nSlides\nQuiz 2\nChapter 3-4",
+    "crumbs": [
+      "Course Overview",
+      "Course Schedule"
+    ]
+  },
+  {
+    "objectID": "introR.html",
+    "href": "introR.html",
+    "title": "2  Introduction to R",
+    "section": "",
+    "text": "2.1 What is R?\nR is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis.",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "introR.html#why-r",
+    "href": "introR.html#why-r",
+    "title": "2  Introduction to R",
+    "section": "2.2 Why R?",
+    "text": "2.2 Why R?\n\nR is open-source and free\nR is a powerful tool for data analysis\nR has a large and active community\nR has a large number of packages for data analysis\nR is a great tool for reproducible research",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "introR.html#posit-rstudio-desktop",
+    "href": "introR.html#posit-rstudio-desktop",
+    "title": "2  Introduction to R",
+    "section": "2.3 Posit (RStudio Desktop)",
+    "text": "2.3 Posit (RStudio Desktop)\nPosit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.\n\n\n\n\n\n\n“R vs. RStudio”\n\n\n\nR is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient.",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "introR.html#installing-r-and-posit-rstudio-desktop",
+    "href": "introR.html#installing-r-and-posit-rstudio-desktop",
+    "title": "2  Introduction to R",
+    "section": "2.4 Installing R and Posit (RStudio Desktop)",
+    "text": "2.4 Installing R and Posit (RStudio Desktop)\nInsert a video here.",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "introR.html#getting-started",
+    "href": "introR.html#getting-started",
+    "title": "2  Introduction to R",
+    "section": "2.5 Getting Started",
+    "text": "2.5 Getting Started\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "powerbi.html",
+    "href": "powerbi.html",
+    "title": "Power BI",
+    "section": "",
+    "text": "Why Power BI?\nPower BI is a powerful business intelligence tool that can handle large datasets and perform complex calculations quickly. It can connect to a wide variety of data sources, including databases, cloud services, and Excel files. The user-friendly interface allows users to create interactive reports and dashboards with ease. Additionally, Power BI enables the creation of custom visualizations and reports using DAX (Data Analysis Expressions) and M (Power Query Formula Language). With built-in collaboration features, users can easily share reports and dashboards with others, making it an ideal choice for organizations looking to enhance their data analysis capabilities.",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
+    ]
+  },
+  {
+    "objectID": "powerbi.html#power-bi-vs.-excel",
+    "href": "powerbi.html#power-bi-vs.-excel",
+    "title": "Power BI",
+    "section": "Power BI vs. Excel",
+    "text": "Power BI vs. Excel\nPower BI and Excel are both powerful tools for data analysis, but they serve different purposes and have different strengths. Here are some key differences:\n\nData Handling: Power BI is designed to handle large datasets and can connect to a wide variety of data sources, while Excel is more suited for smaller datasets and manual data entry.\nData Visualization: Power BI offers a wide range of interactive visualizations and dashboards, while Excel has more limited charting capabilities.\nCollaboration: Power BI allows for easy sharing and collaboration on reports and dashboards, while Excel requires more manual effort to share files.\nData Modeling: Power BI has advanced data modeling capabilities, including relationships between tables and DAX calculations, while Excel is more focused on spreadsheet calculations.\nReal-time Data: Power BI can connect to real-time data sources, allowing for up-to-date reporting, while Excel requires manual updates.\nCost: Power BI has a subscription-based pricing model, while Excel is typically purchased as part of the Microsoft Office suite.\n\n\n\n\nPower BI vs Excel",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
+    ]
+  },
+  {
+    "objectID": "powerbi.html#power-bi-vs.-tableau",
+    "href": "powerbi.html#power-bi-vs.-tableau",
+    "title": "Power BI",
+    "section": "Power BI vs. Tableau",
+    "text": "Power BI vs. Tableau\nPower BI and Tableau are both powerful data visualization tools, but they have some key differences:\n\nEase of Use: Power BI is generally considered more user-friendly, especially for those already familiar with Microsoft products. Tableau has a steeper learning curve but offers more advanced features for experienced users.\nData Handling: Power BI is better suited for handling large datasets and can connect to a wider variety of data sources, while Tableau is more focused on visualizations and may struggle with very large datasets.\nCost: Power BI is typically more affordable, with a subscription-based pricing model, while Tableau can be more expensive, especially for larger teams.\nCollaboration: Power BI has built-in collaboration features that make it easy to share reports and dashboards, while Tableau requires more manual effort to share visualizations.\nCustomization: Tableau offers more customization options for visualizations, while Power BI has a more standardized set of visualizations.\nIntegration: Power BI integrates seamlessly with other Microsoft products, while Tableau has a wider range of third-party integrations.\nCommunity and Support: Both tools have strong user communities and support resources, but Power BI has a larger user base due to its integration with Microsoft products.",
+    "crumbs": [
+      "Power BI",
+      "Power BI"
+    ]
+  },
+  {
+    "objectID": "dbms.html#what-is-the-relationship-between-sql-vs.-rdbms",
+    "href": "dbms.html#what-is-the-relationship-between-sql-vs.-rdbms",
+    "title": "1  Database Management System",
+    "section": "1.6 What is the relationship between SQL vs. RDBMS?",
+    "text": "1.6 What is the relationship between SQL vs. RDBMS?\nSQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a RDBMS. SQL allows users to create, read, update, and delete data in a database. A RDBMS is the software that implements the database and provides the interface for users to interact with it using SQL.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#data-query-language-dql",
+    "href": "dbms.html#data-query-language-dql",
+    "title": "1  Database Management System",
+    "section": "2.4 Data Query Language (DQL)",
+    "text": "2.4 Data Query Language (DQL)\nDQL commands are used to query and retrieve data from the database. The main DQL command is: - SELECT: Used to retrieve data from one or more tables in the database. - WHERE: Used to filter the results of a query based on specified conditions. - ORDER BY: Used to sort the results of a query in ascending or descending order - GROUP BY: Used to group the results of a query based on specified columns. - HAVING: Used to filter the results of a grouped query based on specified conditions - JOIN: Used to combine rows from two or more tables based on a related column between them. - UNION: Used to combine the results of two or more SELECT queries into a single result set. - DISTINCT: Used to retrieve unique values from a column, eliminating duplicate values. - LIMIT: Used to limit the number of rows returned by a query.\nAll these keywords will be explained in the next sections. 🔮",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#connecting-to-oracle-database",
+    "href": "dbms.html#connecting-to-oracle-database",
+    "title": "1  Database Management System",
+    "section": "2.5 Connecting to Oracle Database",
+    "text": "2.5 Connecting to Oracle Database\nFor easy access and start, freesql is a free online SQL editor by Oracle that allows you to practice SQL queries without the need to install any software. You can sign up for a free account and start writing SQL queries right away.\n\n2.5.1 How to sign up\n\nGo to freesql.com.\nClick on the “Sign Up” button in the top right corner of the page.\nFill in the required information, including your name, email address, and password.\nClick on the “Create Account” button to complete the sign-up process.\nOnce you have created your account, you can log in to the platform and start using the SQL editor.\n\n\n\n2.5.2 How to use FreeSQL\n\nAfter logging in, you will be taken to the SQL editor page.\nYou can start writing SQL queries in the editor window.\nTo execute a query, click on the “Run” button or press “Ctrl + Enter” on your keyboard.\nThe results of the query will be displayed in the results window\nYou can save your queries for future use by clicking on the “Save” button.",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "dbms.html#select-statement",
+    "href": "dbms.html#select-statement",
+    "title": "1  Database Management System",
+    "section": "3.1 SELECT Statement",
+    "text": "3.1 SELECT Statement",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Database Management System</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html",
+    "href": "sql_basics.html",
+    "title": "2  SQL Basics",
+    "section": "",
+    "text": "2.1 Creating a Table\nTo create a table in SQL, you can use the CREATE TABLE statement. Here is an example of how to create a simple table called Employees with columns for EmployeeID, FirstName, LastName, and HireDate:",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html#creating-a-table",
+    "href": "sql_basics.html#creating-a-table",
+    "title": "2  SQL Basics",
+    "section": "",
+    "text": "CREATE TABLE Employees (\n    EmployeeID INT PRIMARY KEY,\n    FirstName VARCHAR(50),\n    LastName VARCHAR(50),\n    HireDate DATE\n);",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html#inserting-data",
+    "href": "sql_basics.html#inserting-data",
+    "title": "2  SQL Basics",
+    "section": "2.2 Inserting Data",
+    "text": "2.2 Inserting Data\nTo insert data into a table, you can use the INSERT INTO statement. Here is an example of how to insert a new employee into the Employees table:\nINSERT INTO Employees (EmployeeID, FirstName, LastName, HireDate)\nVALUES (1, 'John', 'Doe', '2022-01-15');",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html#querying-data",
+    "href": "sql_basics.html#querying-data",
+    "title": "2  SQL Basics",
+    "section": "2.3 Querying Data",
+    "text": "2.3 Querying Data\nTo retrieve data from a table, you can use the SELECT statement. Here is an example of how to select all columns from the Employees table:\nSELECT * FROM Employees;",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html#updating-data",
+    "href": "sql_basics.html#updating-data",
+    "title": "2  SQL Basics",
+    "section": "2.4 Updating Data",
+    "text": "2.4 Updating Data\nTo update existing data in a table, you can use the UPDATE statement. Here is an example of how to update the last name of an employee in the Employees table:\nUPDATE Employees\nSET LastName = 'Smith'\nWHERE EmployeeID = 1;",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  },
+  {
+    "objectID": "sql_basics.html#deleting-data",
+    "href": "sql_basics.html#deleting-data",
+    "title": "2  SQL Basics",
+    "section": "2.5 Deleting Data",
+    "text": "2.5 Deleting Data\nTo delete data from a table, you can use the DELETE statement. Here is an example of how to delete an employee from the Employees table:\nDELETE FROM Employees\nWHERE EmployeeID = 1;\n\n2.5.0.1 Exercises\n\nCreate a table called Departments with columns for DepartmentID, DepartmentName, and Location.\n\nCREATE TABLE Departments (\n    DepartmentID INT PRIMARY KEY,\n    DepartmentName VARCHAR(100),\n    Location VARCHAR(100)\n);\n\nInsert three departments into the Departments table with appropriate values.\n\nINSERT INTO Departments (DepartmentID, DepartmentName, Location)\nVALUES\n(1, 'Human Resources', 'Sydney'),\n(2, 'Finance', 'Melbourne'),\n(3, 'IT', 'Brisbane');\n\nWrite a query to select all departments located in ‘Melbourne’.\n\nSELECT * FROM Departments\nWHERE Location = 'Melbourne';\n\nUpdate the location of department to ‘Queensland’.\n\nUPDATE Departments\nSET Location = 'Queensland'\nWHERE DepartmentID = 3;\n\nDelete a department with a specific DepartmentID.\n\nDELETE FROM Departments\nWHERE DepartmentID = 2;",
+    "crumbs": [
+      "Database Management System",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>SQL Basics</span>"
+    ]
+  }
+]

@@ -17,18 +17,26 @@ On successful completion of this unit, you should be able to:
 
 ## Unit Outline {.unnumbered}
 
-1.  Business Analytics & Database Management System
-2.  Structured Query Language
-3.  Data Wrangling with R and Power BI
-4.  Data Visualization with Power BI
-5.  Descriptive Statistics with R and Power BI
-6.  Modelling Uncertainty
-7.  Descriptive Analytics
-8.  Linear Regression
+### Section 1: Data Integration and Management. 
+
+1.  Database Management System & Structured Query Language (SQL)
+2.  SQL Joins & Aggregation
+3.  Advanced SQL for Analytics
+
+### Section 2: Data Analysis and Statistical Modelling. 
+
+4.  Descriptive Analytics and Data Wrangling
+5.  Data Visualisation
+6.  Data Aggregation and Sampling Methods
+7.  Regression Analysis
+8.  Predictive Analytics
 9.  Time Series Analysis
-10. Predictive Analytics: Continuous Outcome Variables
-11. Predictive Analytics: Binary Outcome Variables
-12. Revision
+
+### Section 3: Reporting and Storytelling. 
+
+10. Power BI Foundations
+11. Power BI Dashboard
+12. Course Review (Revision)
 
 ## Textbooks {.unnumbered}
 

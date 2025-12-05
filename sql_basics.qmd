@@ -1,0 +1,97 @@
+# SQL Basics
+
+SQL follows a standard syntax for managing and manipulating relational databases. Below are some fundamental SQL commands and examples to help you get started.
+
+```sql
+-- This is a comment in SQL
+```
+
+The general structure of an SQL statement is as follows:
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+```
+
+The `select` statement is used to retrieve data from a database, while the `from` clause specifies the table from which to retrieve the data. The `where` clause is optional and is used to filter the results based on a specified condition. These are SQL keywords and are not case-sensitive, but it is common practice to write them in uppercase for better readability. Also, they should end with a semicolon (`;`) to indicate the end of the statement.
+
+## Creating a Table
+
+To create a table in SQL, you can use the `CREATE TABLE` statement. Here is an example of how to create a simple table called `Employees` with columns for `EmployeeID`, `FirstName`, `LastName`, and `HireDate`:
+```sql
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    HireDate DATE
+);
+```
+## Inserting Data
+
+To insert data into a table, you can use the `INSERT INTO` statement. Here is an example of how to insert a new employee into the `Employees` table:
+```sql
+INSERT INTO Employees (EmployeeID, FirstName, LastName, HireDate)
+VALUES (1, 'John', 'Doe', '2022-01-15');
+```
+
+## Querying Data
+
+To retrieve data from a table, you can use the `SELECT` statement. Here is an example of how to select all columns from the `Employees` table:
+```sql
+SELECT * FROM Employees;
+```
+
+## Updating Data
+
+To update existing data in a table, you can use the `UPDATE` statement. Here is an example of how to update the last name of an employee in the `Employees` table:
+```sql
+UPDATE Employees
+SET LastName = 'Smith'
+WHERE EmployeeID = 1;
+```
+
+## Deleting Data
+
+To delete data from a table, you can use the `DELETE` statement. Here is an example of how to delete an employee from the `Employees` table:
+```sql
+DELETE FROM Employees
+WHERE EmployeeID = 1;
+```
+
+#### Exercises
+
+1. Create a table called `Departments` with columns for `DepartmentID`, `DepartmentName`, and `Location`.
+
+```{sql}
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(100),
+    Location VARCHAR(100)
+);
+```
+
+2. Insert three departments into the `Departments` table with appropriate values.
+```sql
+INSERT INTO Departments (DepartmentID, DepartmentName, Location)
+VALUES
+(1, 'Human Resources', 'Sydney'),
+(2, 'Finance', 'Melbourne'),
+(3, 'IT', 'Brisbane');
+```
+3. Write a query to select all departments located in 'Melbourne'.
+```sql
+SELECT * FROM Departments
+WHERE Location = 'Melbourne';
+```
+4. Update the location of department to 'Queensland'.
+```sql
+UPDATE Departments
+SET Location = 'Queensland'
+WHERE DepartmentID = 3;
+```
+5. Delete a department with a specific `DepartmentID`.
+```sql
+DELETE FROM Departments
+WHERE DepartmentID = 2;
+```
+

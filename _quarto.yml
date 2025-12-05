@@ -19,12 +19,14 @@ book:
     - part: Database Management System
       chapters:
         - dbms.qmd
-    - part: Power BI
-      chapters: 
-        - powerbi.qmd
+        - sql_basics.qmd
     - part: Data Analysis
       chapters:
         - introR.qmd
+    - part: Power BI
+      chapters: 
+        - powerbi.qmd
+
 
     - part: Data Visualization
 
