@@ -352,7 +352,7 @@ WHERE DepartmentID = (SELECT DepartmentID FROM Departments WHERE DepartmentName 
 ```
 :::
 
-### `Group By` Clause
+### `GROUP BY` Clause
 
 The `GROUP BY` clause is used to group rows that have the same values in specified columns into summary rows. It is often used with aggregate functions to perform calculations on each group of data. The general syntax for the `GROUP BY` clause is as follows:
 

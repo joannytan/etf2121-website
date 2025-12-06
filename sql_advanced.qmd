@@ -1,0 +1,282 @@
+# Advanced sSQL
+
+Consider two tables: `Employees` and `Departments`.
+
+**Employees Table:**
+
+| EmployeeID | Name       | DepartmentID |
+|------------|------------|--------------|
+| 1          | Alice      | 1            |
+| 2          | Bob        | 2            |
+| 3          | Charlie    | NULL         |
+
+**Departments Table:**
+
+| DepartmentID | DepartmentName |
+|--------------|----------------|
+| 1            | HR             |
+| 2            | IT             |
+| 3            | Finance        |
+
+## Joins
+
+Joins are used to combine rows from two or more tables based on a related column between them. Here are some common types of joins:
+
+### **INNER JOIN**
+
+Returns records that have matching values in both tables.
+  
+  ```sql
+  SELECT a.column1, b.column2
+  FROM tableA a
+  INNER JOIN tableB b ON a.common_column = b.common_column;
+  ```
+  
+__Example:__ Select the names of employees along with their department names using an INNER JOIN.
+
+```sql
+SELECT e.Name, d.DepartmentName
+FROM Employees e
+INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID;
+```
+**Result:**
+
+| Name   | DepartmentName |
+|--------|----------------|
+| Alice  | HR             |
+| Bob    | IT             |
+
+### **LEFT JOIN (or LEFT OUTER JOIN)**
+
+Returns all records from the left table, and the matched records from the right table. If there is no match, NULL values are returned for columns from the right table.
+  
+  ```sql
+  SELECT a.column1, b.column2
+  FROM tableA a
+  LEFT JOIN tableB b 
+  ON a.common_column = b.common_column;
+  ```
+ 
+__Example:__ Select the names of employees along with their department names using a LEFT JOIN.
+
+```sql
+SELECT e.Name, d.DepartmentName
+FROM Employees e
+LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID;
+```
+
+**Result:**
+
+| Name    | DepartmentName |
+|---------|----------------|
+| Alice   | HR             |
+| Bob     | IT             |
+| Charlie | NULL           |
+
+  
+- **RIGHT JOIN (or RIGHT OUTER JOIN)**: Returns all records from the right table, and the matched records from the left table. If there is no match, NULL values are returned for columns from the left table.
+  
+  ```sql
+  SELECT a.column1, b.column2
+  FROM tableA a
+  RIGHT JOIN tableB b
+  ON a.common_column = b.common_column;
+  ```
+
+- **FULL JOIN (or FULL OUTER JOIN)**: Returns all records when there is a match in either left or right table. If there is no match, NULL values are returned for columns from the table without a match.
+  
+  ```sql
+  SELECT a.column1, b.column2
+  FROM tableA a
+  FULL JOIN tableB b
+  ON a.common_column = b.common_column;
+  ```
+  
+- **SELF JOIN**: A self join is a regular join but the table is joined with itself.
+  
+  ```sql
+  SELECT a.column1, b.column2
+  FROM tableA a
+  INNER JOIN tableA b
+  ON a.common_column = b.common_column;
+  ```
+  
+  Normally, it is used to compare rows within the same table.
+  
+- **UNION**: Combines the result sets of two or more SELECT statements. It removes duplicate rows between the various SELECT statements.
+  
+  ```sql
+  SELECT column1, column2 FROM tableA
+  UNION
+  SELECT column1, column2 FROM tableB;
+  ```
+  
+- **UNION ALL**: Similar to UNION, but it includes duplicate rows.
+  
+  ```sql
+  SELECT column1, column2 FROM tableA
+  UNION ALL
+  SELECT column1, column2 FROM tableB;
+  ```
+  
+  The requirement for using UNION or UNION ALL is that the number of columns and their data types must match in all SELECT statements, even its order.
+  
+## `EXISTS` and `NOT EXISTS`
+
+The `EXISTS` operator is used to test for the existence of any record in a subquery. It returns TRUE if the subquery returns one or more records. The general syntax is as follows:
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE EXISTS (SELECT column_name FROM table_name WHERE condition);
+```
+
+The `NOT EXISTS` operator is used to test for the non-existence of any record in a subquery. It returns TRUE if the subquery returns no records. The general syntax is as follows:
+
+```sql
+SELECT column_name(s)
+FROM table_name
+WHERE NOT EXISTS (SELECT column_name FROM table_name WHERE condition);
+```
+
+__Example:__ Find all departments that have at least one employee.
+
+```sql
+SELECT d.DepartmentName
+FROM Departments d
+WHERE EXISTS (
+    SELECT 1
+    FROM Employees e
+    WHERE e.DepartmentID = d.DepartmentID
+);
+```
+
+**Result:**
+
+| DepartmentName |
+|----------------|
+| HR             |
+| IT             |
+
+__Example:__ Find all departments that do not have any employees.
+
+```sql
+SELECT d.DepartmentName
+FROM Departments d
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Employees e
+    WHERE e.DepartmentID = d.DepartmentID
+);
+```
+
+**Result:**
+
+| DepartmentName |
+|----------------|
+| Finance        |
+
+## `CASE` Statements
+
+The `CASE` statement is used to create conditional logic in SQL queries. It allows you to return different values based on specified conditions. The general syntax is as follows:
+
+```sql
+SELECT column1,
+       CASE
+           WHEN condition1 THEN result1
+           WHEN condition2 THEN result2
+           ELSE result3
+       END AS alias_name
+FROM table_name;
+```
+
+__Example:__ Use a `CASE` statement to categorize employees based on their department.
+
+```sql
+SELECT e.Name,
+       CASE
+           WHEN e.DepartmentID = 1 THEN 'HR'
+           WHEN e.DepartmentID = 2 THEN 'IT'
+           ELSE 'Other'
+       END AS DepartmentCategory
+FROM Employees e;
+```
+
+**Result:**
+
+| Name    | DepartmentCategory |
+|---------|--------------------|
+| Alice   | HR                 |
+| Bob     | IT                 |
+| Charlie | Other              |
+
+
+
+## Common Table Expressions (CTEs)
+
+A Common Table Expression (CTE) is a temporary result set that you can reference within a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement. CTEs are defined using the `WITH` clause. The general syntax is as follows:
+
+```sql
+WITH cte_name AS (
+    SELECT column1, column2
+    FROM table_name
+    WHERE condition
+)
+SELECT *
+FROM cte_name;
+```
+
+CTE is especially useful for breaking down complex queries into simpler parts, improving readability, and enabling recursion.
+
+__Example:__ Use a CTE to find the names of employees along with their department names.
+
+```sql
+WITH EmployeeDepartments AS (
+    SELECT e.Name, d.DepartmentName
+    FROM Employees e
+    LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID
+)
+SELECT *
+FROM EmployeeDepartments;
+```
+
+**Result:**
+
+| Name    | DepartmentName |
+|---------|----------------|
+| Alice   | HR             |
+| Bob     | IT             |
+| Charlie | NULL           |
+
+## Window Functions
+
+Window functions perform calculations across a set of table rows that are related to the current row. They are often used for ranking, running totals, moving averages, etc. The general syntax is as follows:
+
+```sql
+SELECT column1,
+       window_function() OVER (PARTITION BY column2 ORDER BY column3) AS alias_name
+FROM table_name;
+```
+
+__Example:__ Use a window function to assign a row number to each employee within their department.
+```sql
+SELECT e.Name,
+       ROW_NUMBER() OVER (PARTITION BY e.DepartmentID ORDER BY e.Name) AS Row
+FROM Employees e;
+```
+
+**Result:**
+
+| Name    | Row |
+|---------|-----|
+| Alice   | 1   |
+| Bob     | 1   |
+| Charlie | 1   |
+
+This assigns a row number to each employee within their respective departments, ordered by their names.
+
+These advanced SQL concepts and techniques can help you write more efficient and powerful queries to manage and analyze your data.
+
+
+
+

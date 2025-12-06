@@ -20,10 +20,11 @@ book:
       chapters:
         - dbms.qmd
         - sql_basics.qmd
+        - sql_advanced.qmd
     - part: Data Analysis
       chapters:
         - introR.qmd
-    - part: Power BI
+    - part: Communication and Story Telling
       chapters: 
         - powerbi.qmd
 
