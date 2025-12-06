@@ -24,6 +24,7 @@ book:
     - part: Data Analysis
       chapters:
         - introR.qmd
+        - desc_stats.qmd
     - part: Communication and Story Telling
       chapters: 
         - powerbi.qmd

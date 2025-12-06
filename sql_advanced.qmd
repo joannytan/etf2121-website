@@ -1,4 +1,4 @@
-# Advanced sSQL
+# Advanced SQL
 
 Consider two tables: `Employees` and `Departments`.
 
