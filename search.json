@@ -331,67 +331,67 @@
   {
     "objectID": "sql_advanced.html",
     "href": "sql_advanced.html",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "",
     "text": "3.1 Joins\nConsider two tables: Employees and Departments.\nEmployees Table:\nDepartments Table:\nJoins are used to combine rows from two or more tables based on a related column between them. Here are some common types of joins:",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
     "objectID": "sql_advanced.html#joins",
     "href": "sql_advanced.html#joins",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "",
     "text": "3.1.1 INNER JOIN\nReturns records that have matching values in both tables.\nSELECT a.column1, b.column2\nFROM tableA a\nINNER JOIN tableB b ON a.common_column = b.common_column;\nExample: Select the names of employees along with their department names using an INNER JOIN.\nSELECT e.Name, d.DepartmentName\nFROM Employees e\nINNER JOIN Departments d ON e.DepartmentID = d.DepartmentID;\nResult:\n\n\n\nName\nDepartmentName\n\n\n\n\nAlice\nHR\n\n\nBob\nIT\n\n\n\n\n\n3.1.2 LEFT JOIN (or LEFT OUTER JOIN)\nReturns all records from the left table, and the matched records from the right table. If there is no match, NULL values are returned for columns from the right table.\nSELECT a.column1, b.column2\nFROM tableA a\nLEFT JOIN tableB b \nON a.common_column = b.common_column;\nExample: Select the names of employees along with their department names using a LEFT JOIN.\nSELECT e.Name, d.DepartmentName\nFROM Employees e\nLEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID;\nResult:\n\n\n\nName\nDepartmentName\n\n\n\n\nAlice\nHR\n\n\nBob\nIT\n\n\nCharlie\nNULL\n\n\n\n\nRIGHT JOIN (or RIGHT OUTER JOIN): Returns all records from the right table, and the matched records from the left table. If there is no match, NULL values are returned for columns from the left table.\nSELECT a.column1, b.column2\nFROM tableA a\nRIGHT JOIN tableB b\nON a.common_column = b.common_column;\nFULL JOIN (or FULL OUTER JOIN): Returns all records when there is a match in either left or right table. If there is no match, NULL values are returned for columns from the table without a match.\nSELECT a.column1, b.column2\nFROM tableA a\nFULL JOIN tableB b\nON a.common_column = b.common_column;\nSELF JOIN: A self join is a regular join but the table is joined with itself.\nSELECT a.column1, b.column2\nFROM tableA a\nINNER JOIN tableA b\nON a.common_column = b.common_column;\nNormally, it is used to compare rows within the same table.\nUNION: Combines the result sets of two or more SELECT statements. It removes duplicate rows between the various SELECT statements.\nSELECT column1, column2 FROM tableA\nUNION\nSELECT column1, column2 FROM tableB;\nUNION ALL: Similar to UNION, but it includes duplicate rows.\nSELECT column1, column2 FROM tableA\nUNION ALL\nSELECT column1, column2 FROM tableB;\nThe requirement for using UNION or UNION ALL is that the number of columns and their data types must match in all SELECT statements, even its order.",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
     "objectID": "sql_advanced.html#exists-and-not-exists",
     "href": "sql_advanced.html#exists-and-not-exists",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "3.2 EXISTS and NOT EXISTS",
     "text": "3.2 EXISTS and NOT EXISTS\nThe EXISTS operator is used to test for the existence of any record in a subquery. It returns TRUE if the subquery returns one or more records. The general syntax is as follows:\nSELECT column_name(s)\nFROM table_name\nWHERE EXISTS (SELECT column_name FROM table_name WHERE condition);\nThe NOT EXISTS operator is used to test for the non-existence of any record in a subquery. It returns TRUE if the subquery returns no records. The general syntax is as follows:\nSELECT column_name(s)\nFROM table_name\nWHERE NOT EXISTS (SELECT column_name FROM table_name WHERE condition);\nExample: Find all departments that have at least one employee.\nSELECT d.DepartmentName\nFROM Departments d\nWHERE EXISTS (\n    SELECT 1\n    FROM Employees e\n    WHERE e.DepartmentID = d.DepartmentID\n);\nResult:\n\n\n\nDepartmentName\n\n\n\n\nHR\n\n\nIT\n\n\n\nExample: Find all departments that do not have any employees.\nSELECT d.DepartmentName\nFROM Departments d\nWHERE NOT EXISTS (\n    SELECT 1\n    FROM Employees e\n    WHERE e.DepartmentID = d.DepartmentID\n);\nResult:\n\n\n\nDepartmentName\n\n\n\n\nFinance",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
     "objectID": "sql_advanced.html#case-statements",
     "href": "sql_advanced.html#case-statements",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "3.3 CASE Statements",
     "text": "3.3 CASE Statements\nThe CASE statement is used to create conditional logic in SQL queries. It allows you to return different values based on specified conditions. The general syntax is as follows:\nSELECT column1,\n       CASE\n           WHEN condition1 THEN result1\n           WHEN condition2 THEN result2\n           ELSE result3\n       END AS alias_name\nFROM table_name;\nExample: Use a CASE statement to categorize employees based on their department.\nSELECT e.Name,\n       CASE\n           WHEN e.DepartmentID = 1 THEN 'HR'\n           WHEN e.DepartmentID = 2 THEN 'IT'\n           ELSE 'Other'\n       END AS DepartmentCategory\nFROM Employees e;\nResult:\n\n\n\nName\nDepartmentCategory\n\n\n\n\nAlice\nHR\n\n\nBob\nIT\n\n\nCharlie\nOther",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
     "objectID": "sql_advanced.html#common-table-expressions-ctes",
     "href": "sql_advanced.html#common-table-expressions-ctes",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "3.4 Common Table Expressions (CTEs)",
     "text": "3.4 Common Table Expressions (CTEs)\nA Common Table Expression (CTE) is a temporary result set that you can reference within a SELECT, INSERT, UPDATE, or DELETE statement. CTEs are defined using the WITH clause. The general syntax is as follows:\nWITH cte_name AS (\n    SELECT column1, column2\n    FROM table_name\n    WHERE condition\n)\nSELECT *\nFROM cte_name;\nCTE is especially useful for breaking down complex queries into simpler parts, improving readability, and enabling recursion.\nExample: Use a CTE to find the names of employees along with their department names.\nWITH EmployeeDepartments AS (\n    SELECT e.Name, d.DepartmentName\n    FROM Employees e\n    LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID\n)\nSELECT *\nFROM EmployeeDepartments;\nResult:\n\n\n\nName\nDepartmentName\n\n\n\n\nAlice\nHR\n\n\nBob\nIT\n\n\nCharlie\nNULL",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
     "objectID": "sql_advanced.html#window-functions",
     "href": "sql_advanced.html#window-functions",
-    "title": "3  Advanced sSQL",
+    "title": "3  Advanced SQL",
     "section": "3.5 Window Functions",
     "text": "3.5 Window Functions\nWindow functions perform calculations across a set of table rows that are related to the current row. They are often used for ranking, running totals, moving averages, etc. The general syntax is as follows:\nSELECT column1,\n       window_function() OVER (PARTITION BY column2 ORDER BY column3) AS alias_name\nFROM table_name;\nExample: Use a window function to assign a row number to each employee within their department.\nSELECT e.Name,\n       ROW_NUMBER() OVER (PARTITION BY e.DepartmentID ORDER BY e.Name) AS Row\nFROM Employees e;\nResult:\n\n\n\nName\nRow\n\n\n\n\nAlice\n1\n\n\nBob\n1\n\n\nCharlie\n1\n\n\n\nThis assigns a row number to each employee within their respective departments, ordered by their names.\nThese advanced SQL concepts and techniques can help you write more efficient and powerful queries to manage and analyze your data.",
     "crumbs": [
       "Database Management System",
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced sSQL</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Advanced SQL</span>"
     ]
   },
   {
@@ -444,6 +444,17 @@
     "title": "4  Introduction to R",
     "section": "4.5 Getting Started",
     "text": "4.5 Getting Started\n\nPlease enable JavaScript to experience the dynamic code cell content on this page.",
+    "crumbs": [
+      "Data Analysis",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Introduction to R</span>"
+    ]
+  },
+  {
+    "objectID": "introR.html#sql-in-r",
+    "href": "introR.html#sql-in-r",
+    "title": "4  Introduction to R",
+    "section": "4.6 SQL in R",
+    "text": "4.6 SQL in R",
     "crumbs": [
       "Data Analysis",
       "<span class='chapter-number'>4</span>  <span class='chapter-title'>Introduction to R</span>"
