@@ -261,11 +261,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#creating-a-table" id="toc-creating-a-table" class="nav-link active" data-scroll-target="#creating-a-table"><span class="header-section-number">2.1</span> Creating a Table</a></li>
-  <li><a href="#inserting-data" id="toc-inserting-data" class="nav-link" data-scroll-target="#inserting-data"><span class="header-section-number">2.2</span> Inserting Data</a></li>
-  <li><a href="#querying-data" id="toc-querying-data" class="nav-link" data-scroll-target="#querying-data"><span class="header-section-number">2.3</span> Querying Data</a></li>
-  <li><a href="#updating-data" id="toc-updating-data" class="nav-link" data-scroll-target="#updating-data"><span class="header-section-number">2.4</span> Updating Data</a></li>
-  <li><a href="#deleting-data" id="toc-deleting-data" class="nav-link" data-scroll-target="#deleting-data"><span class="header-section-number">2.5</span> Deleting Data</a></li>
+  <li><a href="#table-creation" id="toc-table-creation" class="nav-link active" data-scroll-target="#table-creation"><span class="header-section-number">2.1</span> Table Creation</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-table" id="toc-creating-a-table" class="nav-link" data-scroll-target="#creating-a-table"><span class="header-section-number">2.1.1</span> Creating a Table</a></li>
+  <li><a href="#inserting-data" id="toc-inserting-data" class="nav-link" data-scroll-target="#inserting-data"><span class="header-section-number">2.1.2</span> Inserting Data</a></li>
+  <li><a href="#querying-data" id="toc-querying-data" class="nav-link" data-scroll-target="#querying-data"><span class="header-section-number">2.1.3</span> Querying Data</a></li>
+  <li><a href="#updating-data" id="toc-updating-data" class="nav-link" data-scroll-target="#updating-data"><span class="header-section-number">2.1.4</span> Updating Data</a></li>
+  <li><a href="#deleting-data" id="toc-deleting-data" class="nav-link" data-scroll-target="#deleting-data"><span class="header-section-number">2.1.5</span> Deleting Data</a></li>
+  </ul></li>
+  <li><a href="#sql-for-data-querying-and-manipulation" id="toc-sql-for-data-querying-and-manipulation" class="nav-link" data-scroll-target="#sql-for-data-querying-and-manipulation"><span class="header-section-number">2.2</span> SQL for Data Querying and Manipulation</a>
+  <ul class="collapse">
+  <li><a href="#selecting-data" id="toc-selecting-data" class="nav-link" data-scroll-target="#selecting-data"><span class="header-section-number">2.2.1</span> Selecting Data</a></li>
+  <li><a href="#filtering-data" id="toc-filtering-data" class="nav-link" data-scroll-target="#filtering-data"><span class="header-section-number">2.2.2</span> Filtering Data</a></li>
+  <li><a href="#sorting-data" id="toc-sorting-data" class="nav-link" data-scroll-target="#sorting-data"><span class="header-section-number">2.2.3</span> Sorting Data</a></li>
+  <li><a href="#distinct-values" id="toc-distinct-values" class="nav-link" data-scroll-target="#distinct-values"><span class="header-section-number">2.2.4</span> Distinct Values</a></li>
+  <li><a href="#multiple-conditions" id="toc-multiple-conditions" class="nav-link" data-scroll-target="#multiple-conditions"><span class="header-section-number">2.2.5</span> Multiple Conditions</a></li>
+  <li><a href="#aggregating-data" id="toc-aggregating-data" class="nav-link" data-scroll-target="#aggregating-data"><span class="header-section-number">2.2.6</span> Aggregating Data</a></li>
+  <li><a href="#where-clause" id="toc-where-clause" class="nav-link" data-scroll-target="#where-clause"><span class="header-section-number">2.2.7</span> <code>WHERE</code> Clause</a></li>
+  <li><a href="#group-by-clause" id="toc-group-by-clause" class="nav-link" data-scroll-target="#group-by-clause"><span class="header-section-number">2.2.8</span> <code>Group By</code> Clause</a></li>
+  <li><a href="#having-clause" id="toc-having-clause" class="nav-link" data-scroll-target="#having-clause"><span class="header-section-number">2.2.9</span> <code>HAVING</code> Clause</a></li>
+  <li><a href="#null-values" id="toc-null-values" class="nav-link" data-scroll-target="#null-values"><span class="header-section-number">2.2.10</span> NULL Values</a></li>
+  <li><a href="#limit-clause" id="toc-limit-clause" class="nav-link" data-scroll-target="#limit-clause"><span class="header-section-number">2.2.11</span> <code>LIMIT</code> Clause</a></li>
+  <li><a href="#like-operator" id="toc-like-operator" class="nav-link" data-scroll-target="#like-operator"><span class="header-section-number">2.2.12</span> <code>LIKE</code> Operator</a></li>
+  <li><a href="#in-operator" id="toc-in-operator" class="nav-link" data-scroll-target="#in-operator"><span class="header-section-number">2.2.13</span> <code>IN</code> Operator</a></li>
+  <li><a href="#between-operator" id="toc-between-operator" class="nav-link" data-scroll-target="#between-operator"><span class="header-section-number">2.2.14</span> <code>BETWEEN</code> Operator</a></li>
+  <li><a href="#aliases" id="toc-aliases" class="nav-link" data-scroll-target="#aliases"><span class="header-section-number">2.2.15</span> Aliases</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -291,15 +312,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>SQL follows a standard syntax for managing and manipulating relational databases. Below are some fundamental SQL commands and examples to help you get started.</p>
+<p>SQL follows a standard syntax for managing and manipulating relational databases. SQL statement is composed of various clauses, each serving a specific purpose.</p>
+<p>To make a comment in SQL, you can use two dashes (<code>--</code>) followed by the comment text as below:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- This is a comment in SQL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The general structure of an SQL statement is as follows:</p>
+<p>A SQL query is made up of different clauses. The general structure of an SQL statement is as follows:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condition;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The <code>select</code> statement is used to retrieve data from a database, while the <code>from</code> clause specifies the table from which to retrieve the data. The <code>where</code> clause is optional and is used to filter the results based on a specified condition. These are SQL keywords and are not case-sensitive, but it is common practice to write them in uppercase for better readability. Also, they should end with a semicolon (<code>;</code>) to indicate the end of the statement.</p>
-<section id="creating-a-table" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="creating-a-table"><span class="header-section-number">2.1</span> Creating a Table</h2>
+<p>It is not common for a data analyst to create or modify database structures, but it is important to understand the basics of SQL in table creation. So for example, here are some basic SQL operations:</p>
+<section id="table-creation" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="table-creation"><span class="header-section-number">2.1</span> Table Creation</h2>
+<section id="creating-a-table" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="creating-a-table"><span class="header-section-number">2.1.1</span> Creating a Table</h3>
 <p>To create a table in SQL, you can use the <code>CREATE TABLE</code> statement. Here is an example of how to create a simple table called <code>Employees</code> with columns for <code>EmployeeID</code>, <code>FirstName</code>, <code>LastName</code>, and <code>HireDate</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> Employees (</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    EmployeeID <span class="dt">INT</span> <span class="kw">PRIMARY</span> <span class="kw">KEY</span>,</span>
@@ -308,31 +333,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    HireDate <span class="dt">DATE</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="inserting-data" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="inserting-data"><span class="header-section-number">2.2</span> Inserting Data</h2>
+<section id="inserting-data" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="inserting-data"><span class="header-section-number">2.1.2</span> Inserting Data</h3>
 <p>To insert data into a table, you can use the <code>INSERT INTO</code> statement. Here is an example of how to insert a new employee into the <code>Employees</code> table:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> Employees (EmployeeID, FirstName, LastName, HireDate)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="dv">1</span>, <span class="st">'John'</span>, <span class="st">'Doe'</span>, <span class="st">'2022-01-15'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="querying-data" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="querying-data"><span class="header-section-number">2.3</span> Querying Data</h2>
+<section id="querying-data" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="querying-data"><span class="header-section-number">2.1.3</span> Querying Data</h3>
 <p>To retrieve data from a table, you can use the <code>SELECT</code> statement. Here is an example of how to select all columns from the <code>Employees</code> table:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="updating-data" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="updating-data"><span class="header-section-number">2.4</span> Updating Data</h2>
+<section id="updating-data" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="updating-data"><span class="header-section-number">2.1.4</span> Updating Data</h3>
 <p>To update existing data in a table, you can use the <code>UPDATE</code> statement. Here is an example of how to update the last name of an employee in the <code>Employees</code> table:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">UPDATE</span> Employees</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SET</span> LastName <span class="op">=</span> <span class="st">'Smith'</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> EmployeeID <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="deleting-data" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="deleting-data"><span class="header-section-number">2.5</span> Deleting Data</h2>
+<section id="deleting-data" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="deleting-data"><span class="header-section-number">2.1.5</span> Deleting Data</h3>
 <p>To delete data from a table, you can use the <code>DELETE</code> statement. Here is an example of how to delete an employee from the <code>Employees</code> table:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> Employees</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> EmployeeID <span class="op">=</span> <span class="dv">1</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="exercises" class="level4" data-number="2.5.0.1">
-<h4 data-number="2.5.0.1" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.5.0.1</span> Exercises</h4>
+<section id="exercises" class="level4" data-number="2.1.5.1">
+<h4 data-number="2.1.5.1" class="anchored" data-anchor-id="exercises"><span class="header-section-number">2.1.5.1</span> Exercises</h4>
 <ol type="1">
 <li>Create a table called <code>Departments</code> with columns for <code>DepartmentID</code>, <code>DepartmentName</code>, and <code>Location</code>.</li>
 </ol>
@@ -365,8 +390,613 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">DELETE</span> <span class="kw">FROM</span> Departments</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> DepartmentID <span class="op">=</span> <span class="dv">2</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now, you know how to create table in SQL and perform basic operations like inserting, querying, updating, and deleting data! But, you will hardly use these commands as a data analyst. The most important command for you is the data querying and data manipulation commands which we will cover in the next sections.</p>
+</section>
+</section>
+</section>
+<section id="sql-for-data-querying-and-manipulation" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sql-for-data-querying-and-manipulation"><span class="header-section-number">2.2</span> SQL for Data Querying and Manipulation</h2>
+<p>SQL is a powerful language for querying and manipulating data in relational databases. As a data analyst, you will frequently use SQL to extract insights from data stored in databases. In this section, we will cover some of the most commonly used SQL commands for data querying and manipulation.</p>
+<section id="selecting-data" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="selecting-data"><span class="header-section-number">2.2.1</span> Selecting Data</h3>
+<p>The <code>SELECT</code> statement is used to retrieve data from a database. You can specify the columns you want to retrieve and the table from which to retrieve the data. The syntax for the <code>SELECT</code> statement is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to select specific columns from a table called <code>Employees</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="filtering-data" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="filtering-data"><span class="header-section-number">2.2.2</span> Filtering Data</h3>
+<p>The <code>WHERE</code> clause is used to filter the results based on a specified condition. Here is an example of how to select employees who were hired after January 1, 2020:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="op">&gt;</span> <span class="st">'2020-01-01'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="sorting-data" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="sorting-data"><span class="header-section-number">2.2.3</span> Sorting Data</h3>
+<p>The <code>ORDER BY</code> clause is used to sort the results in ascending or descending order. Here is an example of how to select employees and sort them by their last name in ascending order:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> LastName <span class="kw">ASC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- or in descending order</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> LastName <span class="kw">DESC</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="distinct-values" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="distinct-values"><span class="header-section-number">2.2.4</span> Distinct Values</h3>
+<p>The <code>DISTINCT</code> keyword is used to retrieve unique values from a column. Here is an example of how to select distinct job titles from a table called <code>Jobs</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> JobTitle</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Jobs;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="multiple-conditions" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="multiple-conditions"><span class="header-section-number">2.2.5</span> Multiple Conditions</h3>
+<p>You can use logical operators such as <code>AND</code>, <code>OR</code>, and <code>NOT</code> to combine multiple conditions in the <code>WHERE</code> clause. The general syntax for using multiple conditions is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condition1 <span class="kw">AND</span>|<span class="kw">OR</span> condition2;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to select employees who were hired after January 1, 2020, and have a salary greater than 50000:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate, Salary</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="op">&gt;</span> <span class="st">'2020-01-01'</span> <span class="kw">AND</span> Salary <span class="op">&gt;</span> <span class="dv">50000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or you can use <code>OR</code> operator as below:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate, Salary</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="op">&gt;</span> <span class="st">'2020-01-01'</span> <span class="kw">OR</span> Salary <span class="op">&gt;</span> <span class="dv">50000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the FirstName, LastName, HireDate, and Salary of employees from the Employees table where the HireDate is after January 1, 2020, or the Salary is greater than 50000.</p>
+<p>The <code>NOT</code> operator can be used to exclude certain records. Here is an example of how to select employees who do not work in the department with ID 3:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, DepartmentID</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="kw">NOT</span> DepartmentID <span class="op">=</span> <span class="dv">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercises-1" class="level4" data-number="2.2.5.1">
+<h4 data-number="2.2.5.1" class="anchored" data-anchor-id="exercises-1"><span class="header-section-number">2.2.5.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select all employees who work in the ‘IT’ department.</li>
+<li>Write a query to select distinct job titles from the <code>Jobs</code> table.</li>
+<li>Write a query to select employees with a salary between 40000 and 80000.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees in 'IT' department</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, DepartmentID</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> DepartmentID <span class="op">=</span> (<span class="kw">SELECT</span> DepartmentID <span class="kw">FROM</span> Departments <span class="kw">WHERE</span> DepartmentName <span class="op">=</span> <span class="st">'IT'</span>);</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Distinct job titles from Jobs table</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> JobTitle</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Jobs;</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Employees with salary between 40000 and 80000</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, Salary</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Salary <span class="kw">BETWEEN</span> <span class="dv">40000</span> <span class="kw">AND</span> <span class="dv">80000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="aggregating-data" class="level3" data-number="2.2.6">
+<h3 data-number="2.2.6" class="anchored" data-anchor-id="aggregating-data"><span class="header-section-number">2.2.6</span> Aggregating Data</h3>
+<p>SQL provides several aggregate functions that allow you to perform calculations on a set of values. Some commonly used aggregate functions include <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, and <code>MAX()</code>. Here is an example of how to count the number of employees in the <code>Employees</code> table:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> NumberOfEmployees</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the total number of employees from the Employees table and labels the result as NumberOfEmployees. * means all rows.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Example of SUM function</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">SUM</span>(Salary) <span class="kw">AS</span> TotalSalary</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the total sum of the Salary column from the Employees table and labels the result as TotalSalary.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Example of AVG function</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(Salary) <span class="kw">AS</span> AverageSalary</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the average value of the Salary column from the Employees table and labels the result as AverageSalary.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- Example of MIN and MAX functions</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(Salary) <span class="kw">AS</span> MinimumSalary, <span class="fu">MAX</span>(Salary) <span class="kw">AS</span> MaximumSalary</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the minimum and maximum values of the Salary column from the Employees table and labels the results as MinimumSalary and MaximumSalary, respectively.</p>
+<section id="exercises-2" class="level4" data-number="2.2.6.1">
+<h4 data-number="2.2.6.1" class="anchored" data-anchor-id="exercises-2"><span class="header-section-number">2.2.6.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select all employees who were hired in the year 2021.</li>
+<li>Write a query to select distinct locations from the <code>Departments</code> table.</li>
+<li>Write a query to count the total number of employees.</li>
+<li>Write a query to find the average salary of employees in the <code>Employees</code> table.</li>
+<li>Write a query to select employees and sort them by their hire date in descending order.</li>
+<li>Write a query to find the maximum and minimum hire dates from the <code>Employees</code> table.</li>
+<li>Write a query to count the number of distinct job titles in the <code>Jobs</code> table.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees hired in 2021</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> <span class="dt">YEAR</span>(HireDate) <span class="op">=</span> <span class="dv">2021</span>;</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Distinct locations from Departments table</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="kw">DISTINCT</span> Location</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Departments;</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Count number of employees in each department</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> TotalEmployees</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- 4. Average salary of employees</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">AVG</span>(Salary) <span class="kw">AS</span> AverageSalary</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- 5. Employees sorted by hire date in descending order</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> HireDate <span class="kw">DESC</span>;</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co">-- 6. Maximum and minimum hire dates</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">MIN</span>(HireDate) <span class="kw">AS</span> MinimumHireDate, <span class="fu">MAX</span>(HireDate) <span class="kw">AS</span> MaximumHire</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co">-- 7. Count of distinct job titles in Jobs table</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="kw">DISTINCT</span> JobTitle) <span class="kw">AS</span> NumberOfJobTitles</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Jobs;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="where-clause" class="level3" data-number="2.2.7">
+<h3 data-number="2.2.7" class="anchored" data-anchor-id="where-clause"><span class="header-section-number">2.2.7</span> <code>WHERE</code> Clause</h3>
+<p>The <code>WHERE</code> clause is used to filter records that meet a certain condition. It can be used with various comparison operators such as <code>=</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, and logical operators like <code>AND</code>, <code>OR</code>, and <code>NOT</code>. The general syntax for the <code>WHERE</code> clause is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> condition;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>WHERE</code> clause to select employees with a salary greater than 50000:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, Salary</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Salary <span class="op">&gt;</span> <span class="dv">50000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the FirstName, LastName, and Salary of employees from the Employees table where the Salary is greater than 50000.</p>
+<section id="exercises-3" class="level4" data-number="2.2.7.1">
+<h4 data-number="2.2.7.1" class="anchored" data-anchor-id="exercises-3"><span class="header-section-number">2.2.7.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select employees who were hired before January 1, 2020.</li>
+<li>Write a query to select employees with the job title ‘Manager’ and a salary greater than 60000.</li>
+<li>Write a query to select employees who work in the ‘IT’ department or have a salary less than 40000.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees hired before January 1, 2020</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="op">&lt;</span> <span class="st">'2020-01-01'</span>;</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Employees with job title 'Manager' and salary greater than 60000</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, Salary</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> JobTitle <span class="op">=</span> <span class="st">'Manager'</span> <span class="kw">AND</span> Salary <span class="op">&gt;</span> <span class="dv">60000</span>;</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Employees in 'IT' department or salary less than 40000</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, DepartmentID, Salary</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> DepartmentID <span class="op">=</span> (<span class="kw">SELECT</span> DepartmentID <span class="kw">FROM</span> Departments <span class="kw">WHERE</span> DepartmentName <span class="op">=</span> <span class="st">'IT'</span>) <span class="kw">OR</span> Salary <span class="op">&lt;</span> <span class="dv">40000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="group-by-clause" class="level3" data-number="2.2.8">
+<h3 data-number="2.2.8" class="anchored" data-anchor-id="group-by-clause"><span class="header-section-number">2.2.8</span> <code>Group By</code> Clause</h3>
+<p>The <code>GROUP BY</code> clause is used to group rows that have the same values in specified columns into summary rows. It is often used with aggregate functions to perform calculations on each group of data. The general syntax for the <code>GROUP BY</code> clause is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, aggregate_function(column2)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> column1;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>GROUP BY</code> clause to count the number of employees in each department:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> NumberOfEmployees</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the DepartmentID and counts the number of employees in each department from the Employees table, grouping the results by DepartmentID and labeling the count as NumberOfEmployees.</p>
+<section id="exercises-4" class="level4" data-number="2.2.8.1">
+<h4 data-number="2.2.8.1" class="anchored" data-anchor-id="exercises-4"><span class="header-section-number">2.2.8.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to find the total salary for each department.</li>
+<li>Write a query to count the number of employees in each job title.</li>
+<li>Write a query to find the average hire date for each department.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Total salary for each department</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">SUM</span>(Salary) <span class="kw">AS</span> TotalSalary</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID;</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Count of employees in each job title</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> JobTitle, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> NumberOfEmployees</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> JobTitle;</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Average hire date for each department</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">AVG</span>(HireDate) <span class="kw">AS</span> AverageHireDate</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="having-clause" class="level3" data-number="2.2.9">
+<h3 data-number="2.2.9" class="anchored" data-anchor-id="having-clause"><span class="header-section-number">2.2.9</span> <code>HAVING</code> Clause</h3>
+<p>The <code>HAVING</code> clause is used to filter records that meet a certain condition after the <code>GROUP BY</code> clause has been applied. It is similar to the <code>WHERE</code> clause, but it is used for aggregated data. The general syntax for the <code>HAVING</code> clause is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, aggregate_function(column2)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> column1</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> condition;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>HAVING</code> clause to filter departments with more than 5 employees:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> NumberOfEmployees</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the DepartmentID and counts the number of employees in each department from the Employees table, grouping the results by DepartmentID and filtering to include only those departments with more than 5 employees.</p>
+<section id="exercises-5" class="level4" data-number="2.2.9.1">
+<h4 data-number="2.2.9.1" class="anchored" data-anchor-id="exercises-5"><span class="header-section-number">2.2.9.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to find departments with a total salary greater than 200000.</li>
+<li>Write a query to find job titles with more than 10 employees.</li>
+<li>Write a query to find departments with an average hire date before 2021.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Departments with total salary greater than 200000</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">SUM</span>(Salary) <span class="kw">AS</span> TotalSalary</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">SUM</span>(Salary) <span class="op">&gt;</span> <span class="dv">200000</span>;</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Job titles with more than 10 employees</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> JobTitle, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> NumberOfEmployees</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> JobTitle</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="op">&gt;</span> <span class="dv">10</span>;</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Departments with average hire date before 2021</span></span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentID, <span class="fu">AVG</span>(HireDate) <span class="kw">AS</span> AverageHireDate</span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> DepartmentID</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="kw">HAVING</span> <span class="fu">AVG</span>(HireDate) <span class="op">&lt;</span> <span class="st">'2021-01-01'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Confusion between <code>WHERE</code> and <code>HAVING</code> Clause”
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <code>WHERE</code> clause is used to filter rows before any grouping is done, while the <code>HAVING</code> clause is used to filter groups after the <code>GROUP BY</code> clause has been applied. Use <code>WHERE</code> for individual row conditions and <code>HAVING</code> for aggregated data conditions.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="null-values" class="level3" data-number="2.2.10">
+<h3 data-number="2.2.10" class="anchored" data-anchor-id="null-values"><span class="header-section-number">2.2.10</span> NULL Values</h3>
+<p>In SQL, <code>NULL</code> represents a missing or unknown value. It is important to handle <code>NULL</code> values properly when querying data. You can use the <code>IS NULL</code> and <code>IS NOT NULL</code> operators to check for <code>NULL</code> values in a column. The general syntax for checking <code>NULL</code> values is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> column_name <span class="kw">IS</span> <span class="kw">NULL</span>|<span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to select employees with a <code>NULL</code> value in the <code>ManagerID</code> column:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, ManagerID</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> ManagerID <span class="kw">IS</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercises-6" class="level4" data-number="2.2.10.1">
+<h4 data-number="2.2.10.1" class="anchored" data-anchor-id="exercises-6"><span class="header-section-number">2.2.10.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select employees with a <code>NULL</code> value in the <code>HireDate</code> column.</li>
+<li>Write a query to select employees with a non-<code>NULL</code> value in the <code>Salary</code> column.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees with NULL HireDate</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="kw">IS</span> <span class="kw">NULL</span>;</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Employees with non-NULL Salary</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, Salary</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Salary <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="limit-clause" class="level3" data-number="2.2.11">
+<h3 data-number="2.2.11" class="anchored" data-anchor-id="limit-clause"><span class="header-section-number">2.2.11</span> <code>LIMIT</code> Clause</h3>
+<p>The <code>LIMIT</code> clause is used to specify the maximum number of records to return in the result set. It is useful when you want to retrieve a subset of data from a larger dataset. The general syntax for the <code>LIMIT</code> clause is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> number_of_records;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>LIMIT</code> clause to select the first 10 employees from the <code>Employees</code> table:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">10</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Note on SQL Dialects
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Not all SQL databases support the <code>LIMIT</code> clause. For example, in Microsoft SQL Server, you would use the <code>SELECT TOP</code> keyword instead. Use AI to check the syntax for your specific database system.</p>
+</div>
+</div>
+<section id="exercises-7" class="level4" data-number="2.2.11.1">
+<h4 data-number="2.2.11.1" class="anchored" data-anchor-id="exercises-7"><span class="header-section-number">2.2.11.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select the first 5 departments from the <code>Departments</code> table.</li>
+<li>Write a query to select the first 3 employees with the highest salaries.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. First 5 departments</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span>  </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Departments</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. First 3 employees with highest salaries</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> Salary <span class="kw">DESC</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">3</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="like-operator" class="level3" data-number="2.2.12">
+<h3 data-number="2.2.12" class="anchored" data-anchor-id="like-operator"><span class="header-section-number">2.2.12</span> <code>LIKE</code> Operator</h3>
+<p>The <code>LIKE</code> operator is used in the <code>WHERE</code> clause to search for a specified pattern in a column. It is often used with wildcard characters such as <code>%</code> (which represents zero or more characters) and <code>_</code> (which represents a single character). The general syntax for the <code>LIKE</code> operator is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> column_name <span class="kw">LIKE</span> pattern;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>LIKE</code> operator to select employees whose last name starts with ‘S’:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> LastName <span class="kw">LIKE</span> <span class="st">'S%'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercises-8" class="level4" data-number="2.2.12.1">
+<h4 data-number="2.2.12.1" class="anchored" data-anchor-id="exercises-8"><span class="header-section-number">2.2.12.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select employees whose first name ends with ‘n’.</li>
+<li>Write a query to select employees whose last name contains ‘ar’.</li>
+<li>Write a query to select employees whose first name has ‘a’ as the last letter.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees whose first name ends with 'n'</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> FirstName <span class="kw">LIKE</span> <span class="st">'%n'</span>;</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Employees whose last name contains 'ar'</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> LastName <span class="kw">LIKE</span> <span class="st">'%ar%'</span>;</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- 3. Employees whose first name has 'a' as the last letter</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> FirstName <span class="kw">LIKE</span> <span class="st">'%a'</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="in-operator" class="level3" data-number="2.2.13">
+<h3 data-number="2.2.13" class="anchored" data-anchor-id="in-operator"><span class="header-section-number">2.2.13</span> <code>IN</code> Operator</h3>
+<p>The <code>IN</code> operator is used in the <code>WHERE</code> clause to filter records based on a list of specified values. It allows you to specify multiple values in a <code>WHERE</code> clause, making it easier to filter data. The general syntax for the <code>IN</code> operator is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> column_name <span class="kw">IN</span> (value1, value2, <span class="op">..</span>.);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>IN</code> operator to select employees who work in departments with IDs 1, 2, or 3:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, DepartmentID</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> DepartmentID <span class="kw">IN</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercises-9" class="level4" data-number="2.2.13.1">
+<h4 data-number="2.2.13.1" class="anchored" data-anchor-id="exercises-9"><span class="header-section-number">2.2.13.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select employees who have the job titles ‘Manager’, ‘Analyst’, or ‘Developer’.</li>
+<li>Write a query to select departments located in ‘Sydney’, ‘Melbourne’, or ‘Brisbane’.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees with job titles 'Manager', 'Analyst', or 'Developer'</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, JobTitle</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> JobTitle <span class="kw">IN</span> (<span class="st">'Manager'</span>, <span class="st">'Analyst'</span>, <span class="st">'Developer'</span>);</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Departments located in 'Sydney', 'Melbourne', or 'Brisbane'</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Departments</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Location <span class="kw">IN</span> (<span class="st">'Sydney'</span>, <span class="st">'Melbourne'</span>, <span class="st">'Brisbane'</span>);</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="between-operator" class="level3" data-number="2.2.14">
+<h3 data-number="2.2.14" class="anchored" data-anchor-id="between-operator"><span class="header-section-number">2.2.14</span> <code>BETWEEN</code> Operator</h3>
+<p>The <code>BETWEEN</code> operator is used in the <code>WHERE</code> clause to filter records within a specified range. It is inclusive, meaning it includes the boundary values. The general syntax for the <code>BETWEEN</code> operator is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column1, column2, <span class="op">..</span>.</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> column_name <span class="kw">BETWEEN</span> value1 <span class="kw">AND</span> value2;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use the <code>BETWEEN</code> operator to select employees with salaries between 40000 and 80000:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, Salary</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> Salary <span class="kw">BETWEEN</span> <span class="dv">40000</span> <span class="kw">AND</span> <span class="dv">80000</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="exercises-10" class="level4" data-number="2.2.14.1">
+<h4 data-number="2.2.14.1" class="anchored" data-anchor-id="exercises-10"><span class="header-section-number">2.2.14.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select employees hired between January 1, 2020, and December 31, 2021.</li>
+<li>Write a query to select departments with IDs between 2 and 5.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Employees hired between January 1, 2020, and December 31</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName, LastName, HireDate</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> HireDate <span class="kw">BETWEEN</span> <span class="st">'2020-01-01'</span> <span class="kw">AND</span> <span class="st">'2021-12-</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="st">31'</span>;</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Departments with IDs between 2 and 5</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Departments</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> DepartmentID <span class="kw">BETWEEN</span> <span class="dv">2</span> <span class="kw">AND</span> <span class="dv">5</span>;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="aliases" class="level3" data-number="2.2.15">
+<h3 data-number="2.2.15" class="anchored" data-anchor-id="aliases"><span class="header-section-number">2.2.15</span> Aliases</h3>
+<p>Aliases are used to give a table or a column a temporary name. This can make your SQL queries easier to read and understand. You can create an alias using the <code>AS</code> keyword. The general syntax for creating an alias is as follows:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> column_name <span class="kw">AS</span> alias_name</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> table_name <span class="kw">AS</span> alias_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Here is an example of how to use aliases to rename columns in the result set:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName <span class="kw">AS</span> First_Name, LastName <span class="kw">AS</span> Last_Name</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees <span class="kw">AS</span> E;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This SQL selects the FirstName and LastName columns from the Employees table, renaming them as First_Name and Last_Name in the result set. The Employees table is also given an alias of E for easier reference.</p>
+<section id="exercises-11" class="level4" data-number="2.2.15.1">
+<h4 data-number="2.2.15.1" class="anchored" data-anchor-id="exercises-11"><span class="header-section-number">2.2.15.1</span> Exercises</h4>
+<ol type="1">
+<li>Write a query to select the <code>DepartmentName</code> column from the <code>Departments</code> table and rename it as <code>Dept_Name</code>.</li>
+<li>Write a query to select the <code>FirstName</code> and <code>LastName</code> columns from the <code>Employees</code> table and rename them as <code>FName</code> and <code>LName</code>, respectively.</li>
+</ol>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solutions
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. Select DepartmentName and rename as Dept_Name</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> DepartmentName <span class="kw">AS</span> Dept_Name</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Departments;</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. Select FirstName and LastName and rename as FName and LName</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> FirstName <span class="kw">AS</span> FName, LastName <span class="kw">AS</span> LName</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> Employees;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 
 
+</section>
 </section>
 </section>
 
