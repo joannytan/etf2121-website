@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>1&nbsp; Database Management System – Data Analysis in Business (First edition)</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -20,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -35,15 +73,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="./schedule.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0cda25dcbb8fe09c7138904322940710.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8b06063d70b38fe22b0e119cf1863158.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -71,8 +108,12 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
+<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -178,12 +219,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Communication and Story Telling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -191,14 +238,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./desc_stat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descri</span></span></a>
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
   </div>
 </li>
       </ul>
@@ -206,7 +259,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Communication and Story Telling</span></a>
+ <span class="menu-text">Statistical Modelling with R</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -214,15 +267,47 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Data Visualization</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -238,28 +323,25 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1.1</span> Introduction</a></li>
-  <li><a href="#why-use-a-dbms-and-not-a-spreadsheettable" id="toc-why-use-a-dbms-and-not-a-spreadsheettable" class="nav-link" data-scroll-target="#why-use-a-dbms-and-not-a-spreadsheettable"><span class="header-section-number">1.2</span> Why use a DBMS and not a spreadsheet/table?</a></li>
-  <li><a href="#why-not-excel" id="toc-why-not-excel" class="nav-link" data-scroll-target="#why-not-excel"><span class="header-section-number">1.3</span> Why not Excel?</a></li>
-  <li><a href="#difference-between-using-dbms-and-excel" id="toc-difference-between-using-dbms-and-excel" class="nav-link" data-scroll-target="#difference-between-using-dbms-and-excel"><span class="header-section-number">1.4</span> Difference between using DBMS and Excel</a></li>
-  <li><a href="#what-is-relational-database-rdbms" id="toc-what-is-relational-database-rdbms" class="nav-link" data-scroll-target="#what-is-relational-database-rdbms"><span class="header-section-number">1.5</span> What is Relational Database (RDBMS)?</a></li>
-  <li><a href="#what-is-the-relationship-between-sql-vs.-rdbms" id="toc-what-is-the-relationship-between-sql-vs.-rdbms" class="nav-link" data-scroll-target="#what-is-the-relationship-between-sql-vs.-rdbms"><span class="header-section-number">1.6</span> What is the relationship between SQL vs.&nbsp;RDBMS?</a></li>
-  <li><a href="#why-sql-is-important-for-a-data-analyst" id="toc-why-sql-is-important-for-a-data-analyst" class="nav-link" data-scroll-target="#why-sql-is-important-for-a-data-analyst"><span class="header-section-number">1.7</span> Why SQL is important for a data analyst?</a></li>
-  <li><a href="#structured-query-language-sql" id="toc-structured-query-language-sql" class="nav-link" data-scroll-target="#structured-query-language-sql"><span class="header-section-number">2</span> Structured Query Language (SQL)</a>
+  <li><a href="#a-day-in-the-life-of-a-data-analyst" id="toc-a-day-in-the-life-of-a-data-analyst" class="nav-link active" data-scroll-target="#a-day-in-the-life-of-a-data-analyst"><span class="header-section-number">1.1</span> A day in the life of a data analyst</a></li>
+  <li><a href="#so-what-is-a-database-really" id="toc-so-what-is-a-database-really" class="nav-link" data-scroll-target="#so-what-is-a-database-really"><span class="header-section-number">1.2</span> So… what is a database, really?</a></li>
+  <li><a href="#what-is-a-database-management-system-dbms" id="toc-what-is-a-database-management-system-dbms" class="nav-link" data-scroll-target="#what-is-a-database-management-system-dbms"><span class="header-section-number">1.3</span> What is a Database Management System (DBMS)?</a></li>
+  <li><a href="#but-cant-i-just-use-excel" id="toc-but-cant-i-just-use-excel" class="nav-link" data-scroll-target="#but-cant-i-just-use-excel"><span class="header-section-number">1.4</span> “But can’t I just use Excel?”</a>
   <ul class="collapse">
-  <li><a href="#what-is-sql" id="toc-what-is-sql" class="nav-link" data-scroll-target="#what-is-sql"><span class="header-section-number">2.1</span> What is SQL?</a></li>
-  <li><a href="#basic-sql-commands" id="toc-basic-sql-commands" class="nav-link" data-scroll-target="#basic-sql-commands"><span class="header-section-number">2.2</span> Basic SQL Commands</a></li>
-  <li><a href="#data-manipulation-language-dml" id="toc-data-manipulation-language-dml" class="nav-link" data-scroll-target="#data-manipulation-language-dml"><span class="header-section-number">2.3</span> Data Manipulation Language (DML)</a>
+  <li><a href="#spreadsheet-vs.-database-at-a-glance" id="toc-spreadsheet-vs.-database-at-a-glance" class="nav-link" data-scroll-target="#spreadsheet-vs.-database-at-a-glance"><span class="header-section-number">1.4.1</span> Spreadsheet vs.&nbsp;database at a glance</a></li>
+  </ul></li>
+  <li><a href="#the-most-common-kind-a-relational-database-rdbms" id="toc-the-most-common-kind-a-relational-database-rdbms" class="nav-link" data-scroll-target="#the-most-common-kind-a-relational-database-rdbms"><span class="header-section-number">1.5</span> The most common kind: a Relational Database (RDBMS)</a></li>
+  <li><a href="#where-does-sql-come-into-all-this" id="toc-where-does-sql-come-into-all-this" class="nav-link" data-scroll-target="#where-does-sql-come-into-all-this"><span class="header-section-number">1.6</span> Where does SQL come into all this?</a>
   <ul class="collapse">
-  <li><a href="#data-definition-language-ddl" id="toc-data-definition-language-ddl" class="nav-link" data-scroll-target="#data-definition-language-ddl"><span class="header-section-number">2.3.1</span> Data Definition Language (DDL)</a></li>
+  <li><a href="#why-every-data-analyst-learns-sql" id="toc-why-every-data-analyst-learns-sql" class="nav-link" data-scroll-target="#why-every-data-analyst-learns-sql"><span class="header-section-number">1.6.1</span> Why every data analyst learns SQL</a></li>
   </ul></li>
-  <li><a href="#data-query-language-dql" id="toc-data-query-language-dql" class="nav-link" data-scroll-target="#data-query-language-dql"><span class="header-section-number">2.4</span> Data Query Language (DQL)</a></li>
-  <li><a href="#connecting-to-oracle-database" id="toc-connecting-to-oracle-database" class="nav-link" data-scroll-target="#connecting-to-oracle-database"><span class="header-section-number">2.5</span> Connecting to Oracle Database</a>
+  <li><a href="#a-first-look-at-sql-commands" id="toc-a-first-look-at-sql-commands" class="nav-link" data-scroll-target="#a-first-look-at-sql-commands"><span class="header-section-number">1.7</span> A first look at SQL commands</a></li>
+  <li><a href="#getting-your-hands-dirty-practising-sql-for-free" id="toc-getting-your-hands-dirty-practising-sql-for-free" class="nav-link" data-scroll-target="#getting-your-hands-dirty-practising-sql-for-free"><span class="header-section-number">1.8</span> Getting your hands dirty: practising SQL for free</a>
   <ul class="collapse">
-  <li><a href="#how-to-sign-up" id="toc-how-to-sign-up" class="nav-link" data-scroll-target="#how-to-sign-up"><span class="header-section-number">2.5.1</span> How to sign up</a></li>
-  <li><a href="#how-to-use-freesql" id="toc-how-to-use-freesql" class="nav-link" data-scroll-target="#how-to-use-freesql"><span class="header-section-number">2.5.2</span> How to use FreeSQL</a></li>
+  <li><a href="#setting-up-freesql-5-minutes" id="toc-setting-up-freesql-5-minutes" class="nav-link" data-scroll-target="#setting-up-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up FreeSQL (5 minutes)</a></li>
   </ul></li>
-  </ul></li>
+  <li><a href="#quick-check-are-you-ready-for-the-next-chapter" id="toc-quick-check-are-you-ready-for-the-next-chapter" class="nav-link" data-scroll-target="#quick-check-are-you-ready-for-the-next-chapter"><span class="header-section-number">1.9</span> Quick check: are you ready for the next chapter?</a></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.10</span> What’s next</a></li>
   </ul>
 </nav>
     </div>
@@ -285,215 +367,333 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="introduction" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1.1</span> Introduction</h2>
-<p>A database management system (DBMS) is a software application that interacts with users, applications, and the database itself to capture and analyze data. A DBMS provides a systematic way to create, retrieve, update, and manage data. It allows users to define, create, maintain, and control access to the database.</p>
-<p><strong>Why databases are important?:</strong></p>
+<section id="a-day-in-the-life-of-a-data-analyst" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="a-day-in-the-life-of-a-data-analyst"><span class="header-section-number">1.1</span> A day in the life of a data analyst</h2>
+<p>Imagine it is your first day as a junior data analyst at a coffee chain with 200 stores across Australia. Your manager walks over with a friendly smile and asks:</p>
+<blockquote class="blockquote">
+<p><em>“Hey, can you tell me how many large oat-milk lattes we sold in Melbourne last month, broken down by store and by day of the week? Oh, and our regional manager needs it before lunch.”</em></p>
+</blockquote>
+<p>Where do you even begin?</p>
+<p>Every store records every transaction. Every transaction has a time, a barista, a customer, a drink, a size, a price, and a payment method. Multiply that by 200 stores, by tens of thousands of customers a day, by 30 days, and you are looking at <strong>millions of rows of data</strong>.</p>
+<p>If somebody hands you a spreadsheet, your laptop will probably freeze before you can open it. And even if it did open, how would you find just the <em>Melbourne</em> stores, just the <em>large oat-milk lattes</em>, just the past <em>30 days</em> — without scrolling for hours?</p>
+<p>This is the moment a data analyst reaches for a <strong>database</strong>.</p>
+</section>
+<section id="so-what-is-a-database-really" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="so-what-is-a-database-really"><span class="header-section-number">1.2</span> So… what is a database, really?</h2>
+<p>A <strong>database</strong> is just an organised collection of data — but designed so that finding, updating, and protecting that data is fast, safe, and reliable, even when there are millions of records and hundreds of people using it at once.</p>
+<p>You already use databases every day, even if you do not realise it:</p>
 <ul>
-<li><strong>Data Storage</strong>: Databases provide a structured way to store large amounts of data efficiently.</li>
-<li><strong>Data Retrieval</strong>: They allow for quick and easy retrieval of data using queries.</li>
-<li><strong>Data Integrity</strong>: Databases enforce data integrity and consistency through constraints and rules.</li>
-<li><strong>Data Security</strong>: They provide mechanisms for securing data and controlling access to it.</li>
-<li><strong>Data Sharing</strong>: Databases enable multiple users to access and share data simultaneously.</li>
-<li><strong>Data Backup and Recovery</strong>: They provide tools for backing up data and recovering it in case of failure.</li>
-<li><strong>Data Relationships</strong>: Databases allow for the establishment of relationships between different data entities, enabling complex data modeling.</li>
-<li><strong>Data Analysis</strong>: They support advanced data analysis and reporting capabilities.</li>
-<li><strong>Data Scalability</strong>: Databases can handle large volumes of data and can be scaled to accommodate growth.</li>
-<li><strong>Data Transactions</strong>: They support transactions, ensuring that data operations are completed successfully or rolled back in case of failure.</li>
-<li><strong>Data Standards</strong>: Databases adhere to industry standards, making it easier to integrate with other systems and applications.</li>
-<li><strong>Data Performance</strong>: They optimize data access and retrieval for better performance.</li>
-<li><strong>Data Maintenance</strong>: Databases provide tools for maintaining data quality and consistency over time.</li>
-<li><strong>Data Auditing</strong>: They support auditing and tracking of data changes for compliance and accountability.</li>
+<li>When you log into Instagram, a database checks your password and pulls up your feed.</li>
+<li>When you tap your Myki card, a database deducts the fare and updates your balance.</li>
+<li>When Spotify recommends a song, it is querying a database of your listening history.</li>
+<li>When your bank app shows your latest transaction, that record came from a database — within milliseconds.</li>
+</ul>
+<p>A database is a quiet engine running in the background of almost every digital service we touch.</p>
+</section>
+<section id="what-is-a-database-management-system-dbms" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="what-is-a-database-management-system-dbms"><span class="header-section-number">1.3</span> What is a Database Management System (DBMS)?</h2>
+<p>A database is the <em>data</em>. A <strong>Database Management System (DBMS)</strong> is the <em>software</em> that lets people and applications interact with that data — to store it, retrieve it, change it, secure it, and back it up.</p>
+<p>Think of it like this:</p>
+<ul>
+<li>The <strong>database</strong> is the library — rows of shelves full of books.</li>
+<li>The <strong>DBMS</strong> is the librarian — the one who knows where every book lives, lends them out, keeps the catalogue tidy, and stops you from walking off with the rare collection.</li>
+</ul>
+<p>Without a librarian, even the best library is just a pile of books.</p>
+<p>A DBMS quietly handles a lot of jobs that you would otherwise have to do by hand:</p>
+<ul>
+<li><strong>Storing data efficiently</strong> so it does not take up unnecessary space.</li>
+<li><strong>Finding data quickly</strong> when you ask a question, even across millions of rows.</li>
+<li><strong>Protecting data integrity</strong> so that, for example, a bank balance can never be in two contradictory states at once.</li>
+<li><strong>Controlling who can see and change what</strong> — the intern should not be able to delete payroll records.</li>
+<li><strong>Letting many people work at once</strong> without overwriting each other’s changes.</li>
+<li><strong>Backing up and recovering</strong> data if something goes wrong.</li>
 </ul>
 </section>
-<section id="why-use-a-dbms-and-not-a-spreadsheettable" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="why-use-a-dbms-and-not-a-spreadsheettable"><span class="header-section-number">1.2</span> Why use a DBMS and not a spreadsheet/table?</h2>
-<p>Spreadsheets are great for small datasets and simple calculations, but they have limitations when it comes to handling large amounts of data, complex relationships, and multi-user access. A DBMS is designed to handle these challenges and provides a more robust solution for data management.</p>
-</section>
-<section id="why-not-excel" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="why-not-excel"><span class="header-section-number">1.3</span> Why not Excel?</h2>
-<p>Excel is a easy to use tool for data analysis and visualization, but it is not designed to be a full-fledged database management system. While Excel can be used for small datasets and simple calculations, a DBMS is a better choice for larger datasets and more complex data management needs. For example, in a large banking system, a DBMS would be used to manage customer accounts, transactions, and other data, while Excel might be used for simple reporting or analysis tasks. To deal with single large dataset, a DBMS is more efficient and effective than Excel. For example, a DBMS can handle millions of records and complex queries, while Excel may struggle with performance and data integrity issues. Also, when we need to joins multiple tables together, a DBMS provides powerful tools for managing relationships between tables, while Excel is limited in this regard. Imagine a bank store all the customers data in Excel, it would be very difficult to manage and retrieve the data efficiently. A DBMS would provide a more structured and efficient way to manage the data.</p>
-</section>
-<section id="difference-between-using-dbms-and-excel" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="difference-between-using-dbms-and-excel"><span class="header-section-number">1.4</span> Difference between using DBMS and Excel</h2>
+<section id="but-cant-i-just-use-excel" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="but-cant-i-just-use-excel"><span class="header-section-number">1.4</span> “But can’t I just use Excel?”</h2>
+<p>Excel is wonderful. It really is. For small datasets, quick calculations, and simple charts, it is hard to beat. Most data analysts open Excel several times a day.</p>
+<p>But Excel was never designed to be a database. The cracks start to show the moment you push past a few thousand rows or need more than one person editing at once.</p>
+<p>Picture a real-world example. A bank stores its customer records in Excel. What happens when:</p>
+<ul>
+<li>Two staff members open the file at the same time and both make edits — whose changes are kept?</li>
+<li>The dataset grows to 50 million rows — Excel itself caps out at around one million.</li>
+<li>The file gets emailed around — which copy is the <em>real</em> one?</li>
+<li>A staff member accidentally sorts only one column, leaving every row attached to the wrong customer.</li>
+<li>A regulator asks: <em>“Who changed this customer’s address last Tuesday at 3:14pm?”</em></li>
+</ul>
+<p>Each of these is a nightmare in Excel. Each is a routine, solved problem in a DBMS.</p>
+<p>Here is the key shift in thinking: <strong>a spreadsheet is a document; a database is a system</strong>. A document lives on someone’s laptop. A system serves many people, protects the data, and can be trusted as the single source of truth.</p>
+<section id="spreadsheet-vs.-database-at-a-glance" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="spreadsheet-vs.-database-at-a-glance"><span class="header-section-number">1.4.1</span> Spreadsheet vs.&nbsp;database at a glance</h3>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 40%">
-<col style="width: 27%">
-<col style="width: 31%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
 <th>Feature</th>
-<th>DBMS</th>
-<th>Excel</th>
+<th>Database (DBMS)</th>
+<th>Spreadsheet (Excel)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Data Storage</td>
-<td>Structured and efficient</td>
-<td>Flat and less efficient</td>
+<td>Typical size</td>
+<td>Millions to billions of rows</td>
+<td>Up to ~1 million rows, slow well before that</td>
 </tr>
 <tr class="even">
-<td>Data Retrieval</td>
-<td>Fast and optimized</td>
-<td>Slower for large datasets</td>
+<td>Speed of search</td>
+<td>Fast, even on huge datasets</td>
+<td>Slows to a crawl as data grows</td>
 </tr>
 <tr class="odd">
-<td>Data Integrity</td>
-<td>Enforced through constraints</td>
-<td>Limited data validation</td>
+<td>Data integrity</td>
+<td>Enforced by rules and constraints</td>
+<td>Relies on the user being careful</td>
 </tr>
 <tr class="even">
-<td>Data Security</td>
-<td>Advanced security features</td>
+<td>Multi-user access</td>
+<td>Many users, simultaneously, safely</td>
+<td>One file, easily overwritten</td>
+</tr>
+<tr class="odd">
+<td>Relationships across tables</td>
+<td>Built-in and powerful</td>
+<td>Limited (VLOOKUP can only do so much)</td>
+</tr>
+<tr class="even">
+<td>Security</td>
+<td>Fine-grained user permissions</td>
 <td>Basic password protection</td>
 </tr>
 <tr class="odd">
-<td>Data Sharing</td>
-<td>Multi-user access</td>
-<td>Limited multi-user support</td>
+<td>Backup &amp; recovery</td>
+<td>Automated, often continuous</td>
+<td>Manual — <em>Save As copy_FINAL_v3</em></td>
 </tr>
 <tr class="even">
-<td>Data Relationships</td>
-<td>Supports complex relationships</td>
-<td>Limited to simple relationships</td>
-</tr>
-<tr class="odd">
-<td>Data Scalability</td>
-<td>Scalable for large datasets</td>
-<td>Limited scalability</td>
-</tr>
-<tr class="even">
-<td>Data Maintenance</td>
-<td>Tools for data quality</td>
-<td>Manual maintenance</td>
-</tr>
-<tr class="odd">
-<td>Data Auditing</td>
-<td>Supports auditing</td>
-<td>No built-in auditing</td>
-</tr>
-<tr class="even">
-<td>Data Performance</td>
-<td>Optimized for performance</td>
-<td>Slower for large datasets</td>
-</tr>
-<tr class="odd">
-<td>Data Standards</td>
-<td>Adheres to industry standards</td>
-<td>No standardization</td>
-</tr>
-<tr class="even">
-<td>Data Backup</td>
-<td>Automated backup options</td>
-<td>Manual backup required</td>
-</tr>
-<tr class="odd">
-<td>Data Recovery</td>
-<td>Automated recovery options</td>
-<td>Manual recovery required</td>
+<td>Audit trail</td>
+<td>Tracks who changed what, and when</td>
+<td>None by default</td>
 </tr>
 </tbody>
 </table>
+<p>A good rule of thumb: <strong>if more than one person depends on the data, or if the data is too big for your laptop to enjoy, it belongs in a database.</strong></p>
 </section>
-<section id="what-is-relational-database-rdbms" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="what-is-relational-database-rdbms"><span class="header-section-number">1.5</span> What is Relational Database (RDBMS)?</h2>
-<p>A relational database is a type of database that organizes data into tables, which consist of rows and columns. Each table represents a specific entity or concept, and the columns represent the attributes or properties of that entity. The rows in the table represent individual records or instances of the entity. It allows for the establishment of relationships between different tables using keys, enabling complex data modeling and retrieval. Figure 1 illustrates a simple relational database with four tables: Drivers License, Member, Rental, Movie_Rental and Movie. Each table has its own set of columns and rows, and the relationships between the tables are established using primary and foreign keys. (we will cover keys later).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://i.ytimg.com/vi/C3icLzBtg8I/hqdefault.jpg" class="img-fluid figure-img"></p>
-<figcaption>Figure 1: Simple Relational Database Example.</figcaption>
-</figure>
+</section>
+<section id="the-most-common-kind-a-relational-database-rdbms" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="the-most-common-kind-a-relational-database-rdbms"><span class="header-section-number">1.5</span> The most common kind: a Relational Database (RDBMS)</h2>
+<p>There are several styles of database, but the one a data analyst encounters most often — by a wide margin — is the <strong>relational database</strong>, managed by a <strong>Relational Database Management System (RDBMS)</strong>.</p>
+<p>A relational database organises information into <strong>tables</strong> — and that one word is the key to everything.</p>
+<p>A table is exactly what it sounds like:</p>
+<ul>
+<li>Each <strong>column</strong> describes a property (e.g.&nbsp;<code>customer_id</code>, <code>first_name</code>, <code>email</code>).</li>
+<li>Each <strong>row</strong> is one record — one customer, one order, one transaction.</li>
+</ul>
+<p>Here is a tiny <code>customers</code> table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>customer_id</th>
+<th>first_name</th>
+<th>last_name</th>
+<th>email</th>
+<th>city</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>Aisha</td>
+<td>Khan</td>
+<td>aisha@example.com</td>
+<td>Melbourne</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>Ben</td>
+<td>Tran</td>
+<td>ben@example.com</td>
+<td>Sydney</td>
+</tr>
+<tr class="odd">
+<td>1003</td>
+<td>Chloe</td>
+<td>Wong</td>
+<td>chloe@example.com</td>
+<td>Melbourne</td>
+</tr>
+</tbody>
+</table>
+<p>So far this could be a spreadsheet. The magic of a <em>relational</em> database is that tables can be <strong>linked</strong> to each other.</p>
+<p>Imagine our coffee chain has three tables:</p>
+<ul>
+<li><code>customers</code> — who the customer is.</li>
+<li><code>orders</code> — what they ordered, when, and at which store.</li>
+<li><code>stores</code> — where each store is located.</li>
+</ul>
+<p>Each table on its own only tells part of the story. But because the <code>orders</code> table contains a <code>customer_id</code> (which links back to <code>customers</code>) and a <code>store_id</code> (which links back to <code>stores</code>), we can answer rich questions like <em>“How many lattes did Melbourne customers buy on Saturdays?”</em> by combining the tables.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">erDiagram
+    CUSTOMERS ||--o{ ORDERS : places
+    STORES ||--o{ ORDERS : "is sold at"
+    CUSTOMERS {
+        int customer_id PK
+        string first_name
+        string last_name
+        string email
+        string city
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        int store_id FK
+        datetime order_time
+        string drink
+        decimal price
+    }
+    STORES {
+        int store_id PK
+        string store_name
+        string city
+        string state
+    }
+</pre>
 </div>
-<p><small><em>source: https://www.youtube.com/watch?v=C3icLzBtg8I</em></small></p>
-</section>
-<section id="what-is-the-relationship-between-sql-vs.-rdbms" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="what-is-the-relationship-between-sql-vs.-rdbms"><span class="header-section-number">1.6</span> What is the relationship between SQL vs.&nbsp;RDBMS?</h2>
-<p>SQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a RDBMS. SQL allows users to create, read, update, and delete data in a database. A RDBMS is the software that implements the database and provides the interface for users to interact with it using SQL.</p>
-</section>
-<section id="why-sql-is-important-for-a-data-analyst" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="why-sql-is-important-for-a-data-analyst"><span class="header-section-number">1.7</span> Why SQL is important for a data analyst?</h2>
-<p>SQL is important because it provides a standardized way to interact with relational databases. It allows users to perform complex queries, retrieve data, and manipulate data in a consistent manner. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS). Learning SQL is essential for anyone working with databases, as it enables them to effectively manage and analyze data. Additionally, SQL skills are highly sought after in the job market, making it a valuable asset for data analysts.</p>
-</section>
-<section id="structured-query-language-sql" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Structured Query Language (SQL)</h1>
-<section id="what-is-sql" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-sql"><span class="header-section-number">2.1</span> What is SQL?</h2>
-<p>SQL (Structured Query Language) is a standard programming language used to manage and manipulate relational databases. It is used to perform various operations on the data stored in a database, such as querying, updating, inserting, and deleting data. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS), including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server. The standard language for different RDBMS may have slight variations, but the core SQL syntax and functionality remain consistent across platforms. In this course, we will focus on using Oracle as our RDBMS. Oracle is chosen as it is widely used in the industry and provides a robust platform for learning SQL and database management concepts.</p>
-<p>SQL is a declarative language, meaning that users specify what they want to do with the data, rather than how to do it. This allows for more efficient and optimized execution of queries by the database engine. SQL is also a powerful language that supports complex queries, joins, aggregations, and subqueries, making it suitable for a wide range of data analysis tasks.</p>
-</section>
-<section id="basic-sql-commands" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="basic-sql-commands"><span class="header-section-number">2.2</span> Basic SQL Commands</h2>
-<p>There are several types of SQL commands, each serving a different purpose. The main categories of SQL commands are:</p>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The links between tables are made by special columns called <strong>keys</strong>:</p>
 <ul>
-<li><strong>Data Manipulation Language (DML)</strong>: Used to manipulate data in the database.<br>
-</li>
-<li><strong>Data Definition Language (DDL)</strong>: Used to define and manage the structure of the database.<br>
-</li>
-<li><strong>Data Query Language (DQL)</strong>: Used to query and retrieve data from the database.</li>
+<li>A <strong>primary key</strong> is a column that uniquely identifies each row in a table — like <code>customer_id</code> in <code>customers</code>. No two customers can share one.</li>
+<li>A <strong>foreign key</strong> is a column in one table that points to the primary key of another. In <code>orders</code>, <code>customer_id</code> is a foreign key — it tells us <em>which</em> customer placed the order.</li>
 </ul>
+<p>This simple idea — <em>unique IDs that connect tables</em> — is the backbone of almost every business system you will ever work with. Once it clicks, a huge amount of the messy real world becomes tidy.</p>
 </section>
-<section id="data-manipulation-language-dml" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="data-manipulation-language-dml"><span class="header-section-number">2.3</span> Data Manipulation Language (DML)</h2>
-<p>DML commands are used to manipulate data in the database. They include commands for inserting, updating, deleting, and retrieving data.</p>
+<section id="where-does-sql-come-into-all-this" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="where-does-sql-come-into-all-this"><span class="header-section-number">1.6</span> Where does SQL come into all this?</h2>
+<p>You now understand the <em>what</em> (a database) and the <em>who</em> (the DBMS). The missing piece is the <em>how</em>: how do you actually ask a database a question?</p>
+<p>The answer is <strong>SQL</strong> — short for <strong>Structured Query Language</strong>, and usually pronounced “sequel.”</p>
+<p>SQL is the language we use to talk to a relational database. You write a sentence in SQL, the DBMS understands what you want, and it returns the answer. For example, to answer your manager’s coffee question, you might write:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> store_name, <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> num_lattes</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> orders</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">JOIN</span> stores <span class="kw">ON</span> orders.store_id <span class="op">=</span> stores.store_id</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> drink <span class="op">=</span> <span class="st">'Large Oat Latte'</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> stores.city <span class="op">=</span> <span class="st">'Melbourne'</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> order_time <span class="op">&gt;=</span> <span class="st">'2026-03-01'</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> store_name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Do not worry if that looks like wizardry right now — by the end of this section, it will read almost like English. The point for now is: that one short query can sift through millions of rows in seconds. Try doing that in Excel.</p>
+<section id="why-every-data-analyst-learns-sql" class="level3" data-number="1.6.1">
+<h3 data-number="1.6.1" class="anchored" data-anchor-id="why-every-data-analyst-learns-sql"><span class="header-section-number">1.6.1</span> Why every data analyst learns SQL</h3>
+<p>If there is one technical skill that appears in nearly every data-analyst job ad on the planet, it is SQL. Here is why it matters so much:</p>
 <ul>
-<li><strong>INSERT</strong>: Used to add new rows of data to a table.</li>
-<li><strong>UPDATE</strong>: Used to modify existing data in a table.</li>
-<li><strong>DELETE</strong>: Used to remove rows of data from a table.</li>
+<li><strong>It is the universal language of data.</strong> Whether the data lives in PostgreSQL, MySQL, SQL Server, Oracle, Snowflake, or BigQuery, the core syntax is almost identical. Learn it once, use it anywhere.</li>
+<li><strong>It is where the data lives.</strong> Most companies store their important data in relational databases. If you cannot query the database, you cannot do the analysis.</li>
+<li><strong>It is fast.</strong> A well-written SQL query can summarise hundreds of millions of rows in seconds — work that would crash any spreadsheet.</li>
+<li><strong>It is the entry point to everything else.</strong> Power BI dashboards, R analyses, Python models — they all begin with pulling data, and pulling data usually means SQL.</li>
 </ul>
-<section id="data-definition-language-ddl" class="level3" data-number="2.3.1">
-<h3 data-number="2.3.1" class="anchored" data-anchor-id="data-definition-language-ddl"><span class="header-section-number">2.3.1</span> Data Definition Language (DDL)</h3>
-<p>DDL commands are used to define and manage the structure of the database. They include commands for creating, altering, and dropping database objects such as tables, indexes, and views.</p>
+<p>The good news? SQL is also one of the <em>easiest</em> programming languages to start with. It is <strong>declarative</strong>, which means you describe <em>what</em> you want, not <em>how</em> to get it. You say “give me all customers in Melbourne” and the database figures out the most efficient way to find them.</p>
+</section>
+</section>
+<section id="a-first-look-at-sql-commands" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="a-first-look-at-sql-commands"><span class="header-section-number">1.7</span> A first look at SQL commands</h2>
+<p>SQL has a small vocabulary, but its words fall into three useful families. You do not need to memorise these now — just notice the shape of the language.</p>
+<p><strong>Data Definition Language (DDL)</strong> — for <em>defining the structure</em> of the database itself.</p>
 <ul>
-<li><strong>CREATE</strong>: Used to create a new database object (e.g., table, index).</li>
-<li><strong>ALTER</strong>: Used to modify an existing database object (e.g., add or drop columns).</li>
-<li><strong>DROP</strong>: Used to delete an existing database object (e.g., table, index).</li>
-<li><strong>TRUNCATE</strong>: Used to delete all rows from a table without removing the table itself.</li>
-<li><strong>RENAME</strong>: Used to rename an existing database object (e.g., table, column).</li>
-<li><strong>COMMENT</strong>: Used to add comments to database objects (e.g., tables, columns).</li>
-<li><strong>CREATE INDEX</strong>: Used to create an index on a table to improve query performance.</li>
-<li><strong>DROP INDEX</strong>: Used to delete an existing index from a table.</li>
-<li><strong>CREATE VIEW</strong>: Used to create a virtual table based on the result of a query.</li>
-<li><strong>DROP VIEW</strong>: Used to delete an existing view from the database.</li>
-<li><strong>CREATE TABLE</strong>: Used to create a new table in the database.</li>
-<li><strong>ALTER TABLE</strong>: Used to modify the structure of an existing table (e.g., add or drop columns).</li>
-<li><strong>DROP TABLE</strong>: Used to delete an existing table from the database.</li>
+<li><code>CREATE</code> — make a new table, view, or index.</li>
+<li><code>ALTER</code> — change an existing table’s structure.</li>
+<li><code>DROP</code> — delete a table or other object permanently.</li>
+<li><code>TRUNCATE</code> — empty a table without deleting the table itself.</li>
 </ul>
+<p><strong>Data Manipulation Language (DML)</strong> — for <em>changing the data</em> inside the tables.</p>
+<ul>
+<li><code>INSERT</code> — add new rows.</li>
+<li><code>UPDATE</code> — change existing rows.</li>
+<li><code>DELETE</code> — remove rows.</li>
+</ul>
+<p><strong>Data Query Language (DQL)</strong> — for <em>asking questions</em> of the data. As an analyst, this is where you will spend almost all of your time.</p>
+<ul>
+<li><code>SELECT</code> — pick the columns you want to see.</li>
+<li><code>WHERE</code> — filter to just the rows you care about.</li>
+<li><code>ORDER BY</code> — sort the result.</li>
+<li><code>GROUP BY</code> and <code>HAVING</code> — summarise the data into groups.</li>
+<li><code>JOIN</code> — combine information across multiple tables.</li>
+<li><code>DISTINCT</code> — get rid of duplicates.</li>
+<li><code>LIMIT</code> — return only the first few rows.</li>
+</ul>
+<p>Most data analysts write <code>SELECT</code> queries every single day, and rarely touch <code>CREATE</code> or <code>DROP</code>. Building tables is more often the job of a database administrator or data engineer. Still, it is useful to recognise these commands when you see them — and we will cover the essentials in the next chapter.</p>
 </section>
-</section>
-<section id="data-query-language-dql" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="data-query-language-dql"><span class="header-section-number">2.4</span> Data Query Language (DQL)</h2>
-<p>DQL commands are used to query and retrieve data from the database. The main DQL command is: - <strong>SELECT</strong>: Used to retrieve data from one or more tables in the database. - <strong>WHERE</strong>: Used to filter the results of a query based on specified conditions. - <strong>ORDER BY</strong>: Used to sort the results of a query in ascending or descending order - <strong>GROUP BY</strong>: Used to group the results of a query based on specified columns. - <strong>HAVING</strong>: Used to filter the results of a grouped query based on specified conditions - <strong>JOIN</strong>: Used to combine rows from two or more tables based on a related column between them. - <strong>UNION</strong>: Used to combine the results of two or more SELECT queries into a single result set. - <strong>DISTINCT</strong>: Used to retrieve unique values from a column, eliminating duplicate values. - <strong>LIMIT</strong>: Used to limit the number of rows returned by a query.</p>
-<p>All these keywords will be explained in the next sections. 🔮</p>
-</section>
-<section id="connecting-to-oracle-database" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="connecting-to-oracle-database"><span class="header-section-number">2.5</span> Connecting to Oracle Database</h2>
-<p>For easy access and start, <a href="https://www.freesql.com/">freesql</a> is a free online SQL editor by Oracle that allows you to practice SQL queries without the need to install any software. You can sign up for a free account and start writing SQL queries right away.</p>
-<section id="how-to-sign-up" class="level3" data-number="2.5.1">
-<h3 data-number="2.5.1" class="anchored" data-anchor-id="how-to-sign-up"><span class="header-section-number">2.5.1</span> How to sign up</h3>
+<section id="getting-your-hands-dirty-practising-sql-for-free" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="getting-your-hands-dirty-practising-sql-for-free"><span class="header-section-number">1.8</span> Getting your hands dirty: practising SQL for free</h2>
+<p>Theory only takes you so far. The fastest way to get comfortable with SQL is to start writing it. Best of all, you do not need to install anything heavy on your laptop.</p>
+<p>In this course, we will use <a href="https://www.freesql.com/"><strong>FreeSQL</strong></a> — a free, browser-based SQL editor. You sign up once, log in, and can start writing real queries against a real database immediately.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try it later: open-source alternatives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you want to keep learning beyond this course, two excellent free, open-source databases to install on your own machine are:</p>
+<ul>
+<li><strong>SQLite</strong> — the lightest, simplest database in the world. A whole database lives in a single file. Perfect for personal projects.</li>
+<li><strong>PostgreSQL</strong> — the same industrial-strength database used by companies like Apple, Instagram, and Reddit. Free forever.</li>
+</ul>
+<p>The SQL skills you build here will work, almost unchanged, on either.</p>
+</div>
+</div>
+<section id="setting-up-freesql-5-minutes" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="setting-up-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up FreeSQL (5 minutes)</h3>
 <ol type="1">
 <li>Go to <a href="https://www.freesql.com/">freesql.com</a>.</li>
-<li>Click on the “Sign Up” button in the top right corner of the page.</li>
-<li>Fill in the required information, including your name, email address, and password.</li>
-<li>Click on the “Create Account” button to complete the sign-up process.</li>
-<li>Once you have created your account, you can log in to the platform and start using the SQL editor.</li>
+<li>Click <strong>Sign Up</strong> in the top-right corner.</li>
+<li>Enter your name, email, and a password, then click <strong>Create Account</strong>.</li>
+<li>Log in. You will land in an editor with a sample database ready to query.</li>
+<li>Type a query, click <strong>Run</strong> (or press <code>Ctrl + Enter</code>), and watch the results appear.</li>
 </ol>
+<p>That is it. You now have a real SQL playground.</p>
 </section>
-<section id="how-to-use-freesql" class="level3" data-number="2.5.2">
-<h3 data-number="2.5.2" class="anchored" data-anchor-id="how-to-use-freesql"><span class="header-section-number">2.5.2</span> How to use FreeSQL</h3>
+</section>
+<section id="quick-check-are-you-ready-for-the-next-chapter" class="level2" data-number="1.9">
+<h2 data-number="1.9" class="anchored" data-anchor-id="quick-check-are-you-ready-for-the-next-chapter"><span class="header-section-number">1.9</span> Quick check: are you ready for the next chapter?</h2>
+<p>Before we move on, take a moment to make sure these ideas feel solid. If any of them are still fuzzy, give the chapter another quick skim — that is completely normal.</p>
 <ol type="1">
-<li>After logging in, you will be taken to the SQL editor page.</li>
-<li>You can start writing SQL queries in the editor window.</li>
-<li>To execute a query, click on the “Run” button or press “Ctrl + Enter” on your keyboard.</li>
-<li>The results of the query will be displayed in the results window</li>
-<li>You can save your queries for future use by clicking on the “Save” button.</li>
+<li>In your own words, why might a coffee chain prefer a database over a giant Excel file?</li>
+<li>What is the difference between a <em>database</em> and a <em>DBMS</em>?</li>
+<li>What makes a database “relational”? What does a primary key do, and what does a foreign key do?</li>
+<li>Why is SQL a useful skill for a data analyst, even one who works mostly in Power BI or R?</li>
+<li>Name one DDL command, one DML command, and one DQL command.</li>
 </ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>In a nutshell
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>database</strong> is a structured store of information. A <strong>DBMS</strong> is the software that manages it. The most common kind, the <strong>relational database</strong>, organises data into <strong>tables</strong> linked by <strong>keys</strong>. To talk to it, we use <strong>SQL</strong> — the language at the heart of nearly every data analyst’s job.</p>
+</div>
+</div>
+</section>
+<section id="whats-next" class="level2" data-number="1.10">
+<h2 data-number="1.10" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">1.10</span> What’s next</h2>
+<p>In the next chapter, we will roll up our sleeves and write our first real SQL queries — pulling data, filtering it, sorting it, and starting to answer questions like the one your manager threw at you on day one. By the end of the section, that coffee question will not feel scary at all.</p>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->

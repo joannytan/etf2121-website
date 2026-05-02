@@ -2,16 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Dr.&nbsp;Joan Tan">
-<meta name="dcterms.date" content="2025-12-06">
+<meta name="dcterms.date" content="2026-05-02">
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
 <title>Data Analysis in Business (First edition)</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -36,15 +39,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="./intro.html" rel="next">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0cda25dcbb8fe09c7138904322940710.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8b06063d70b38fe22b0e119cf1863158.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,6 +76,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -179,12 +182,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Communication and Story Telling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -192,14 +201,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./desc_stat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descri</span></span></a>
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
   </div>
 </li>
       </ul>
@@ -207,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Communication and Story Telling</span></a>
+ <span class="menu-text">Statistical Modelling with R</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -215,15 +230,47 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Data Visualization</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -239,7 +286,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
+  <ul class="collapse">
+  <li><a href="#what-this-book-is-about" id="toc-what-this-book-is-about" class="nav-link" data-scroll-target="#what-this-book-is-about">What this book is about</a></li>
+  <li><a href="#how-to-read-this-book" id="toc-how-to-read-this-book" class="nav-link" data-scroll-target="#how-to-read-this-book">How to read this book</a></li>
+  <li><a href="#a-note-from-the-author" id="toc-a-note-from-the-author" class="nav-link" data-scroll-target="#a-note-from-the-author">A note from the author</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -270,7 +322,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 6, 2025</p>
+      <p class="date">May 2, 2026</p>
     </div>
   </div>
   
@@ -284,14 +336,45 @@ ul.task-list li input[type="checkbox"] {
 
 
 <section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1><p><img src="images/cover.png" title="Data Analysis in Business (First edition)" class="quarto-cover-image nolightbox img-fluid"></p>
-<p>This is a the website for ETF2121/5912 Handbook (1e). The handbook is a comprehensive guide to the ETF2121/5912 course, covering the course content and resources. The handbook is designed to be a valuable resource for students, providing them with the information they need to succeed in the course. In this book, you will find a practicum of skills for data analysis, including data manipulation, data visualization, and data modeling. The book is designed to be a practical guide, with hands-on exercises and examples to help you learn the skills you need to succeed in the course. The book is also designed to be a reference guide, with clear explanations and examples of the key concepts and techniques used in data analysis. The book is organized into chapters, each covering a specific topic in data analysis. Each chapter includes a summary of the key concepts, hands-on exercises, and examples to help you learn the material. The book also includes a glossary of key terms and concepts, as well as a list of additional resources for further reading. The book is designed to be used in conjunction with the ETF2121/5912 course, but it can also be used as a standalone resource for anyone interested in learning about data analysis. The book is suitable for students, professionals, and anyone interested in learning about data analysis and its applications. This book is solely authored by Dr.&nbsp;Joan Tan and is affiliated with Monash University. The book is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License, which allows you to share and adapt the material for non-commercial purposes, as long as you give appropriate credit to the original authors and license your contributions under the same terms. All the mistakes are mine, and I welcome any feedback or suggestions for improvement. You can contact me at <a href="mailto:joan.tan@monash.edu">Joan Tan</a>.</p>
+<h1 class="unnumbered">Welcome</h1><p><img src="images/cover.svg" title="Data Analysis in Business (First edition)" class="quarto-cover-image nolightbox img-fluid"></p>
+<p>If you have ever stared at a spreadsheet and wondered, <em>“What is this data actually telling me?”</em> — then this book is for you.</p>
+<p>Welcome to the <strong>ETF2121 / ETF5921 Handbook (1st Edition)</strong>: a practical, hands-on guide to the data analysis skills that matter most in the real world. Whether you are a student stepping into data for the very first time, a working professional looking to sharpen your toolkit, or simply a curious mind who wants to make sense of numbers, you are in the right place.</p>
+<section id="what-this-book-is-about" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-book-is-about">What this book is about</h2>
+<p>Data is everywhere — in the businesses we run, the decisions we make, and the stories we tell. But raw data, on its own, says very little. The real magic happens when we learn how to <em>ask the right questions</em>, <em>pull out the right information</em>, and <em>communicate what we find</em> in a way that helps others make better decisions.</p>
+<p>This handbook is built around that journey. Together, we will:</p>
+<ul>
+<li><strong>Query and shape data</strong> using SQL — the language of databases.</li>
+<li><strong>Explore and visualise</strong> patterns using R, a free and powerful tool used by analysts and researchers worldwide.</li>
+<li><strong>Build dashboards</strong> in Power BI that turn raw numbers into clear, compelling stories.</li>
+<li><strong>Apply modelling techniques</strong> to real-world problems — from forecasting demand to understanding customer behaviour.</li>
+</ul>
+<p>Every chapter is written with one promise in mind: <strong>no prior experience required</strong>. If you can read, click, and copy a line of code, you can do this.</p>
+</section>
+<section id="how-to-read-this-book" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-read-this-book">How to read this book</h2>
+<p>This is not a textbook you read once and shelve. It is designed as a <em>companion</em>: short enough to follow during a busy semester, deep enough to return to long after the course is over. Each chapter offers:</p>
+<ul>
+<li>A clear walkthrough of the key ideas, in plain language.</li>
+<li>Worked examples using real datasets — not toy problems.</li>
+<li>Hands-on exercises that mirror the kinds of questions you will face at work.</li>
+<li>A summary and further reading for those who want to go deeper.</li>
+</ul>
+<p>Every tool used in this book is <strong>free and open-source</strong>. You will never need to buy a licence to follow along. All you need is a laptop, an internet connection, and a willingness to experiment.</p>
+</section>
+<section id="a-note-from-the-author" class="level2">
+<h2 class="anchored" data-anchor-id="a-note-from-the-author">A note from the author</h2>
+<p>I wrote this book for the student I once was — curious, a little overwhelmed, and unsure where to start. My hope is that by the final page, you will not only have the technical skills to analyse data confidently, but also the mindset to keep learning long after this course ends.</p>
+<p>Mistakes are part of the journey, both yours and mine. If you spot one in these pages, or have an idea for how to make the book better, I would love to hear from you. Please reach out at <a href="mailto:joan.tan@monash.edu">joan.tan@monash.edu</a>.</p>
+<p>Thank you for reading, and welcome aboard.</p>
 <p>Yours sincerely,</p>
-<p>Dr.&nbsp;Joan Tan</p>
-<p>Monash University</p>
+<p><strong>Dr.&nbsp;Joan Tan</strong> Senior Lecturer, Monash University</p>
+<hr>
+<p><em>This book is solely authored by Dr.&nbsp;Joan Tan and is affiliated with Monash University. It is licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>, which allows you to share and adapt the material for non-commercial purposes, provided you give appropriate credit and license your contributions under the same terms.</em></p>
 <p>© 2026 Joan Tan. All rights reserved.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

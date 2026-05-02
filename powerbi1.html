@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
+
+<title>6&nbsp; Power BI: Getting Started – Data Analysis in Business (First edition)</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./powerbi2.html" rel="next">
+<link href="./powerbi.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0cda25dcbb8fe09c7138904322940710.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8b06063d70b38fe22b0e119cf1863158.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="custom.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Communication and Story Telling</a></li><li class="breadcrumb-item"><a href="./powerbi1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Data Analysis in Business (First edition)</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Course Overview</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./team.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Team</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./schedule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Course Schedule</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Database Management System</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dbms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Communication and Story Telling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Statistical Modelling with R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">
+ <span class="menu-text">Conclusion</span></span>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-is-power-bi" id="toc-what-is-power-bi" class="nav-link active" data-scroll-target="#what-is-power-bi"><span class="header-section-number">6.1</span> What is Power BI?</a>
+  <ul class="collapse">
+  <li><a href="#is-it-really-free" id="toc-is-it-really-free" class="nav-link" data-scroll-target="#is-it-really-free"><span class="header-section-number">6.1.1</span> Is it really free?</a></li>
+  </ul></li>
+  <li><a href="#step-1-installing-power-bi-desktop" id="toc-step-1-installing-power-bi-desktop" class="nav-link" data-scroll-target="#step-1-installing-power-bi-desktop"><span class="header-section-number">6.2</span> Step 1: Installing Power BI Desktop</a>
+  <ul class="collapse">
+  <li><a href="#download-and-install-windows" id="toc-download-and-install-windows" class="nav-link" data-scroll-target="#download-and-install-windows"><span class="header-section-number">6.2.1</span> Download and Install (Windows)</a></li>
+  </ul></li>
+  <li><a href="#step-2-the-power-bi-interface" id="toc-step-2-the-power-bi-interface" class="nav-link" data-scroll-target="#step-2-the-power-bi-interface"><span class="header-section-number">6.3</span> Step 2: The Power BI Interface</a></li>
+  <li><a href="#step-3-get-the-freshmart-data" id="toc-step-3-get-the-freshmart-data" class="nav-link" data-scroll-target="#step-3-get-the-freshmart-data"><span class="header-section-number">6.4</span> Step 3: Get the FreshMart Data</a></li>
+  <li><a href="#step-4-load-the-data-into-power-bi" id="toc-step-4-load-the-data-into-power-bi" class="nav-link" data-scroll-target="#step-4-load-the-data-into-power-bi"><span class="header-section-number">6.5</span> Step 4: Load the Data into Power BI</a></li>
+  <li><a href="#step-5-clean-the-data-with-power-query" id="toc-step-5-clean-the-data-with-power-query" class="nav-link" data-scroll-target="#step-5-clean-the-data-with-power-query"><span class="header-section-number">6.6</span> Step 5: Clean the Data with Power Query</a></li>
+  <li><a href="#step-6-create-relationships-between-tables" id="toc-step-6-create-relationships-between-tables" class="nav-link" data-scroll-target="#step-6-create-relationships-between-tables"><span class="header-section-number">6.7</span> Step 6: Create Relationships Between Tables</a></li>
+  <li><a href="#step-7-your-first-visual-a-table" id="toc-step-7-your-first-visual-a-table" class="nav-link" data-scroll-target="#step-7-your-first-visual-a-table"><span class="header-section-number">6.8</span> Step 7: Your First Visual — A Table</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-table-visual" id="toc-creating-a-table-visual" class="nav-link" data-scroll-target="#creating-a-table-visual"><span class="header-section-number">6.8.1</span> Creating a Table Visual</a></li>
+  </ul></li>
+  <li><a href="#step-8-your-second-visual-kpi-cards" id="toc-step-8-your-second-visual-kpi-cards" class="nav-link" data-scroll-target="#step-8-your-second-visual-kpi-cards"><span class="header-section-number">6.9</span> Step 8: Your Second Visual — KPI Cards</a></li>
+  <li><a href="#step-9-your-third-visual-a-column-chart" id="toc-step-9-your-third-visual-a-column-chart" class="nav-link" data-scroll-target="#step-9-your-third-visual-a-column-chart"><span class="header-section-number">6.10</span> Step 9: Your Third Visual — A Column Chart</a></li>
+  <li><a href="#step-10-basic-formatting" id="toc-step-10-basic-formatting" class="nav-link" data-scroll-target="#step-10-basic-formatting"><span class="header-section-number">6.11</span> Step 10: Basic Formatting</a></li>
+  <li><a href="#step-11-saving-your-work" id="toc-step-11-saving-your-work" class="nav-link" data-scroll-target="#step-11-saving-your-work"><span class="header-section-number">6.12</span> Step 11: Saving Your Work</a></li>
+  <li><a href="#what-we-have-built" id="toc-what-we-have-built" class="nav-link" data-scroll-target="#what-we-have-built"><span class="header-section-number">6.13</span> What We Have Built</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">6.14</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Communication and Story Telling</a></li><li class="breadcrumb-item"><a href="./powerbi1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Power BI is Microsoft’s free business intelligence tool, and it is one of the most in-demand skills on any data analyst job listing in Australia. By the end of this chapter, you will have Power BI installed, data loaded, tables properly connected, and your first three visuals on the canvas — all built from the FreshMart dataset you already know from the SQL chapters.</p>
+<p>This chapter deliberately goes slowly. Every click is described. If you have never opened Power BI before, that is completely fine — that is exactly who this chapter is written for.</p>
+<hr>
+<section id="what-is-power-bi" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="what-is-power-bi"><span class="header-section-number">6.1</span> What is Power BI?</h2>
+<p>Power BI Desktop is a free application from Microsoft that lets you:</p>
+<ul>
+<li><strong>Connect</strong> to data sources (CSV files, Excel, databases, cloud services)</li>
+<li><strong>Transform</strong> messy data into analysis-ready shapes</li>
+<li><strong>Model</strong> relationships between multiple tables</li>
+<li><strong>Visualise</strong> your data with interactive charts, maps, and tables</li>
+<li><strong>Build dashboards</strong> that update automatically as your data changes</li>
+</ul>
+<p>The end product is a <code>.pbix</code> file — a Power BI report file — that can be published online and shared with colleagues, embedded in a website, or presented to stakeholders.</p>
+<section id="is-it-really-free" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="is-it-really-free"><span class="header-section-number">6.1.1</span> Is it really free?</h3>
+<p>Power BI <strong>Desktop</strong> — the application you install on your computer — is completely free. You can download it, build reports, and save <code>.pbix</code> files without spending a cent. A paid subscription (Power BI Pro or Premium) is only required if you want to publish reports to the cloud and share them with a team. For this course, the free Desktop version is everything you need.</p>
+<hr>
+</section>
+</section>
+<section id="step-1-installing-power-bi-desktop" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="step-1-installing-power-bi-desktop"><span class="header-section-number">6.2</span> Step 1: Installing Power BI Desktop</h2>
+<p>Power BI Desktop runs on <strong>Windows</strong> only. If you are on a Mac, see the note below.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Mac Users
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Power BI Desktop does not have a native macOS version. Mac users have two options:</p>
+<ol type="1">
+<li><strong>Microsoft Remote Desktop</strong> — Access a Windows virtual machine through your university. Check with the IT department for access details.</li>
+<li><strong>Windows via Parallels or VMWare</strong> — If you have a virtualisation tool installed, you can run Windows inside macOS and install Power BI Desktop there.</li>
+</ol>
+<p>The university computer labs all have Power BI Desktop installed. If you are stuck, head to a lab for this chapter.</p>
+</div>
+</div>
+<section id="download-and-install-windows" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="download-and-install-windows"><span class="header-section-number">6.2.1</span> Download and Install (Windows)</h3>
+<p><strong>Step 1.</strong> Open your web browser and go to:</p>
+<blockquote class="blockquote">
+<p><a href="https://powerbi.microsoft.com/desktop">https://powerbi.microsoft.com/desktop</a></p>
+</blockquote>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Microsoft Power BI website, with a large blue “Download free” button in the centre of the page.</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> Click <strong>Download free</strong>. You will be taken to the Microsoft Store.</p>
+<p><strong>Step 3.</strong> In the Microsoft Store, click <strong>Get</strong> (or <strong>Install</strong>). Windows will download and install Power BI Desktop automatically. This takes about 2–5 minutes depending on your connection.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Microsoft Store page showing “Power BI Desktop” with a blue “Get” button.</p>
+</div>
+</div>
+<p><strong>Step 4.</strong> Once installed, search for <strong>Power BI Desktop</strong> in your Start menu and open it.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Alternative: Download the installer directly
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the Microsoft Store is not available on your machine, you can download the <code>.exe</code> installer directly from: &gt; <a href="https://www.microsoft.com/en-us/download/details.aspx?id=58494">https://www.microsoft.com/en-us/download/details.aspx?id=58494</a></p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="step-2-the-power-bi-interface" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="step-2-the-power-bi-interface"><span class="header-section-number">6.3</span> Step 2: The Power BI Interface</h2>
+<p>When you first open Power BI Desktop, you will see a splash screen and then the main interface. Close the welcome dialog that appears.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Power BI Desktop main window. It has a dark ribbon toolbar at the top, a blank white canvas in the centre, and three icons on the left sidebar.</p>
+</div>
+</div>
+<p>The interface has five main areas. Take a moment to find each one:</p>
+<p><strong>① The Ribbon (top)</strong> — Like the ribbon in Microsoft Word. The tabs are: Home, Insert, Modeling, View, Optimize, Help. You will use <strong>Home</strong> most often.</p>
+<p><strong>② The Left Sidebar</strong> — Three icons that switch between:</p>
+<ul>
+<li>📊 <strong>Report view</strong> (the default) — where you build visuals</li>
+<li>🗃 <strong>Data view</strong> — where you inspect your raw table data</li>
+<li>🔀 <strong>Model view</strong> — where you define relationships between tables</li>
+</ul>
+<p><strong>③ The Canvas (centre)</strong> — The blank page where you place your charts and visuals. Think of it as a slide in PowerPoint.</p>
+<p><strong>④ Visualizations Pane (right side)</strong> — A gallery of chart types to choose from.</p>
+<p><strong>⑤ Data/Fields Pane (right side, below Visualizations)</strong> — Once data is loaded, your table columns appear here. You drag columns from here onto the canvas to create visuals.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The five areas labelled above visible on screen. The canvas is blank. The Visualizations pane shows small icons for chart types (bar chart, line chart, map, etc.). The Data pane shows “No data loaded yet.”</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-3-get-the-freshmart-data" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="step-3-get-the-freshmart-data"><span class="header-section-number">6.4</span> Step 3: Get the FreshMart Data</h2>
+<p>You will be working with the same FreshMart dataset from the SQL chapters, now packaged as four CSV files. Download each file and save them to a folder you can find easily — a folder called <code>FreshMart</code> on your Desktop is perfect.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>File</th>
+<th>What it contains</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>customers.csv</code></td>
+<td>7 FreshMart loyalty members</td>
+</tr>
+<tr class="even">
+<td><code>products.csv</code></td>
+<td>10 products sold at FreshMart</td>
+</tr>
+<tr class="odd">
+<td><code>stores.csv</code></td>
+<td>6 FreshMart store locations</td>
+</tr>
+<tr class="even">
+<td><code>transactions.csv</code></td>
+<td>60 purchase transactions</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Download the files
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The CSV files are available in the <code>data/</code> folder of the course website. Right-click each link → Save As → save to your <code>FreshMart</code> folder on the Desktop.</p>
+<ul>
+<li><a href="data/customers.csv">customers.csv</a></li>
+<li><a href="data/products.csv">products.csv</a></li>
+<li><a href="data/stores.csv">stores.csv</a></li>
+<li><a href="data/transactions.csv">transactions.csv</a></li>
+</ul>
+</div>
+</div>
+<p>A quick preview of the data so you know what you are working with:</p>
+<p><strong>Customers</strong> — 7 loyalty members across VIC, NSW, and QLD:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>CustomerID</th>
+<th>FirstName</th>
+<th>LastName</th>
+<th>State</th>
+<th>MembershipTier</th>
+<th>TotalSpend</th>
+<th>Churned</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Priya</td>
+<td>Sharma</td>
+<td>VIC</td>
+<td>Gold</td>
+<td>$8,420.50</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Marcus</td>
+<td>Lee</td>
+<td>VIC</td>
+<td>Gold</td>
+<td>$12,300.00</td>
+<td>No</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Nina</td>
+<td>Patel</td>
+<td>VIC</td>
+<td>Bronze</td>
+<td>$0.00</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Transactions</strong> — 60 rows recording individual product purchases across the year 2024:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>TransactionID</th>
+<th>CustomerID</th>
+<th>ProductID</th>
+<th>StoreID</th>
+<th>TransactionDate</th>
+<th>Quantity</th>
+<th>TotalAmount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1001</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2024-01-05</td>
+<td>3</td>
+<td>$10.47</td>
+</tr>
+<tr class="even">
+<td>1002</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>2024-01-05</td>
+<td>1</td>
+<td>$6.50</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>Transactions</code> table is the fact table — it records what happened. The <code>Customers</code>, <code>Products</code>, and <code>Stores</code> tables are dimension tables — they add context (names, categories, locations) to the numbers. This star-schema structure is exactly the pattern Power BI is built for.</p>
+<hr>
+</section>
+<section id="step-4-load-the-data-into-power-bi" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="step-4-load-the-data-into-power-bi"><span class="header-section-number">6.5</span> Step 4: Load the Data into Power BI</h2>
+<p><strong>Step 1.</strong> In Power BI, click <strong>Home</strong> in the ribbon. Find the <strong>Get data</strong> button (it has a small cylinder icon).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Home tab is selected. “Get data” appears in the top-left area of the ribbon, with a small dropdown arrow beside it.</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> Click the dropdown arrow next to <strong>Get data</strong> and choose <strong>Text/CSV</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A dropdown menu with options including “Excel workbook”, “Text/CSV”, “Web”, “More…”. “Text/CSV” is highlighted.</p>
+</div>
+</div>
+<p><strong>Step 3.</strong> A file browser opens. Navigate to your <code>FreshMart</code> folder on the Desktop. Select <strong><code>customers.csv</code></strong> and click <strong>Open</strong>.</p>
+<p><strong>Step 4.</strong> Power BI reads the file and shows you a preview. Check that the columns look correct — you should see <code>CustomerID</code>, <code>FirstName</code>, <code>LastName</code>, and the rest. Then click <strong>Load</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A preview dialog showing the first few rows of the customers data. Column headers are correctly detected. A “Load” button and a “Transform Data” button appear at the bottom.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Load vs Transform Data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Load</strong> imports the data as-is. <strong>Transform Data</strong> opens Power Query Editor, where you can clean and reshape the data before importing. For now, click Load — we will visit Power Query in the next step.</p>
+</div>
+</div>
+<p><strong>Step 5.</strong> Repeat for the remaining three files. Each time: <strong>Get data → Text/CSV → select file → Load</strong>.</p>
+<ul>
+<li>Load <code>products.csv</code></li>
+<li>Load <code>stores.csv</code></li>
+<li>Load <code>transactions.csv</code></li>
+</ul>
+<p>After loading all four files, check the <strong>Data pane</strong> on the right side of the screen. You should now see four tables listed: <code>customers</code>, <code>products</code>, <code>stores</code>, and <code>transactions</code>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Data pane on the right shows four table names. Each table has an expand arrow (▶) next to it. Clicking the arrow reveals the column names inside.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Loaded all four?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Click the <strong>Data view</strong> icon on the left sidebar (the table icon). Select each table and scroll through the rows to confirm the data loaded correctly. The <code>transactions</code> table should have 60 rows.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-5-clean-the-data-with-power-query" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="step-5-clean-the-data-with-power-query"><span class="header-section-number">6.6</span> Step 5: Clean the Data with Power Query</h2>
+<p>Power Query is Power BI’s built-in data transformation tool. It lets you rename columns, change data types, remove blank rows, split text, and much more — all without touching the original CSV files.</p>
+<p>We need to fix one thing in the <code>transactions</code> table: the <code>TransactionDate</code> column was loaded as text. We need to convert it to a proper date type.</p>
+<p><strong>Step 1.</strong> In the Home ribbon, click <strong>Transform data</strong>. Power Query Editor opens in a new window.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A new window opens — Power Query Editor. On the left is a list of your four queries (one per table). In the centre is a data grid. On the right is the “Query Settings” panel showing “Applied Steps.”</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> In the left pane, click <strong>transactions</strong> to select it.</p>
+<p><strong>Step 3.</strong> Find the <code>TransactionDate</code> column in the grid. Look at the icon to the left of the column header — it probably shows <strong>ABC</strong> (text) instead of a calendar icon. Right-click the column header → <strong>Change Type</strong> → <strong>Date</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After changing the type, the icon next to “TransactionDate” becomes a small calendar icon. The dates in the column change from text like “2024-01-05” to a date format like “05/01/2024”.</p>
+</div>
+</div>
+<p><strong>Step 4.</strong> Power Query may ask whether to replace the existing step. Click <strong>Replace current</strong>.</p>
+<p><strong>Step 5.</strong> Now do the same for the <code>customers</code> table. Select <strong>customers</strong> in the left pane. Look for any columns that have wrong types. The <code>TotalSpend</code> column should be <strong>Decimal Number</strong> (a currency icon). If it shows as text, right-click → Change Type → Decimal Number.</p>
+<p><strong>Step 6.</strong> When you are satisfied, click <strong>Close &amp; Apply</strong> (top-left of the Power Query window).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Power Query closes and you return to Power BI Desktop. A loading bar briefly appears while your changes are applied. Your data is now clean and typed correctly.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Applied Steps — your undo history
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice the “Applied Steps” panel on the right in Power Query. Every transformation you make is recorded as a step. You can click any step to undo back to that point — it is a non-destructive workflow. Your original CSV files are never modified.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-6-create-relationships-between-tables" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="step-6-create-relationships-between-tables"><span class="header-section-number">6.7</span> Step 6: Create Relationships Between Tables</h2>
+<p>Right now Power BI has four separate tables. It does not yet know that <code>CustomerID</code> in <code>transactions</code> links to <code>CustomerID</code> in <code>customers</code>. We need to define these relationships explicitly — this is the same concept as foreign keys in SQL.</p>
+<p><strong>Step 1.</strong> Click the <strong>Model view</strong> icon on the left sidebar (the diamond/relationship icon).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The four tables appear as boxes in the Model view. They may be scattered around — drag them to arrange them neatly. No lines connect them yet.</p>
+</div>
+</div>
+<p>Power BI may have auto-detected some relationships already. If you see lines between the tables, great — but verify them. If not, you will create them now.</p>
+<p><strong>Step 2.</strong> Arrange the tables in a star pattern: <strong>transactions</strong> in the centre, with <strong>customers</strong>, <strong>products</strong>, and <strong>stores</strong> around it. This makes the diagram easy to read.</p>
+<p><strong>Step 3.</strong> To create the first relationship: click and drag from <strong><code>CustomerID</code></strong> in the <code>transactions</code> table and drop it onto <strong><code>CustomerID</code></strong> in the <code>customers</code> table. A line appears connecting the two tables.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A line appears between the transactions box and the customers box. The line has a “1” on the customers end and a “*” (asterisk) on the transactions end — this means one customer can have many transactions (a one-to-many relationship).</p>
+</div>
+</div>
+<p><strong>Step 4.</strong> Repeat for <code>ProductID</code>: drag from <code>transactions.ProductID</code> → <code>products.ProductID</code>.</p>
+<p><strong>Step 5.</strong> Repeat for <code>StoreID</code>: drag from <code>transactions.StoreID</code> → <code>stores.StoreID</code>.</p>
+<p>After creating all three relationships, your model should look like this:</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Model view shows four table boxes. The <code>transactions</code> box in the centre has three lines connecting it to <code>customers</code> (via CustomerID), <code>products</code> (via ProductID), and <code>stores</code> (via StoreID). Each line shows “1” on the dimension table side and “*” on the transactions side.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why relationships matter
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Once the relationships are set, Power BI can automatically combine information from all four tables when you build visuals. When you drag <code>CustomerName</code> from <code>customers</code> and <code>TotalAmount</code> from <code>transactions</code> onto the canvas, Power BI knows to join them via <code>CustomerID</code> — just like an INNER JOIN in SQL, happening invisibly in the background.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Check the direction of your lines
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Double-click any relationship line to inspect it. The “Cardinality” should be **Many to one (*:1)<strong> — many transaction rows per one customer/product/store. The “Cross filter direction” should be </strong>Single**. If something looks wrong, delete the line and redraw it.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-7-your-first-visual-a-table" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="step-7-your-first-visual-a-table"><span class="header-section-number">6.8</span> Step 7: Your First Visual — A Table</h2>
+<p>Now the fun begins. Switch back to <strong>Report view</strong> (click the bar chart icon on the left sidebar). The canvas is blank and ready.</p>
+<section id="creating-a-table-visual" class="level3" data-number="6.8.1">
+<h3 data-number="6.8.1" class="anchored" data-anchor-id="creating-a-table-visual"><span class="header-section-number">6.8.1</span> Creating a Table Visual</h3>
+<p>A Table visual in Power BI is like a formatted spreadsheet. It is the quickest way to verify your data is connected correctly.</p>
+<p><strong>Step 1.</strong> In the <strong>Visualizations</strong> pane on the right, click the <strong>Table</strong> icon (it looks like a grid of rows and columns).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An empty table visual appears in the centre of the canvas — it shows “Add data fields here.”</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> In the <strong>Data pane</strong> (bottom-right), expand the <code>customers</code> table by clicking the ▶ arrow.</p>
+<p><strong>Step 3.</strong> Drag <strong><code>FirstName</code></strong> from the Data pane and drop it into the <strong>Columns</strong> section of the Visualizations pane (the area that says “Add data fields here”). A column of customer names appears in the table.</p>
+<p><strong>Step 4.</strong> Now expand the <code>transactions</code> table in the Data pane. Drag <strong><code>TotalAmount</code></strong> into the Columns section. Power BI automatically sums the TotalAmount for each customer.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The table visual now shows two columns: FirstName and a Sum of TotalAmount. Each customer’s name appears with their total spending summed across all transactions. Marcus Lee should show the highest value.</p>
+</div>
+</div>
+<p><strong>Step 5.</strong> Add <strong><code>LastName</code></strong> from the <code>customers</code> table to the Columns section as well. The table now shows full names.</p>
+<p><strong>Step 6.</strong> To sort the table by total spending, click the <strong>TotalAmount column header</strong> in the visual. An arrow appears — click it again to sort descending (highest first).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The table is now sorted by spending: Marcus Lee at the top, followed by Priya Sharma, and Nina Patel at the bottom with $0.00.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Resize and reposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Click and drag the corners of the table visual to resize it. Click and drag the centre to move it. Think of each visual as an object on a PowerPoint slide.</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="step-8-your-second-visual-kpi-cards" class="level2" data-number="6.9">
+<h2 data-number="6.9" class="anchored" data-anchor-id="step-8-your-second-visual-kpi-cards"><span class="header-section-number">6.9</span> Step 8: Your Second Visual — KPI Cards</h2>
+<p>A <strong>Card</strong> visual displays a single number prominently — perfect for headline metrics like “Total Revenue”, “Number of Transactions”, or “Average Order Value”. These are the big bold numbers you see at the top of every executive dashboard.</p>
+<p><strong>Step 1.</strong> Click on a <strong>blank area of the canvas</strong> to deselect the table. Then click the <strong>Card</strong> icon in the Visualizations pane (it looks like a single rectangle with a number inside).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A blank Card visual appears on the canvas, showing “Add data fields here.”</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> From the <code>transactions</code> table in the Data pane, drag <strong><code>TotalAmount</code></strong> into the <strong>Fields</strong> section of the Card visual. The card now shows the sum of all transactions — the total revenue for FreshMart in 2024.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Card visual displays a large number — the sum of TotalAmount across all 60 transactions. It should be around $974. This is FreshMart’s total revenue in the dataset.</p>
+</div>
+</div>
+<p><strong>Step 3.</strong> Let us add a second Card showing the total number of transactions. Click a blank area to deselect. Add another <strong>Card</strong> visual.</p>
+<p><strong>Step 4.</strong> Drag <strong><code>TransactionID</code></strong> from the <code>transactions</code> table. But instead of summing, we want to <strong>count</strong> the rows. In the Visualizations pane, click the dropdown arrow next to <code>TransactionID</code> in the Fields well → change <strong>Sum</strong> to <strong>Count</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The second Card now shows “60” — the number of transactions in the dataset.</p>
+</div>
+</div>
+<p><strong>Step 5.</strong> Add a third Card: drag <code>CustomerID</code> from <code>customers</code> into a new Card visual, and change the aggregation to <strong>Count (Distinct)</strong>. This shows the number of unique customers.</p>
+<p>Arrange the three cards in a row at the top of the canvas. You now have a simple KPI row that immediately tells the reader three things: total revenue, transaction count, and customer count.</p>
+<hr>
+</section>
+<section id="step-9-your-third-visual-a-column-chart" class="level2" data-number="6.10">
+<h2 data-number="6.10" class="anchored" data-anchor-id="step-9-your-third-visual-a-column-chart"><span class="header-section-number">6.10</span> Step 9: Your Third Visual — A Column Chart</h2>
+<p>A <strong>Column Chart</strong> is one of the most used visuals in business reporting. Let us build one showing <strong>total revenue by product category</strong>.</p>
+<p><strong>Step 1.</strong> Click a blank area of the canvas. Click the <strong>Clustered column chart</strong> icon in the Visualizations pane (it is the bar chart icon — vertical bars side by side).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A blank column chart visual appears on the canvas with placeholder axis labels.</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> In the Data pane, expand the <code>products</code> table. Drag <strong><code>Category</code></strong> into the <strong>X-axis</strong> field well in the Visualizations pane.</p>
+<p><strong>Step 3.</strong> Expand the <code>transactions</code> table. Drag <strong><code>TotalAmount</code></strong> into the <strong>Y-axis</strong> field well.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A column chart appears with product categories on the horizontal axis (Bakery, Beverages, Dairy, etc.) and the sum of revenue on the vertical axis. Each bar represents one category’s total sales.</p>
+</div>
+</div>
+<p><strong>Step 4.</strong> To sort the bars from highest to lowest revenue: click the three dots (…) in the top-right corner of the visual → <strong>Sort axis</strong> → <strong>Sum of TotalAmount</strong> → <strong>Sort descending</strong>.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The bars re-order so the highest-revenue category appears on the left. Dairy or Meat &amp; Seafood should be near the top — Marcus Lee’s chicken purchases are doing a lot of heavy lifting.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="step-10-basic-formatting" class="level2" data-number="6.11">
+<h2 data-number="6.11" class="anchored" data-anchor-id="step-10-basic-formatting"><span class="header-section-number">6.11</span> Step 10: Basic Formatting</h2>
+<p>A chart with the default blue colour and no title is functional but not professional. Let us apply some basic formatting.</p>
+<p><strong>Step 1.</strong> Click on the column chart to select it. In the Visualizations pane, click the <strong>Format visual</strong> icon (the paint roller icon, second icon from the left in the Visualizations pane header).</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The Visualizations pane switches to formatting options. You see sections like “Visual” and “General”, each with expandable sub-sections: Title, Colors, Data labels, etc.</p>
+</div>
+</div>
+<p><strong>Step 2.</strong> Expand <strong>Title</strong>. Change the title text to: <code>Revenue by Product Category</code>. Change the font size to 14. Turn on <strong>Bold</strong>.</p>
+<p><strong>Step 3.</strong> Expand <strong>Columns</strong> → change the colour to a dark blue or your preferred brand colour using the colour picker.</p>
+<p><strong>Step 4.</strong> Expand <strong>Data labels</strong> and toggle them <strong>On</strong>. Each bar now shows its exact value — useful for stakeholders who do not want to read the axis.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>📸 What you should see
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The chart now has a bold title, coloured bars, and small data labels above each bar showing the exact revenue value.</p>
+</div>
+</div>
+<p><strong>Step 5.</strong> To format the Y-axis values as currency: click the <strong>Y-axis</strong> section → expand <strong>Display units</strong> → change to <strong>None</strong> (so numbers show in full, not abbreviated as “1K”). To add a dollar sign, you would typically set this up in the Data Model as a currency column — we will cover that in the next chapter.</p>
+<hr>
+</section>
+<section id="step-11-saving-your-work" class="level2" data-number="6.12">
+<h2 data-number="6.12" class="anchored" data-anchor-id="step-11-saving-your-work"><span class="header-section-number">6.12</span> Step 11: Saving Your Work</h2>
+<p><strong>Step 1.</strong> Press <strong>Ctrl + S</strong> (or File → Save).</p>
+<p><strong>Step 2.</strong> Choose a location — save it as <code>FreshMart_Dashboard.pbix</code> in your FreshMart folder on the Desktop.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Save often
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Power BI does not auto-save. Press Ctrl+S regularly. A <code>.pbix</code> file saves everything: the data, the model, the relationships, and all your visuals.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="what-we-have-built" class="level2" data-number="6.13">
+<h2 data-number="6.13" class="anchored" data-anchor-id="what-we-have-built"><span class="header-section-number">6.13</span> What We Have Built</h2>
+<p>At the end of this chapter, your canvas should have:</p>
+<ul>
+<li><strong>3 KPI Cards</strong> across the top (Total Revenue, Transaction Count, Customer Count)</li>
+<li><strong>1 Table</strong> showing each customer’s name and total spend</li>
+<li><strong>1 Column Chart</strong> showing revenue by product category</li>
+</ul>
+<p>This is a simple but functional analytical view. A stakeholder looking at this page immediately knows: how much money FreshMart made, how many transactions occurred, how many customers are in the program, and which product categories generate the most revenue.</p>
+<p>In the next chapter, we will add slicers, maps, more chart types, DAX calculations, and wire everything together into a polished, interactive multi-page dashboard.</p>
+<hr>
+</section>
+<section id="exercises" class="level2" data-number="6.14">
+<h2 data-number="6.14" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.14</span> Exercises</h2>
+<p><strong>Exercise 1.</strong> Add a fourth KPI Card showing the <strong>average transaction value</strong> (<code>TotalAmount</code>, aggregation: Average). Format it to show two decimal places.</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-36-contents" aria-controls="callout-36" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-36" class="callout-36-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Add a new Card visual to the canvas.</li>
+<li>Drag <code>TotalAmount</code> from the <code>transactions</code> table into the Fields well.</li>
+<li>In the Visualizations pane, click the dropdown next to <code>TotalAmount</code> and change the aggregation from <strong>Sum</strong> to <strong>Average</strong>.</li>
+<li>To control decimal places: go to Format Visual → Callout value → Value decimal places → set to 2.</li>
+</ol>
+<p>The card should display approximately $16.23 — the average amount spent per transaction.</p>
+</div>
+</div>
+</div>
+<p><strong>Exercise 2.</strong> Create a new column chart showing <strong>total revenue by store</strong> (use <code>StoreName</code> from <code>stores</code> on the X-axis and <code>TotalAmount</code> from <code>transactions</code> on the Y-axis). Sort it descending. Which store has the highest revenue?</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-37-contents" aria-controls="callout-37" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-37" class="callout-37-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Add a Clustered column chart.</li>
+<li>Drag <code>StoreName</code> from <code>stores</code> to the X-axis field well.</li>
+<li>Drag <code>TotalAmount</code> from <code>transactions</code> to the Y-axis field well.</li>
+<li>Click the three dots → Sort axis → Sum of TotalAmount → Sort descending.</li>
+</ol>
+<p>FreshMart Parramatta (StoreID 2) should come out on top — it serves the largest customer base in the dataset, including Amara Diallo and Jake Nguyen.</p>
+<p>Note: FreshMart Darwin appears in the <code>stores</code> table but has no transactions (it opened in 2024 with no sales recorded). It may not appear in the chart at all — this is the same LEFT JOIN / RIGHT JOIN gap from the SQL chapters, now visible in Power BI.</p>
+</div>
+</div>
+</div>
+<p><strong>Exercise 3.</strong> In the Table visual you built in Step 7, add the <code>MembershipTier</code> column from the <code>customers</code> table. Then sort by <code>TotalAmount</code> descending. What is the membership tier of the top two spenders?</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-38-contents" aria-controls="callout-38" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-38" class="callout-38-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Click on the existing Table visual to select it.</li>
+<li>From the <code>customers</code> table in the Data pane, drag <code>MembershipTier</code> into the Columns field well in the Visualizations pane.</li>
+<li>Click the TotalAmount column header to sort descending.</li>
+</ol>
+<p>Both Marcus Lee and Priya Sharma are <strong>Gold</strong> tier members — the highest tier. This makes sense: they are the two highest spenders. Gold tier members appear to be the most engaged with the FreshMart loyalty program.</p>
+</div>
+</div>
+</div>
+<p><strong>Exercise 4.</strong> Go to <strong>Data view</strong> and inspect the <code>transactions</code> table. Verify that <code>TransactionDate</code> is stored as a Date type (not text). What is the earliest transaction date in the dataset?</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-39-contents" aria-controls="callout-39" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-39" class="callout-39-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Click the Data view icon (table icon) on the left sidebar.</li>
+<li>Select the <code>transactions</code> table from the panel.</li>
+<li>Click the <code>TransactionDate</code> column header. Check that the column type icon shows a calendar (📅) not text (ABC).</li>
+<li>Scroll to the top or sort ascending to find the earliest date.</li>
+</ol>
+<p>The earliest transaction is <strong>2024-01-05</strong> — Priya Sharma’s first purchase of the year: 3 litres of Full Cream Milk.</p>
+</div>
+</div>
+</div>
+<p><strong>Exercise 5.</strong> In Model view, double-click the relationship line between <code>transactions</code> and <code>customers</code>. What is the cardinality? What does it mean in plain English?</p>
+<div class="callout callout-style-default callout-note no-icon callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-40-contents" aria-controls="callout-40" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-40" class="callout-40-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The cardinality is **Many to one (*:1)**.</p>
+<p>In plain English: one customer can appear in many transaction rows (because a customer makes multiple purchases), but each transaction row belongs to exactly one customer. This is the standard parent-child relationship in a relational database — the same concept as a foreign key in SQL.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Chapter Summary
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this chapter you:</p>
+<ul>
+<li>Installed Power BI Desktop (free, Windows)</li>
+<li>Navigated the five main areas of the Power BI interface</li>
+<li>Loaded four CSV files (Customers, Products, Stores, Transactions)</li>
+<li>Cleaned data types in Power Query Editor</li>
+<li>Created a star-schema data model with three relationships</li>
+<li>Built your first three visuals: Table, Card, and Column Chart</li>
+<li>Applied basic formatting (titles, colours, data labels)</li>
+</ul>
+<p>These are the foundations. Everything in the next chapter builds on what you have set up here.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./powerbi2.html" class="pagination-link" aria-label="Power BI: Building Your Dashboard">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

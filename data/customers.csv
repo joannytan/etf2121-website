@@ -1,0 +1,8 @@
+CustomerID,FirstName,LastName,Age,Gender,Suburb,State,MembershipTier,YearJoined,TotalSpend,Churned
+1,Priya,Sharma,34,F,Fitzroy,VIC,Gold,2018,8420.50,0
+2,Jake,Nguyen,22,M,Parramatta,NSW,Bronze,2023,340.00,0
+3,Bev,O'Brien,58,F,Toowoomba,QLD,Silver,2020,3150.75,1
+4,Marcus,Lee,41,M,Carlton,VIC,Gold,2017,12300.00,0
+5,Amara,Diallo,29,F,Newtown,NSW,Silver,2021,1890.25,0
+6,Gary,McSnarl,47,M,Chadstone,VIC,Bronze,2022,520.00,1
+7,Nina,Patel,19,F,Brunswick,VIC,Bronze,2024,0.00,0

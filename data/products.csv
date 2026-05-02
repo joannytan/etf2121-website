@@ -1,0 +1,11 @@
+ProductID,ProductName,Category,Brand,UnitPrice,IsOrganic
+1,Full Cream Milk 2L,Dairy,FarmFresh,3.49,0
+2,Organic Oats 500g,Breakfast,NatureBest,5.99,1
+3,Sourdough Bread,Bakery,BreadHaus,6.50,0
+4,Free Range Eggs 12pk,Dairy,HappyHen,7.99,1
+5,Cola 1.25L,Beverages,FizzPop,2.80,0
+6,Chicken Breast 500g,Meat & Seafood,FarmFresh,8.50,0
+7,Mixed Salad Leaves 120g,Produce,GreenLeaf,3.20,1
+8,Dark Chocolate 100g,Snacks,ChocoLux,4.50,0
+9,Sparkling Water 6pk,Beverages,AquaFizz,6.99,0
+10,Almond Butter 250g,Pantry,NatureBest,9.99,1

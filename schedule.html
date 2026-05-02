@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,6 +10,9 @@
 
 <title>Course Schedule – Data Analysis in Business (First edition)</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -35,15 +38,14 @@ ul.task-list li input[type="checkbox"] {
 <link href="./team.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-0cda25dcbb8fe09c7138904322940710.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-0dd2bd5de344125cf763a379ddc3eb04.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-a13fac823209c05bb6c7177d7e5f0a16.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -73,6 +75,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -178,12 +181,18 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Communication and Story Telling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -191,14 +200,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./desc_stat.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Descri</span></span></a>
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
   </div>
 </li>
       </ul>
@@ -206,7 +221,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Communication and Story Telling</span></a>
+ <span class="menu-text">Statistical Modelling with R</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -214,15 +229,47 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Data Visualization</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -258,40 +305,352 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page outlines the schedule for the course, including important dates and deadlines for each week. Please note that the schedule is subject to updates, so be sure to check back regularly for any changes. In the event of any discrepancies between the information on this website and the exam timetable or course handbook, the exam timetable and course handbook will serve as the authoritative sources.</p>
-<table class="caption-top table">
+<style>
+/* Palette: cream #F0EBE3 · teal #8FBFCA · lavender #9B8EC7 */
+
+/* ── Hero Banner ── */
+.schedule-hero {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 36px 32px 28px;
+  margin-bottom: 32px;
+}
+.schedule-hero h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8FBFCA !important;
+  margin: 0 0 10px;
+  -webkit-text-fill-color: #8FBFCA !important;
+}
+.schedule-hero p {
+  font-size: 0.95rem;
+  color: #F0EBE3 !important;
+  -webkit-text-fill-color: #F0EBE3 !important;
+  margin: 0 0 22px;
+  line-height: 1.7;
+}
+.hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid rgba(155,142,199,0.4);
+  color: #F0EBE3 !important;
+  -webkit-text-fill-color: #F0EBE3 !important;
+  background: rgba(155,142,199,0.15);
+}
+
+/* ── Table wrapper ── */
+.sched-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(15,23,42,0.08);
+  border: 1px solid #e2e8f0;
+}
+.sched-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.91rem;
+}
+
+/* ── Column header row ── */
+.sched-table thead tr {
+  background: #0f172a !important;
+}
+.sched-table thead th {
+  padding: 13px 16px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #F0EBE3 !important;
+  -webkit-text-fill-color: #F0EBE3 !important;
+}
+
+/* ── Section divider rows — uniform lavender across all parts ── */
+.sec-label {
+  background: #9B8EC7 !important;
+}
+.sec-label td {
+  padding: 9px 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase !important;
+  font-size: 0.76rem !important;
+  color: #1e293b !important;
+  -webkit-text-fill-color: #1e293b !important;
+  background: #9B8EC7 !important;
+}
+
+/* ── Data rows ── */
+.row-sql, .row-pbi, .row-r, .row-ai { background: #fff; }
+.row-sql:hover, .row-pbi:hover,
+.row-r:hover,   .row-ai:hover {
+  background: #f5f2f9;
+}
+.row-break { background: #faf9f7 !important; }
+.row-break td { color: #6b7280 !important; font-style: italic; font-size: 0.87rem; text-align: center; }
+
+.sched-table td {
+  padding: 11px 16px !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  transition: background 0.12s;
+  color: #1e293b !important;
+  -webkit-text-fill-color: #1e293b !important;
+}
+
+/* ── Week badge ── */
+.wk-badge {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  background: #9B8EC7;
+  flex-shrink: 0;
+}
+
+/* ── Topic title ── */
+.topic-title {
+  font-weight: 600;
+  color: #1e293b !important;
+  -webkit-text-fill-color: #1e293b !important;
+  display: block;
+}
+
+/* ── Link buttons ── */
+.btn-link {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  margin: 2px 0;
+  white-space: nowrap;
+  transition: background 0.12s;
+}
+.btn-slides {
+  background: #eef3f7;
+  color: #2c6e8a !important;
+  -webkit-text-fill-color: #2c6e8a !important;
+  border: 1px solid #8FBFCA;
+}
+.btn-slides:hover { background: #d8edf4; }
+.btn-quiz {
+  background: #f4f2f9;
+  color: #5c4d8a !important;
+  -webkit-text-fill-color: #5c4d8a !important;
+  border: 1px solid #9B8EC7;
+}
+.btn-quiz:hover { background: #e9e5f5; }
+
+/* ── Notes tag ── */
+.note-tag {
+  display: inline-block;
+  background: #faf9f7;
+  color: #6b7280 !important;
+  -webkit-text-fill-color: #6b7280 !important;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.76rem;
+  font-weight: 500;
+}
+
+/* ── Extend content into right margin column (no TOC on this page) ── */
+@media (min-width: 992px) {
+  #quarto-margin-sidebar { display: none !important; }
+  main#quarto-document-content {
+    grid-column: body-content-start / page-end !important;
+  }
+}
+
+/* ── Info strip ── */
+.info-strip {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin-top: 24px;
+}
+.info-card {
+  flex: 1; min-width: 200px;
+  border-radius: 8px;
+  padding: 16px 18px;
+  font-size: 0.87rem;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #334155 !important;
+  -webkit-text-fill-color: #334155 !important;
+}
+.info-card strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.92rem;
+  color: #1e293b !important;
+  -webkit-text-fill-color: #1e293b !important;
+}
+</style>
+
+<div class="schedule-hero">
+  <h2 class="anchored">📅 ETF2121 / ETF5921 &nbsp;·&nbsp; Semester Schedule</h2>
+  <p>This page outlines the weekly topics, readings, and assessments for the semester. The schedule is subject to updates — check back regularly. In the event of any discrepancy between this page and the official course handbook or exam timetable, the official sources take precedence.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">🗄️ SQL · Weeks 1–3</span>
+    <span class="hero-pill">📊 Power BI · Weeks 4–5</span>
+    <span class="hero-pill">📈 Statistical Modelling in R · Weeks 6–11</span>
+    <span class="hero-pill">🤖 AI &amp; Revision · Week 12</span>
+  </div>
+</div>
+
+<div class="sched-wrap">
+
+<table class="sched-table caption-top table">
 <thead>
 <tr class="header">
-<th>Week</th>
-<th>Date</th>
-<th>Topic</th>
-<th>Slides</th>
-<th>Quiz</th>
-<th>Reading</th>
-<th>Notes</th>
+<th data-quarto-table-cell-role="th" style="width: 52px">Week</th>
+<th data-quarto-table-cell-role="th" style="width: 110px">Date</th>
+<th data-quarto-table-cell-role="th">Topic</th>
+<th data-quarto-table-cell-role="th" style="width: 90px">Slides</th>
+<th data-quarto-table-cell-role="th" style="width: 80px">Quiz</th>
+<th data-quarto-table-cell-role="th" style="width: 120px">Notes</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td>1</td>
+<tr class="sec-label sec-sql odd">
+<td colspan="6">🗄️ &nbsp;Part 1: Database Query Language (SQL)</td>
+</tr>
+<tr class="row-sql even">
+<td><span class="wk-badge wk-sql">1</span></td>
 <td>Tue, Jul 23</td>
-<td>Business Analytics &amp; Database Management System</td>
-<td><a href="link_to_slides">Slides</a></td>
-<td><a href="link_to_quiz">Quiz 1</a></td>
-<td>Chapter 1-2</td>
+<td><span class="topic-title">Introduction to Databases &amp; SQL</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 1</a></td>
 <td></td>
 </tr>
-<tr class="even">
-<td>2</td>
+<tr class="row-sql odd">
+<td><span class="wk-badge wk-sql">2</span></td>
 <td>Tue, Jul 30</td>
-<td>Database Query Language: SQL</td>
-<td><a href="link_to_slides">Slides</a></td>
-<td><a href="link_to_quiz">Quiz 2</a></td>
-<td>Chapter 3-4</td>
+<td><span class="topic-title">Summarising Data with SQL</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 2</a></td>
 <td></td>
+</tr>
+<tr class="row-sql even">
+<td><span class="wk-badge wk-sql">3</span></td>
+<td>Tue, Aug 6</td>
+<td><span class="topic-title">Combining Tables &amp; Advanced Queries</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 3</a></td>
+<td></td>
+</tr>
+<tr class="sec-label sec-pbi odd">
+<td colspan="6">📊 &nbsp;Part 2: Data Visualisation with Power BI</td>
+</tr>
+<tr class="row-pbi even">
+<td><span class="wk-badge wk-pbi">4</span></td>
+<td>Tue, Aug 13</td>
+<td><span class="topic-title">Getting Started with Power BI</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 4</a></td>
+<td></td>
+</tr>
+<tr class="row-pbi odd">
+<td><span class="wk-badge wk-pbi">5</span></td>
+<td>Tue, Aug 20</td>
+<td><span class="topic-title">Building Dashboards</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 5</a></td>
+<td></td>
+</tr>
+<tr class="sec-label sec-r even">
+<td colspan="6">📈 &nbsp;Part 3: Statistical Modelling with R</td>
+</tr>
+<tr class="row-r odd">
+<td><span class="wk-badge wk-r">6</span></td>
+<td>Tue, Aug 27</td>
+<td><span class="topic-title">Introduction to R &amp; Exploratory Data Analysis</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 6</a></td>
+<td><span class="note-tag">⚠️ Break follows</span></td>
+</tr>
+<tr class="row-break even">
+<td colspan="6" style="text-align: center; padding: 10px 16px;">☀️ &nbsp;<strong>Mid-Semester Break</strong> &nbsp;—&nbsp; No classes (Aug 28 – Sep 8)</td>
+</tr>
+<tr class="row-r odd">
+<td><span class="wk-badge wk-r">7</span></td>
+<td>Tue, Sep 9</td>
+<td><span class="topic-title">Linear Regression</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 7</a></td>
+<td></td>
+</tr>
+<tr class="row-r even">
+<td><span class="wk-badge wk-r">8</span></td>
+<td>Tue, Sep 16</td>
+<td><span class="topic-title">Logistic Regression</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 8</a></td>
+<td></td>
+</tr>
+<tr class="row-r odd">
+<td><span class="wk-badge wk-r">9</span></td>
+<td>Tue, Sep 23</td>
+<td><span class="topic-title">Regression Trees</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 9</a></td>
+<td></td>
+</tr>
+<tr class="row-r even">
+<td><span class="wk-badge wk-r">10</span></td>
+<td>Tue, Sep 30</td>
+<td><span class="topic-title">K-Nearest Neighbour (KNN)</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 10</a></td>
+<td></td>
+</tr>
+<tr class="row-r odd">
+<td><span class="wk-badge wk-r">11</span></td>
+<td>Tue, Oct 7</td>
+<td><span class="topic-title">Clustering</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td><a href="link_to_quiz" class="btn-link btn-quiz">Quiz 11</a></td>
+<td></td>
+</tr>
+<tr class="sec-label sec-ai even">
+<td colspan="6">🤖 &nbsp;Part 4: Revision &amp; The Future of Data Analytics</td>
+</tr>
+<tr class="row-ai odd">
+<td><span class="wk-badge wk-ai">12</span></td>
+<td>Tue, Oct 14</td>
+<td><span class="topic-title">Revision &amp; AI in Data Analytics</span></td>
+<td><a href="link_to_slides" class="btn-link btn-slides">Slides</a></td>
+<td></td>
+<td><span class="note-tag">📌 Last week</span></td>
 </tr>
 </tbody>
 </table>
+
+</div>
+
+<div class="info-strip">
+  <div class="info-card card-break">
+    <strong>☀️ Mid-Semester Break</strong>
+    No classes from <strong>Aug 28 to Sep 8</strong>. Teaching resumes Week 7 on Tuesday, Sep 9.
+  </div>
+  <div class="info-card card-tools">
+    <strong>🛠️ Software You Will Need</strong>
+    All tools are free. <strong>DB Browser for SQLite</strong> (SQL) · <strong>Power BI Desktop</strong> (Power BI) · <strong>R + RStudio</strong> (Statistical Modelling)
+  </div>
+</div>
 
 
 
