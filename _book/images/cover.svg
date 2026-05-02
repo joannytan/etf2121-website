@@ -1,0 +1,190 @@
+<svg viewBox="0 0 600 800" xmlns="http://www.w3.org/2000/svg" font-family="Georgia, 'Times New Roman', serif">
+
+  <!-- ── Background: warm cream ── -->
+  <rect width="600" height="800" fill="#F5F0E8"/>
+
+  <!-- ── Outer double border frame ── -->
+  <rect x="16" y="16" width="568" height="768" fill="none" stroke="#9B8EC7" stroke-width="2.5"/>
+  <rect x="22" y="22" width="556" height="756" fill="none" stroke="#9B8EC7" stroke-width="0.7"/>
+
+  <!-- ── Top lavender band ── -->
+  <rect x="16" y="16" width="568" height="95" fill="#9B8EC7"/>
+
+  <!-- Top band text -->
+  <text x="300" y="50" font-size="10" fill="#F5F0E8" text-anchor="middle" letter-spacing="5" font-weight="400">FIRST EDITION</text>
+  <text x="300" y="82" font-size="16" fill="#F5F0E8" text-anchor="middle" letter-spacing="2" font-style="italic">Data Analysis in Business</text>
+
+  <!-- Thin rule below top band -->
+  <line x1="16" y1="111" x2="584" y2="111" stroke="#9B8EC7" stroke-width="0.8"/>
+
+  <!-- ── Main Title ── -->
+  <text x="300" y="165" font-size="50" font-weight="bold" fill="#1e293b" text-anchor="middle">Data Analysis</text>
+  <text x="300" y="218" font-size="50" font-weight="bold" fill="#1e293b" text-anchor="middle">in Business</text>
+
+  <!-- Subtitle -->
+  <text x="300" y="252" font-size="13.5" fill="#7c6db0" text-anchor="middle" font-style="italic">SQL · Power BI · Statistical Modelling with R</text>
+
+  <!-- Thin rule below title -->
+  <line x1="55" y1="270" x2="545" y2="270" stroke="#9B8EC7" stroke-width="0.7"/>
+
+  <!-- ════════════════════════════════════
+       HEDGEHOG ILLUSTRATION
+       Centred in area y=270 to y=690
+       Hedgehog walks rightward, profile view
+       ════════════════════════════════════ -->
+
+  <!-- Ground shadow -->
+  <ellipse cx="295" cy="608" rx="160" ry="13" fill="rgba(0,0,0,0.07)"/>
+
+  <!-- ── 1. Belly / main body (light tan) ── -->
+  <ellipse cx="278" cy="505" rx="152" ry="88" fill="#C8935F"/>
+
+  <!-- ── 2. Lighter underside ── -->
+  <ellipse cx="272" cy="545" rx="118" ry="48" fill="#DDB07A"/>
+
+  <!-- ── 3. Spine dome (dark brown, upper-back portion) ── -->
+  <path d="
+    M 138,505
+    C 124,462 132,405 168,368
+    C 205,330 262,310 318,312
+    C 372,314 420,338 452,372
+    C 476,398 478,432 466,460
+    C 440,455 390,450 330,450
+    C 268,450 200,458 155,478
+    Z
+  " fill="#3A1A06"/>
+
+  <!-- ── 4. Spine dome highlight (slightly lighter inner) ── -->
+  <path d="
+    M 165,495
+    C 154,458 160,410 192,378
+    C 225,346 275,330 324,332
+    C 372,334 414,354 440,382
+    C 460,404 460,432 450,455
+    C 425,450 380,447 325,447
+    C 268,447 208,456 168,473
+    Z
+  " fill="#4A2510"/>
+
+  <!-- ── 5. SPINES — rows of triangles radiating outward ── -->
+
+  <!-- Outer spine row (longest, darkest) -->
+  <polygon points="136,500 100,452 150,488" fill="#1E0800"/>
+  <polygon points="142,474 108,418 155,462" fill="#1E0800"/>
+  <polygon points="154,448 126,388 168,438" fill="#1E0800"/>
+  <polygon points="172,422 152,358 188,414" fill="#1E0800"/>
+  <polygon points="196,400 182,335 212,394" fill="#1E0800"/>
+  <polygon points="224,384 218,316 242,380" fill="#1E0800"/>
+  <polygon points="258,372 258,304 278,370" fill="#1E0800"/>
+  <polygon points="294,366 300,298 318,365" fill="#1E0800"/>
+  <polygon points="334,368 346,302 358,368" fill="#1E0800"/>
+  <polygon points="370,376 390,315 395,376" fill="#1E0800"/>
+  <polygon points="404,392 428,338 430,393" fill="#1E0800"/>
+  <polygon points="432,412 460,368 456,414" fill="#1E0800"/>
+  <polygon points="450,436 480,402 468,438" fill="#1E0800"/>
+
+  <!-- Middle spine row (medium) -->
+  <polygon points="145,495 114,454 157,482" fill="#2E1005"/>
+  <polygon points="150,470 120,422 162,458" fill="#2E1005"/>
+  <polygon points="163,444 138,392 176,434" fill="#2E1005"/>
+  <polygon points="182,420 164,363 199,412" fill="#2E1005"/>
+  <polygon points="208,398 196,340 224,392" fill="#2E1005"/>
+  <polygon points="236,382 232,325 254,379" fill="#2E1005"/>
+  <polygon points="268,370 270,315 288,369" fill="#2E1005"/>
+  <polygon points="305,365 312,308 328,364" fill="#2E1005"/>
+  <polygon points="342,368 356,314 368,368" fill="#2E1005"/>
+  <polygon points="378,378 398,328 402,378" fill="#2E1005"/>
+  <polygon points="412,394 436,348 437,395" fill="#2E1005"/>
+  <polygon points="440,415 465,376 460,416" fill="#2E1005"/>
+
+  <!-- Inner spine row (shorter, brown) -->
+  <polygon points="155,490 130,457 164,478" fill="#5C2E12"/>
+  <polygon points="160,466 138,428 170,456" fill="#5C2E12"/>
+  <polygon points="174,442 155,400 185,434" fill="#5C2E12"/>
+  <polygon points="193,419 178,370 207,413" fill="#5C2E12"/>
+  <polygon points="218,400 208,354 232,396" fill="#5C2E12"/>
+  <polygon points="246,384 244,340 263,382" fill="#5C2E12"/>
+  <polygon points="276,373 280,330 296,372" fill="#5C2E12"/>
+  <polygon points="312,368 320,326 334,368" fill="#5C2E12"/>
+  <polygon points="348,370 361,330 371,370" fill="#5C2E12"/>
+  <polygon points="383,380 400,344 404,380" fill="#5C2E12"/>
+  <polygon points="416,396 438,362 438,396" fill="#5C2E12"/>
+  <polygon points="443,418 464,388 458,419" fill="#5C2E12"/>
+
+  <!-- ── 6. Face / head (extends right from body) ── -->
+  <ellipse cx="390" cy="478" rx="75" ry="52" fill="#C8935F"/>
+  <ellipse cx="408" cy="482" rx="62" ry="44" fill="#BC8252"/>
+
+  <!-- Snout -->
+  <path d="M 438,472 C 458,462 488,462 510,474 C 528,484 532,498 520,508 C 508,518 482,516 460,506 C 440,497 432,485 438,472 Z" fill="#A87040"/>
+
+  <!-- Nose (dark, glistening) -->
+  <ellipse cx="524" cy="490" rx="10" ry="8" fill="#0F0500"/>
+  <ellipse cx="521" cy="487" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.45)"/>
+
+  <!-- Mouth hint -->
+  <path d="M 512,500 C 516,504 522,505 526,502" fill="none" stroke="#7A4820" stroke-width="1.2" stroke-linecap="round"/>
+
+  <!-- ── 7. Eye ── -->
+  <circle cx="450" cy="458" r="14" fill="#0F0500"/>
+  <circle cx="445" cy="452" r="4.5" fill="rgba(255,255,255,0.85)"/>
+  <circle cx="456" cy="462" r="2" fill="rgba(255,255,255,0.4)"/>
+
+  <!-- Brow -->
+  <path d="M 440,444 C 447,438 458,438 465,443" fill="none" stroke="#2A0E04" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- ── 8. Ear ── -->
+  <ellipse cx="412" cy="400" rx="16" ry="22" fill="#C8935F" transform="rotate(-18 412 400)"/>
+  <ellipse cx="412" cy="402" rx="10" ry="15" fill="#DDB07A" transform="rotate(-18 412 402)"/>
+
+  <!-- ── 9. Cheek fur texture (subtle) ── -->
+  <path d="M 382,488 C 388,490 392,494 388,498" fill="none" stroke="#A87040" stroke-width="1" stroke-linecap="round"/>
+  <path d="M 376,494 C 382,497 385,502 380,506" fill="none" stroke="#A87040" stroke-width="1" stroke-linecap="round"/>
+
+  <!-- ── 10. Legs ── -->
+  <!-- Back left leg -->
+  <path d="M 152,565 C 148,545 136,540 130,556 C 124,572 134,594 147,596 C 160,598 168,580 152,565 Z" fill="#A87040"/>
+  <!-- Back right leg -->
+  <path d="M 210,572 C 206,552 194,547 188,563 C 182,579 192,600 206,602 C 220,604 228,585 210,572 Z" fill="#A87040"/>
+  <!-- Front left leg -->
+  <path d="M 375,572 C 371,552 359,547 354,564 C 348,580 358,600 372,602 C 386,604 393,585 375,572 Z" fill="#A87040"/>
+  <!-- Front right leg -->
+  <path d="M 435,565 C 431,545 420,540 414,556 C 408,572 418,593 432,595 C 446,597 453,580 435,565 Z" fill="#A87040"/>
+
+  <!-- Feet / tiny claw lines -->
+  <line x1="128" y1="596" x2="123" y2="606" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="137" y1="598" x2="134" y2="608" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="146" y1="598" x2="145" y2="608" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+
+  <line x1="185" y1="602" x2="181" y2="612" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="195" y1="604" x2="193" y2="614" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="205" y1="603" x2="205" y2="613" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+
+  <line x1="351" y1="602" x2="347" y2="612" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="361" y1="604" x2="360" y2="614" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="371" y1="603" x2="372" y2="613" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+
+  <line x1="411" y1="595" x2="408" y2="606" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="421" y1="597" x2="420" y2="607" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="432" y1="596" x2="433" y2="606" stroke="#2A0E04" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- ── 11. Tail (tiny round nub at back-left) ── -->
+  <ellipse cx="135" cy="500" rx="12" ry="9" fill="#4A2510" transform="rotate(20 135 500)"/>
+
+  <!-- ════════════════════════════════════
+       BOTTOM TEXT AREA
+       ════════════════════════════════════ -->
+
+  <!-- Rule above author -->
+  <line x1="55" y1="682" x2="545" y2="682" stroke="#9B8EC7" stroke-width="0.7"/>
+
+  <!-- Author -->
+  <text x="300" y="714" font-size="21" font-weight="bold" fill="#1e293b" text-anchor="middle">Dr. Joan Tan</text>
+  <text x="300" y="738" font-size="12.5" fill="#7c6db0" text-anchor="middle" font-style="italic">Department of Econometrics and Business Statistics</text>
+  <text x="300" y="756" font-size="12.5" fill="#7c6db0" text-anchor="middle" font-style="italic">Monash University</text>
+
+  <!-- Bottom teal band -->
+  <rect x="16" y="762" width="568" height="22" fill="#8FBFCA"/>
+  <text x="300" y="777" font-size="9.5" fill="#1e293b" text-anchor="middle" letter-spacing="3.5">MONASH UNIVERSITY PRESS</text>
+
+</svg>

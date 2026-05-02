@@ -1,282 +1,1128 @@
 # Advanced SQL
 
-Consider two tables: `Employees` and `Departments`.
+In the previous chapter, you learned how to query a single table — filtering, sorting, grouping, and summarising data. That is a solid foundation. But in the real world, data is never conveniently packed into one table. A company's database might have dozens of tables, each storing a different piece of the puzzle. Advanced SQL is how you put those pieces together.
 
-**Employees Table:**
+In this chapter, we will cover:
 
-| EmployeeID | Name       | DepartmentID |
-|------------|------------|--------------|
-| 1          | Alice      | 1            |
-| 2          | Bob        | 2            |
-| 3          | Charlie    | NULL         |
+- **JOINs** — combining data from multiple tables
+- **CASE WHEN** — conditional logic inside a query
+- **Subqueries** — queries inside queries
+- **String Functions** — cleaning and transforming text
+- **Date Functions** — working with dates and times
+- **UNION** — stacking result sets on top of each other
 
-**Departments Table:**
+All examples use the **FreshMart** database — a fictional Australian supermarket chain with customers, products, stores, and transaction records.
 
-| DepartmentID | DepartmentName |
-|--------------|----------------|
-| 1            | HR             |
-| 2            | IT             |
-| 3            | Finance        |
+---
 
-## Joins
+## The FreshMart Database
 
-Joins are used to combine rows from two or more tables based on a related column between them. Here are some common types of joins:
+We are working with four tables.
 
-### **INNER JOIN**
+**`Customers`**:
 
-Returns records that have matching values in both tables.
-  
-  ```sql
-  SELECT a.column1, b.column2
-  FROM tableA a
-  INNER JOIN tableB b ON a.common_column = b.common_column;
-  ```
-  
-__Example:__ Select the names of employees along with their department names using an INNER JOIN.
+| CustomerID | FirstName | LastName | Age | Gender | Suburb | State | MembershipTier | YearJoined | TotalSpend | Churned |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Priya | Sharma | 34 | F | Fitzroy | VIC | Gold | 2018 | 8420.50 | 0 |
+| 2 | Jake | Nguyen | 22 | M | Parramatta | NSW | Bronze | 2023 | 340.00 | 0 |
+| 3 | Bev | O'Brien | 58 | F | Toowoomba | QLD | Silver | 2020 | 3150.75 | 1 |
+| 4 | Marcus | Lee | 41 | M | Carlton | VIC | Gold | 2017 | 12300.00 | 0 |
+| 5 | Amara | Diallo | 29 | F | Newtown | NSW | Silver | 2021 | 1890.25 | 0 |
+| 6 | Gary | McSnarl | 47 | M | Chadstone | VIC | Bronze | 2022 | 520.00 | 1 |
+| 7 | Nina | Patel | 19 | F | Brunswick | VIC | Bronze | 2024 | 0.00 | 0 |
 
-```sql
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID;
-```
-**Result:**
+**`Products`**:
 
-| Name   | DepartmentName |
-|--------|----------------|
-| Alice  | HR             |
-| Bob    | IT             |
+| ProductID | ProductName | Category | Brand | UnitPrice | IsOrganic |
+|---|---|---|---|---|---|
+| 1 | Full Cream Milk 2L | Dairy | FarmFresh | 3.49 | 0 |
+| 2 | Organic Oats 500g | Breakfast | NatureBest | 5.99 | 1 |
+| 3 | Sourdough Bread | Bakery | BreadHaus | 6.50 | 0 |
+| 4 | Free Range Eggs 12pk | Dairy | HappyHen | 7.99 | 1 |
+| 5 | Cola 1.25L | Beverages | FizzPop | 2.80 | 0 |
+| 6 | Chicken Breast 500g | Meat & Seafood | FarmFresh | 8.50 | 0 |
+| 7 | Mixed Salad Leaves 120g | Produce | GreenLeaf | 3.20 | 1 |
+| 8 | Dark Chocolate 100g | Snacks | ChocoLux | 4.50 | 0 |
+| 9 | Sparkling Water 6pk | Beverages | AquaFizz | 6.99 | 0 |
+| 10 | Almond Butter 250g | Pantry | NatureBest | 9.99 | 1 |
 
-### **LEFT JOIN (or LEFT OUTER JOIN)**
+**`Stores`**:
 
-Returns all records from the left table, and the matched records from the right table. If there is no match, NULL values are returned for columns from the right table.
-  
-  ```sql
-  SELECT a.column1, b.column2
-  FROM tableA a
-  LEFT JOIN tableB b 
-  ON a.common_column = b.common_column;
-  ```
- 
-__Example:__ Select the names of employees along with their department names using a LEFT JOIN.
+| StoreID | StoreName | Suburb | State | OpenYear | SquareMetres |
+|---|---|---|---|---|---|
+| 1 | FreshMart Fitzroy | Fitzroy | VIC | 2015 | 1200 |
+| 2 | FreshMart Parramatta | Parramatta | NSW | 2018 | 2100 |
+| 3 | FreshMart Toowoomba | Toowoomba | QLD | 2020 | 980 |
+| 4 | FreshMart Carlton | Carlton | VIC | 2014 | 1450 |
+| 5 | FreshMart Adelaide CBD | Adelaide | SA | 2019 | 1800 |
+| 6 | FreshMart Darwin | Darwin | NT | 2024 | 800 |
 
-```sql
-SELECT e.Name, d.DepartmentName
-FROM Employees e
-LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID;
-```
+**`Transactions`**:
 
-**Result:**
+| TransactionID | CustomerID | StoreID | TransactionDate | TotalAmount | NumItems |
+|---|---|---|---|---|---|
+| 1001 | 1 | 1 | 2024-01-15 | 87.40 | 12 |
+| 1002 | 4 | 4 | 2024-01-18 | 210.30 | 28 |
+| 1003 | 2 | 2 | 2024-02-03 | 34.20 | 5 |
+| 1004 | 5 | 2 | 2024-02-14 | 65.90 | 9 |
+| 1005 | 1 | 1 | 2024-03-02 | 142.60 | 18 |
+| 1006 | 3 | 3 | 2024-03-20 | 28.50 | 4 |
+| 1007 | 6 | 5 | 2024-04-05 | 45.00 | 7 |
+| 1008 | 4 | 4 | 2024-04-22 | 189.75 | 24 |
+| 1009 | 5 | 2 | 2024-05-10 | 112.00 | 15 |
+| 1010 | 2 | 2 | 2024-05-28 | 18.90 | 3 |
 
-| Name    | DepartmentName |
-|---------|----------------|
-| Alice   | HR             |
-| Bob     | IT             |
-| Charlie | NULL           |
+::: {.callout-note}
+## Two Are Missing From Transactions
 
-  
-- **RIGHT JOIN (or RIGHT OUTER JOIN)**: Returns all records from the right table, and the matched records from the left table. If there is no match, NULL values are returned for columns from the left table.
-  
-  ```sql
-  SELECT a.column1, b.column2
-  FROM tableA a
-  RIGHT JOIN tableB b
-  ON a.common_column = b.common_column;
-  ```
+**Nina Patel** (CustomerID 7) has a loyalty card but zero transactions. She joined in 2024 and is apparently still working up the courage to approach the self-checkout. **FreshMart Darwin** (StoreID 6) opened in 2024 and has no transactions on record yet — early days for the Top End. Both absences are intentional and will make the LEFT JOIN and RIGHT JOIN examples considerably more interesting.
+:::
 
-- **FULL JOIN (or FULL OUTER JOIN)**: Returns all records when there is a match in either left or right table. If there is no match, NULL values are returned for columns from the table without a match.
-  
-  ```sql
-  SELECT a.column1, b.column2
-  FROM tableA a
-  FULL JOIN tableB b
-  ON a.common_column = b.common_column;
-  ```
-  
-- **SELF JOIN**: A self join is a regular join but the table is joined with itself.
-  
-  ```sql
-  SELECT a.column1, b.column2
-  FROM tableA a
-  INNER JOIN tableA b
-  ON a.common_column = b.common_column;
-  ```
-  
-  Normally, it is used to compare rows within the same table.
-  
-- **UNION**: Combines the result sets of two or more SELECT statements. It removes duplicate rows between the various SELECT statements.
-  
-  ```sql
-  SELECT column1, column2 FROM tableA
-  UNION
-  SELECT column1, column2 FROM tableB;
-  ```
-  
-- **UNION ALL**: Similar to UNION, but it includes duplicate rows.
-  
-  ```sql
-  SELECT column1, column2 FROM tableA
-  UNION ALL
-  SELECT column1, column2 FROM tableB;
-  ```
-  
-  The requirement for using UNION or UNION ALL is that the number of columns and their data types must match in all SELECT statements, even its order.
-  
-## `EXISTS` and `NOT EXISTS`
+---
 
-The `EXISTS` operator is used to test for the existence of any record in a subquery. It returns TRUE if the subquery returns one or more records. The general syntax is as follows:
+## JOINs
+
+A JOIN combines rows from two tables based on a related column. The `Transactions` table stores `CustomerID` and `StoreID` — numbers that point to records in the `Customers` and `Stores` tables. On its own, a table full of ID numbers is not very useful. JOINs let you pull in the actual names and details from the other tables.
+
+The general syntax is:
 
 ```sql
-SELECT column_name(s)
-FROM table_name
-WHERE EXISTS (SELECT column_name FROM table_name WHERE condition);
+SELECT t1.column1, t2.column2, ...
+FROM table1 AS t1
+JOIN table2 AS t2
+  ON t1.shared_column = t2.shared_column;
 ```
 
-The `NOT EXISTS` operator is used to test for the non-existence of any record in a subquery. It returns TRUE if the subquery returns no records. The general syntax is as follows:
+The `ON` clause specifies the condition that links the two tables — usually a foreign key in one table matched to a primary key in another. You must qualify column names with the table alias (e.g., `T.CustomerID` instead of just `CustomerID`) when the same column name exists in multiple tables.
+
+---
+
+### INNER JOIN
+
+An **INNER JOIN** returns only the rows that have a matching value in **both** tables. If a row has no match in the other table, it is excluded entirely.
 
 ```sql
-SELECT column_name(s)
-FROM table_name
-WHERE NOT EXISTS (SELECT column_name FROM table_name WHERE condition);
+SELECT T.TransactionID,
+       C.FirstName,
+       C.LastName,
+       S.StoreName,
+       T.TransactionDate,
+       T.TotalAmount
+FROM Transactions AS T
+INNER JOIN Customers AS C
+  ON T.CustomerID = C.CustomerID
+INNER JOIN Stores AS S
+  ON T.StoreID = S.StoreID;
 ```
 
-__Example:__ Find all departments that have at least one employee.
+This query joins all three tables at once. The result replaces the ID numbers with actual names:
+
+| TransactionID | FirstName | LastName | StoreName | TransactionDate | TotalAmount |
+|---|---|---|---|---|---|
+| 1001 | Priya | Sharma | FreshMart Fitzroy | 2024-01-15 | 87.40 |
+| 1002 | Marcus | Lee | FreshMart Carlton | 2024-01-18 | 210.30 |
+| 1003 | Jake | Nguyen | FreshMart Parramatta | 2024-02-03 | 34.20 |
+| 1004 | Amara | Diallo | FreshMart Parramatta | 2024-02-14 | 65.90 |
+| 1005 | Priya | Sharma | FreshMart Fitzroy | 2024-03-02 | 142.60 |
+| 1006 | Bev | O'Brien | FreshMart Toowoomba | 2024-03-20 | 28.50 |
+| 1007 | Gary | McSnarl | FreshMart Adelaide CBD | 2024-04-05 | 45.00 |
+| 1008 | Marcus | Lee | FreshMart Carlton | 2024-04-22 | 189.75 |
+| 1009 | Amara | Diallo | FreshMart Parramatta | 2024-05-10 | 112.00 |
+| 1010 | Jake | Nguyen | FreshMart Parramatta | 2024-05-28 | 18.90 |
+
+Nina Patel appears nowhere. She has no transactions to join on, so she is excluded. That is the defining behaviour of INNER JOIN: no match, no row.
+
+---
+
+### LEFT JOIN
+
+A **LEFT JOIN** returns **all rows from the left table**, plus the matching rows from the right table. Where there is no match, the right table's columns come back as `NULL`.
+
+This is the most useful JOIN for analysts. Use it when you want to see everything from one table regardless of whether it has matching records in another — for example, to find customers who have never made a purchase.
+
+Show all customers, along with any transactions they have made:
 
 ```sql
-SELECT d.DepartmentName
-FROM Departments d
-WHERE EXISTS (
-    SELECT 1
-    FROM Employees e
-    WHERE e.DepartmentID = d.DepartmentID
-);
+SELECT C.FirstName, C.LastName, T.TransactionID, T.TotalAmount
+FROM Customers AS C
+LEFT JOIN Transactions AS T
+  ON C.CustomerID = T.CustomerID;
 ```
 
-**Result:**
+| FirstName | LastName | TransactionID | TotalAmount |
+|---|---|---|---|
+| Priya | Sharma | 1001 | 87.40 |
+| Priya | Sharma | 1005 | 142.60 |
+| Jake | Nguyen | 1003 | 34.20 |
+| Jake | Nguyen | 1010 | 18.90 |
+| Bev | O'Brien | 1006 | 28.50 |
+| Marcus | Lee | 1002 | 210.30 |
+| Marcus | Lee | 1008 | 189.75 |
+| Amara | Diallo | 1004 | 65.90 |
+| Amara | Diallo | 1009 | 112.00 |
+| Gary | McSnarl | 1007 | 45.00 |
+| **Nina** | **Patel** | **NULL** | **NULL** |
 
-| DepartmentName |
-|----------------|
-| HR             |
-| IT             |
+Nina Patel finally appears — but with `NULL` for both `TransactionID` and `TotalAmount`. She is present but has no recorded transactions. LEFT JOIN ensures she is not silently dropped from the analysis.
 
-__Example:__ Find all departments that do not have any employees.
+A common pattern is to filter on `NULL` after a LEFT JOIN to find records with **no** match at all:
 
 ```sql
-SELECT d.DepartmentName
-FROM Departments d
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM Employees e
-    WHERE e.DepartmentID = d.DepartmentID
-);
+-- Customers who have never made a transaction
+SELECT C.FirstName, C.LastName
+FROM Customers AS C
+LEFT JOIN Transactions AS T
+  ON C.CustomerID = T.CustomerID
+WHERE T.TransactionID IS NULL;
 ```
 
-**Result:**
+This returns only Nina Patel. She is presumably still weighing up her options in the breakfast cereal aisle.
 
-| DepartmentName |
-|----------------|
-| Finance        |
+---
 
-## `CASE` Statements
+### RIGHT JOIN
 
-The `CASE` statement is used to create conditional logic in SQL queries. It allows you to return different values based on specified conditions. The general syntax is as follows:
+A **RIGHT JOIN** is the mirror image of LEFT JOIN: it returns **all rows from the right table**, plus matching rows from the left table. Unmatched left-table rows become `NULL`.
+
+Show all stores, along with any transactions that have taken place in them:
+
+```sql
+SELECT S.StoreName, T.TransactionID, T.TotalAmount
+FROM Transactions AS T
+RIGHT JOIN Stores AS S
+  ON T.StoreID = S.StoreID;
+```
+
+| StoreName | TransactionID | TotalAmount |
+|---|---|---|
+| FreshMart Fitzroy | 1001 | 87.40 |
+| FreshMart Fitzroy | 1005 | 142.60 |
+| FreshMart Parramatta | 1003 | 34.20 |
+| FreshMart Parramatta | 1004 | 65.90 |
+| FreshMart Parramatta | 1009 | 112.00 |
+| FreshMart Parramatta | 1010 | 18.90 |
+| FreshMart Toowoomba | 1006 | 28.50 |
+| FreshMart Carlton | 1002 | 210.30 |
+| FreshMart Carlton | 1008 | 189.75 |
+| FreshMart Adelaide CBD | 1007 | 45.00 |
+| **FreshMart Darwin** | **NULL** | **NULL** |
+
+FreshMart Darwin appears with `NULL` transaction data. It is registered as a store but has had no customer activity yet. Grand opening banners are presumably still up.
+
+::: {.callout-tip}
+## LEFT JOIN vs RIGHT JOIN — A Practical Tip
+
+Most analysts write everything as a LEFT JOIN and simply swap the table order when needed. A RIGHT JOIN of `A → B` returns the same result as a LEFT JOIN of `B → A`. Sticking to LEFT JOIN throughout makes queries easier to read.
+
+```sql
+-- These two queries return the same result:
+
+-- RIGHT JOIN version
+SELECT S.StoreName, T.TransactionID
+FROM Transactions AS T
+RIGHT JOIN Stores AS S
+  ON T.StoreID = S.StoreID;
+
+-- Equivalent LEFT JOIN version (just swap the tables)
+SELECT S.StoreName, T.TransactionID
+FROM Stores AS S
+LEFT JOIN Transactions AS T
+  ON S.StoreID = T.StoreID;
+```
+:::
+
+---
+
+### JOIN Summary
+
+| Type | What it returns |
+|------|----------------|
+| `INNER JOIN` | Only rows with a match in **both** tables |
+| `LEFT JOIN` | **All** rows from the left table; `NULL` for unmatched right rows |
+| `RIGHT JOIN` | **All** rows from the right table; `NULL` for unmatched left rows |
+
+#### Exercises
+
+1. Write a query to show each transaction's ID, the customer's first and last name, the store name, and the total amount.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT T.TransactionID,
+       C.FirstName,
+       C.LastName,
+       S.StoreName,
+       T.TotalAmount
+FROM Transactions AS T
+INNER JOIN Customers AS C
+  ON T.CustomerID = C.CustomerID
+INNER JOIN Stores AS S
+  ON T.StoreID = S.StoreID;
+```
+:::
+
+2. Write a query to show all stores and the total number of transactions recorded at each. Include stores with zero transactions, showing `0` rather than `NULL`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT S.StoreName, COUNT(T.TransactionID) AS TotalTransactions
+FROM Stores AS S
+LEFT JOIN Transactions AS T
+  ON S.StoreID = T.StoreID
+GROUP BY S.StoreName;
+-- COUNT(T.TransactionID) counts only non-NULL values,
+-- so stores with no transactions correctly get 0.
+```
+:::
+
+3. Write a query to show all customers who have made at least one transaction, along with the transaction date and amount.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT C.FirstName, C.LastName, T.TransactionDate, T.TotalAmount
+FROM Customers AS C
+INNER JOIN Transactions AS T
+  ON C.CustomerID = T.CustomerID;
+-- INNER JOIN automatically excludes customers with no transactions.
+```
+:::
+
+4. Write a query to find which customers have **never** made a transaction.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT C.FirstName, C.LastName
+FROM Customers AS C
+LEFT JOIN Transactions AS T
+  ON C.CustomerID = T.CustomerID
+WHERE T.TransactionID IS NULL;
+-- Only Nina Patel returns.
+```
+:::
+
+5. Write a query to list all transactions made at stores in VIC, showing the customer name, store name, transaction date, and total amount.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT C.FirstName, C.LastName, S.StoreName, T.TransactionDate, T.TotalAmount
+FROM Transactions AS T
+INNER JOIN Customers AS C
+  ON T.CustomerID = C.CustomerID
+INNER JOIN Stores AS S
+  ON T.StoreID = S.StoreID
+WHERE S.State = 'VIC';
+```
+:::
+
+---
+
+## CASE WHEN
+
+`CASE WHEN` is SQL's version of if-else logic. It lets you create new calculated columns based on conditions — classifying values, creating labels, flagging rows — all inside a single query without touching the raw data.
 
 ```sql
 SELECT column1,
        CASE
            WHEN condition1 THEN result1
            WHEN condition2 THEN result2
-           ELSE result3
-       END AS alias_name
+           ELSE default_result
+       END AS new_column_name
 FROM table_name;
 ```
 
-__Example:__ Use a `CASE` statement to categorize employees based on their department.
+SQL checks each `WHEN` condition from top to bottom and returns the first one that is true. If none match, the `ELSE` value is used. If there is no `ELSE` and nothing matches, the result is `NULL`.
+
+Classify customers into spend tiers based on their lifetime `TotalSpend`:
 
 ```sql
-SELECT e.Name,
+SELECT FirstName, LastName, TotalSpend,
        CASE
-           WHEN e.DepartmentID = 1 THEN 'HR'
-           WHEN e.DepartmentID = 2 THEN 'IT'
-           ELSE 'Other'
-       END AS DepartmentCategory
-FROM Employees e;
+           WHEN TotalSpend >= 5000 THEN 'High Spender'
+           WHEN TotalSpend >= 1000 THEN 'Mid Spender'
+           ELSE 'Light Spender'
+       END AS SpendTier
+FROM Customers;
 ```
 
-**Result:**
+| FirstName | LastName | TotalSpend | SpendTier |
+|---|---|---|---|
+| Priya | Sharma | 8420.50 | High Spender |
+| Jake | Nguyen | 340.00 | Light Spender |
+| Bev | O'Brien | 3150.75 | Mid Spender |
+| Marcus | Lee | 12300.00 | High Spender |
+| Amara | Diallo | 1890.25 | Mid Spender |
+| Gary | McSnarl | 520.00 | Light Spender |
+| Nina | Patel | 0.00 | Light Spender |
 
-| Name    | DepartmentCategory |
-|---------|--------------------|
-| Alice   | HR                 |
-| Bob     | IT                 |
-| Charlie | Other              |
+Nina Patel is officially a Light Spender with zero dollars spent. Her classification is technically accurate. Gary McSnarl spent $520 before churning — apparently he found cheaper milk elsewhere and never looked back.
 
-
-
-## Common Table Expressions (CTEs)
-
-A Common Table Expression (CTE) is a temporary result set that you can reference within a `SELECT`, `INSERT`, `UPDATE`, or `DELETE` statement. CTEs are defined using the `WITH` clause. The general syntax is as follows:
+You can also combine `MembershipTier` and `TotalSpend` for a more nuanced classification:
 
 ```sql
-WITH cte_name AS (
-    SELECT column1, column2
-    FROM table_name
-    WHERE condition
-)
-SELECT *
-FROM cte_name;
+SELECT FirstName, LastName, MembershipTier, TotalSpend,
+       CASE
+           WHEN MembershipTier = 'Gold'   AND TotalSpend >= 5000 THEN 'Loyal VIP'
+           WHEN MembershipTier = 'Gold'   AND TotalSpend <  5000 THEN 'Gold Underperformer'
+           WHEN MembershipTier = 'Silver'                        THEN 'Growing'
+           WHEN MembershipTier = 'Bronze' AND Churned = 1        THEN 'Lost'
+           ELSE 'New'
+       END AS CustomerSegment
+FROM Customers;
 ```
 
-CTE is especially useful for breaking down complex queries into simpler parts, improving readability, and enabling recursion.
-
-__Example:__ Use a CTE to find the names of employees along with their department names.
+You can also use `CASE WHEN` inside aggregate functions. This pattern is used constantly for pivot-style summaries:
 
 ```sql
-WITH EmployeeDepartments AS (
-    SELECT e.Name, d.DepartmentName
-    FROM Employees e
-    LEFT JOIN Departments d ON e.DepartmentID = d.DepartmentID
-)
-SELECT *
-FROM EmployeeDepartments;
+-- Count churned vs active customers in a single query
+SELECT
+    SUM(CASE WHEN Churned = 1 THEN 1 ELSE 0 END) AS ChurnedCount,
+    SUM(CASE WHEN Churned = 0 THEN 1 ELSE 0 END) AS ActiveCount
+FROM Customers;
 ```
 
-**Result:**
+#### Exercises
 
-| Name    | DepartmentName |
-|---------|----------------|
-| Alice   | HR             |
-| Bob     | IT             |
-| Charlie | NULL           |
+1. Write a query to classify each customer by `MembershipTier` into a descriptive label:
+   - `'Gold'` → `'Premium Member'`
+   - `'Silver'` → `'Standard Member'`
+   - `'Bronze'` → `'Entry Member'`
 
-## Window Functions
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT FirstName, LastName, MembershipTier,
+       CASE
+           WHEN MembershipTier = 'Gold'   THEN 'Premium Member'
+           WHEN MembershipTier = 'Silver' THEN 'Standard Member'
+           ELSE 'Entry Member'
+       END AS MemberLabel
+FROM Customers;
+```
+:::
 
-Window functions perform calculations across a set of table rows that are related to the current row. They are often used for ranking, running totals, moving averages, etc. The general syntax is as follows:
+2. Write a query to classify each product by `UnitPrice`:
+   - Under $4.00 → `'Budget'`
+   - $4.00 to $7.99 → `'Mid-Range'`
+   - $8.00 or above → `'Premium'`
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT ProductName, UnitPrice,
+       CASE
+           WHEN UnitPrice < 4.00  THEN 'Budget'
+           WHEN UnitPrice < 8.00  THEN 'Mid-Range'
+           ELSE 'Premium'
+       END AS PriceCategory
+FROM Products;
+```
+:::
+
+3. Write a query using the `Transactions` table to add a `BasketSize` column:
+   - `NumItems` of 5 or fewer → `'Small'`
+   - 6 to 14 → `'Medium'`
+   - 15 or more → `'Large'`
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID, NumItems,
+       CASE
+           WHEN NumItems <= 5  THEN 'Small'
+           WHEN NumItems <= 14 THEN 'Medium'
+           ELSE 'Large'
+       END AS BasketSize
+FROM Transactions;
+```
+:::
+
+4. Write a query to count how many customers fall into each spend tier (`High Spender` / `Mid Spender` / `Light Spender`).
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT
+    CASE
+        WHEN TotalSpend >= 5000 THEN 'High Spender'
+        WHEN TotalSpend >= 1000 THEN 'Mid Spender'
+        ELSE 'Light Spender'
+    END AS SpendTier,
+    COUNT(*) AS NumberOfCustomers
+FROM Customers
+GROUP BY
+    CASE
+        WHEN TotalSpend >= 5000 THEN 'High Spender'
+        WHEN TotalSpend >= 1000 THEN 'Mid Spender'
+        ELSE 'Light Spender'
+    END;
+```
+:::
+
+---
+
+## Subqueries
+
+A **subquery** is a query nested inside another query. The inner query runs first, and its result is handed to the outer query to use. This lets you answer two-step questions: "first calculate this, then use that result to filter or compute something else."
+
+Subqueries appear in three places:
+
+- Inside `WHERE` — to filter using a calculated value
+- Inside `FROM` — to create a temporary derived table
+- Inside `SELECT` — to add a per-row calculated column
+
+### Subqueries in WHERE
+
+Find customers whose lifetime `TotalSpend` is **above the average**:
 
 ```sql
-SELECT column1,
-       window_function() OVER (PARTITION BY column2 ORDER BY column3) AS alias_name
-FROM table_name;
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+WHERE TotalSpend > (SELECT AVG(TotalSpend) FROM Customers);
 ```
 
-__Example:__ Use a window function to assign a row number to each employee within their department.
+The inner query runs first and returns the average spend (approximately $3,803). The outer query then uses that value to filter rows.
+
+| FirstName | LastName | TotalSpend |
+|---|---|---|
+| Priya | Sharma | 8420.50 |
+| Marcus | Lee | 12300.00 |
+
+Marcus Lee and Priya Sharma are the only two customers above average — which is less surprising when you notice that Marcus spent $210 and $190 in a single month. He is clearly shopping for a village.
+
+Find transactions where the basket total exceeds the average transaction amount:
+
 ```sql
-SELECT e.Name,
-       ROW_NUMBER() OVER (PARTITION BY e.DepartmentID ORDER BY e.Name) AS Row
-FROM Employees e;
+SELECT TransactionID, TotalAmount
+FROM Transactions
+WHERE TotalAmount > (SELECT AVG(TotalAmount) FROM Transactions);
 ```
 
-**Result:**
+### Subqueries in FROM
 
-| Name    | Row |
-|---------|-----|
-| Alice   | 1   |
-| Bob     | 1   |
-| Charlie | 1   |
+A subquery in the `FROM` clause creates a **temporary derived table** that the outer query treats like a real table. You must give it an alias.
 
-This assigns a row number to each employee within their respective departments, ordered by their names.
+Calculate the average transaction amount per state by first joining transactions to stores, then grouping in the outer query:
 
-These advanced SQL concepts and techniques can help you write more efficient and powerful queries to manage and analyze your data.
+```sql
+SELECT State, AVG(TotalAmount) AS AvgTransactionAmount
+FROM (
+    SELECT T.TotalAmount, S.State
+    FROM Transactions AS T
+    INNER JOIN Stores AS S
+      ON T.StoreID = S.StoreID
+) AS TransactionsByState
+GROUP BY State;
+```
 
+The inner query builds a table that links each transaction to the store's state. The outer query then groups and aggregates it. In SQL Server, you cannot reference a column alias created in `SELECT` directly inside `GROUP BY` — wrapping it in a subquery solves this cleanly.
 
+### Subqueries in SELECT
 
+A subquery in the `SELECT` clause adds a calculated value to every row. It must return exactly one value (a scalar).
 
+Show each transaction alongside the overall average transaction amount and the difference:
+
+```sql
+SELECT TransactionID, TotalAmount,
+       (SELECT AVG(TotalAmount) FROM Transactions) AS AvgAmount,
+       TotalAmount - (SELECT AVG(TotalAmount) FROM Transactions) AS DifferenceFromAvg
+FROM Transactions;
+```
+
+| TransactionID | TotalAmount | AvgAmount | DifferenceFromAvg |
+|---|---|---|---|
+| 1001 | 87.40 | 93.46 | -6.06 |
+| 1002 | 210.30 | 93.46 | +116.84 |
+| 1003 | 34.20 | 93.46 | -59.26 |
+| 1004 | 65.90 | 93.46 | -27.56 |
+| 1005 | 142.60 | 93.46 | +49.14 |
+| 1006 | 28.50 | 93.46 | -64.96 |
+| 1007 | 45.00 | 93.46 | -48.46 |
+| 1008 | 189.75 | 93.46 | +96.29 |
+| 1009 | 112.00 | 93.46 | +18.54 |
+| 1010 | 18.90 | 93.46 | -74.56 |
+
+Marcus Lee's two transactions are $116 and $96 above average. Bev O'Brien's single visit to FreshMart Toowoomba came in $65 below average. She bought exactly what she came for and left.
+
+#### Exercises
+
+1. Write a query to find all products whose `UnitPrice` is above the average unit price.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice > (SELECT AVG(UnitPrice) FROM Products);
+```
+:::
+
+2. Write a query to find all transactions where `TotalAmount` is below the average transaction amount.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID, TotalAmount
+FROM Transactions
+WHERE TotalAmount < (SELECT AVG(TotalAmount) FROM Transactions);
+```
+:::
+
+3. Write a query to show each customer's name, their `TotalSpend`, the maximum `TotalSpend` across all customers, and the gap between their spend and the top spender.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT FirstName, LastName, TotalSpend,
+       (SELECT MAX(TotalSpend) FROM Customers) AS TopSpend,
+       (SELECT MAX(TotalSpend) FROM Customers) - TotalSpend AS GapFromTop
+FROM Customers;
+```
+:::
+
+4. Using a subquery in `FROM`, write a query to find the average `TotalAmount` per membership tier, but only include tiers where the average transaction exceeds $60.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT MembershipTier, AvgTransaction
+FROM (
+    SELECT C.MembershipTier, AVG(T.TotalAmount) AS AvgTransaction
+    FROM Transactions AS T
+    INNER JOIN Customers AS C
+      ON T.CustomerID = C.CustomerID
+    GROUP BY C.MembershipTier
+) AS TierSummary
+WHERE AvgTransaction > 60;
+```
+:::
+
+---
+
+## String Functions
+
+Real data is messy. Names have inconsistent capitalisation. Text fields have trailing spaces. Values need reformatting before they are useful. String functions let you clean and reshape text directly inside SQL.
+
+All examples use **SQL Server** syntax.
+
+### `UPPER()` and `LOWER()`
+
+Convert text to all uppercase or all lowercase. This is important for consistent comparisons — `'Victoria'` and `'VICTORIA'` are treated as different values by SQL unless you normalise first.
+
+```sql
+SELECT FirstName, LastName,
+       UPPER(LastName)  AS LastNameUpper,
+       LOWER(FirstName) AS FirstNameLower
+FROM Customers;
+```
+
+A common use: case-insensitive search by converting both the column and the search term to the same case.
+
+```sql
+SELECT ProductName
+FROM Products
+WHERE LOWER(Category) LIKE '%dairy%';
+```
+
+### `LEN()`
+
+Returns the number of characters in a string. SQL Server uses `LEN()` — note this is different from `LENGTH()` used in MySQL and SQLite.
+
+```sql
+SELECT ProductName, LEN(ProductName) AS NameLength
+FROM Products;
+```
+
+Find products with unusually long names:
+
+```sql
+SELECT ProductName, LEN(ProductName) AS NameLength
+FROM Products
+WHERE LEN(ProductName) > 15;
+```
+
+### `CONCAT()`
+
+Joins two or more strings together into one.
+
+```sql
+SELECT CONCAT(FirstName, ' ', LastName) AS FullName,
+       Suburb,
+       State
+FROM Customers;
+```
+
+| FullName | Suburb | State |
+|---|---|---|
+| Priya Sharma | Fitzroy | VIC |
+| Jake Nguyen | Parramatta | NSW |
+| Bev O'Brien | Toowoomba | QLD |
+
+In SQL Server you can also use the `+` operator to concatenate. However, you cannot use `+` to join a number directly to a string — you must convert the number to text first using `CAST()`:
+
+```sql
+SELECT FirstName + ' ' + LastName + ' has spent $' + CAST(TotalSpend AS VARCHAR) AS SpendSummary
+FROM Customers;
+```
+
+### `SUBSTRING()`, `LEFT()`, `RIGHT()`
+
+`SUBSTRING(string, start, length)` extracts part of a string. Positions are 1-indexed — the first character is at position 1.
+
+```sql
+SELECT ProductName, SUBSTRING(ProductName, 1, 10) AS FirstTenChars
+FROM Products;
+```
+
+`LEFT(string, n)` and `RIGHT(string, n)` are convenient shortcuts for extracting from the beginning or end:
+
+```sql
+SELECT FirstName,
+       LEFT(FirstName, 3)  AS FirstThree,
+       RIGHT(LastName, 3)  AS LastThree
+FROM Customers;
+```
+
+### `TRIM()`, `LTRIM()`, `RTRIM()`
+
+Removes leading and/or trailing spaces. Invisible extra spaces are a common source of silent bugs — a value that looks like `'Fitzroy'` in a report might actually be `' Fitzroy'` in the database, causing `WHERE Suburb = 'Fitzroy'` to silently return no rows.
+
+```sql
+SELECT TRIM(StoreName)   AS BothSidesTrimmed   -- removes spaces on both sides
+FROM Stores;
+
+SELECT LTRIM(StoreName)  AS LeftTrimmed         -- removes leading spaces only
+FROM Stores;
+
+SELECT RTRIM(StoreName)  AS RightTrimmed        -- removes trailing spaces only
+FROM Stores;
+```
+
+### `REPLACE()`
+
+Replaces every occurrence of a substring with another string. Useful for fixing consistent data entry errors or abbreviating labels.
+
+```sql
+-- Abbreviate store names in a summary report
+SELECT StoreName,
+       REPLACE(StoreName, 'FreshMart', 'FM') AS ShortName
+FROM Stores;
+```
+
+| StoreName | ShortName |
+|---|---|
+| FreshMart Fitzroy | FM Fitzroy |
+| FreshMart Parramatta | FM Parramatta |
+| FreshMart Toowoomba | FM Toowoomba |
+| FreshMart Carlton | FM Carlton |
+| FreshMart Adelaide CBD | FM Adelaide CBD |
+| FreshMart Darwin | FM Darwin |
+
+The rebranding team is going to love this.
+
+#### Exercises
+
+1. Write a query to display each customer's full name in uppercase and the character length of their last name.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT UPPER(CONCAT(FirstName, ' ', LastName)) AS FullNameUpper,
+       LEN(LastName) AS LastNameLength
+FROM Customers;
+```
+:::
+
+2. Write a query to create a `CustomerProfile` column that combines `FirstName`, `LastName`, and `Suburb` in the format `'FirstName LastName — Suburb'` (e.g., `'Priya Sharma — Fitzroy'`).
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT CONCAT(FirstName, ' ', LastName, ' — ', Suburb) AS CustomerProfile
+FROM Customers;
+
+-- Equivalent using + operator:
+SELECT FirstName + ' ' + LastName + ' — ' + Suburb AS CustomerProfile
+FROM Customers;
+```
+:::
+
+3. Write a query to find all products whose `ProductName` contains the word `'organic'`, regardless of how it was capitalised in the database. Use `LOWER()` to make the search case-insensitive.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT ProductName, Category
+FROM Products
+WHERE LOWER(ProductName) LIKE '%organic%';
+```
+:::
+
+4. Write a query to display each customer's first name and the first 3 characters of their suburb as `SuburbCode`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT FirstName, LEFT(Suburb, 3) AS SuburbCode
+FROM Customers;
+```
+:::
+
+---
+
+## Date Functions
+
+Almost every real-world dataset has dates — join dates, transaction records, store opening dates. Being able to extract parts of dates, calculate durations, and filter by time period is an essential analyst skill. All examples use **SQL Server** syntax.
+
+### `GETDATE()`
+
+Returns the current date and time from the database server.
+
+```sql
+SELECT GETDATE() AS CurrentDateTime;
+```
+
+Useful as a reference point for "how long ago" calculations.
+
+### `YEAR()`, `MONTH()`, `DAY()`
+
+Extract individual components from a date column.
+
+```sql
+SELECT TransactionID,
+       YEAR(TransactionDate)  AS TxnYear,
+       MONTH(TransactionDate) AS TxnMonth,
+       DAY(TransactionDate)   AS TxnDay
+FROM Transactions;
+```
+
+Filter to transactions from February 2024 only:
+
+```sql
+SELECT TransactionID, TotalAmount
+FROM Transactions
+WHERE YEAR(TransactionDate) = 2024
+  AND MONTH(TransactionDate) = 2;
+```
+
+Calculate approximate years since each customer joined:
+
+```sql
+SELECT FirstName, LastName, YearJoined,
+       YEAR(GETDATE()) - YearJoined AS YearsAsMember
+FROM Customers;
+```
+
+| FirstName | LastName | YearJoined | YearsAsMember |
+|---|---|---|---|
+| Priya | Sharma | 2018 | 8 |
+| Jake | Nguyen | 2023 | 3 |
+| Bev | O'Brien | 2020 | 6 |
+| Marcus | Lee | 2017 | 9 |
+| Amara | Diallo | 2021 | 5 |
+| Gary | McSnarl | 2022 | 4 |
+| Nina | Patel | 2024 | 2 |
+
+*(Approximate values based on 2026.)*
+
+### `DATEDIFF()`
+
+Calculates the difference between two dates. Syntax: `DATEDIFF(unit, start_date, end_date)`.
+
+Common units: `DAY`, `MONTH`, `YEAR`.
+
+How many days ago did each transaction take place?
+
+```sql
+SELECT TransactionID, TransactionDate,
+       DATEDIFF(DAY, TransactionDate, GETDATE()) AS DaysSinceTransaction
+FROM Transactions;
+```
+
+How many months have passed since FreshMart Darwin opened?
+
+```sql
+SELECT DATEDIFF(MONTH, '2024-01-01', GETDATE()) AS MonthsSinceOpening;
+```
+
+::: {.callout-tip}
+## Storing Years as Integers vs Dates
+
+In the `Customers` table, `YearJoined` is stored as an `INT` (e.g., `2018`) rather than a full `DATE`. This works fine for year-level calculations using `YEAR(GETDATE()) - YearJoined`, but it does not work with `DATEDIFF()` directly. In a production database, you would store join dates as a proper `DATE` column for full date arithmetic.
+:::
+
+### `DATEADD()`
+
+Adds (or subtracts) a time interval from a date. Syntax: `DATEADD(unit, number, date)`. Use a negative number to subtract.
+
+What would each transaction date be if a promotional reminder was sent 14 days later?
+
+```sql
+SELECT TransactionID, TransactionDate,
+       DATEADD(DAY, 14, TransactionDate) AS ReminderDate
+FROM Transactions;
+```
+
+What was the date 3 months before each transaction (to identify pre-transaction browsing windows)?
+
+```sql
+SELECT TransactionID, TransactionDate,
+       DATEADD(MONTH, -3, TransactionDate) AS ThreeMonthsBefore
+FROM Transactions;
+```
+
+### `FORMAT()`
+
+Formats a date as a human-readable string. Useful for reports and dashboards where raw date formats look unfriendly.
+
+```sql
+SELECT TransactionID,
+       FORMAT(TransactionDate, 'dd MMMM yyyy') AS FormattedDate
+FROM Transactions;
+```
+
+| TransactionID | FormattedDate |
+|---|---|
+| 1001 | 15 January 2024 |
+| 1002 | 18 January 2024 |
+| 1003 | 03 February 2024 |
+
+Other useful format strings:
+
+| Pattern | Output example |
+|---------|---------------|
+| `'dd/MM/yyyy'` | 15/01/2024 |
+| `'MMMM yyyy'` | January 2024 |
+| `'yyyy-MM-dd'` | 2024-01-15 |
+| `'ddd, dd MMM yyyy'` | Mon, 15 Jan 2024 |
+
+#### Exercises
+
+1. Write a query to find all transactions that took place in the first quarter of 2024 (January to March).
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID, TransactionDate, TotalAmount
+FROM Transactions
+WHERE YEAR(TransactionDate) = 2024
+  AND MONTH(TransactionDate) <= 3;
+```
+:::
+
+2. Write a query to show each transaction's ID, date, and the number of days between the transaction date and today.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID, TransactionDate,
+       DATEDIFF(DAY, TransactionDate, GETDATE()) AS DaysAgo
+FROM Transactions;
+```
+:::
+
+3. Write a query to count the number of transactions per month in 2024, ordered by month.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT MONTH(TransactionDate) AS TxnMonth,
+       COUNT(*) AS NumberOfTransactions
+FROM Transactions
+WHERE YEAR(TransactionDate) = 2024
+GROUP BY MONTH(TransactionDate)
+ORDER BY TxnMonth;
+```
+:::
+
+4. Write a query to show customer names and a column `LongTermMember` — `'Yes'` if they joined before 2020, `'No'` otherwise. Combine `CASE WHEN` with `YearJoined`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT FirstName, LastName, YearJoined,
+       CASE
+           WHEN YearJoined < 2020 THEN 'Yes'
+           ELSE 'No'
+       END AS LongTermMember
+FROM Customers;
+```
+:::
+
+5. Write a query to show all transactions with the date formatted as `'Month YYYY'` (e.g., `'January 2024'`) and the total amount.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID,
+       FORMAT(TransactionDate, 'MMMM yyyy') AS TransactionPeriod,
+       TotalAmount
+FROM Transactions;
+```
+:::
+
+---
+
+## UNION
+
+`UNION` stacks the results of two separate `SELECT` queries into one combined result set by appending the rows of the second query below the rows of the first.
+
+Three rules must be followed:
+
+1. Both queries must return the **same number of columns**.
+2. The columns must have **compatible data types**, in the same order.
+3. The column names in the final output come from the **first** query.
+
+### `UNION` vs `UNION ALL`
+
+| | `UNION` | `UNION ALL` |
+|---|---------|-------------|
+| Duplicates | Removed | Kept |
+| Performance | Slower (must scan for duplicates) | Faster |
+| Use when | You need a deduplicated list | You want all rows including repeats |
+
+Default to `UNION ALL` unless you specifically need duplicate removal.
+
+### Example: Active and At-Risk Customers
+
+The marketing team wants a single report showing both active and churned customers, labelled clearly. Two separate pools of data, same structure — a perfect job for `UNION ALL`.
+
+```sql
+SELECT FirstName, LastName, MembershipTier, TotalSpend, 'Active' AS Status
+FROM Customers
+WHERE Churned = 0
+
+UNION ALL
+
+SELECT FirstName, LastName, MembershipTier, TotalSpend, 'Churned' AS Status
+FROM Customers
+WHERE Churned = 1;
+```
+
+| FirstName | LastName | MembershipTier | TotalSpend | Status |
+|---|---|---|---|---|
+| Priya | Sharma | Gold | 8420.50 | Active |
+| Jake | Nguyen | Bronze | 340.00 | Active |
+| Marcus | Lee | Gold | 12300.00 | Active |
+| Amara | Diallo | Silver | 1890.25 | Active |
+| Nina | Patel | Bronze | 0.00 | Active |
+| Bev | O'Brien | Silver | 3150.75 | Churned |
+| Gary | McSnarl | Bronze | 520.00 | Churned |
+
+Both queries return five columns with compatible types. You can add `ORDER BY` at the very end to sort the full combined result:
+
+```sql
+SELECT FirstName, LastName, MembershipTier, TotalSpend, 'Active' AS Status
+FROM Customers
+WHERE Churned = 0
+
+UNION ALL
+
+SELECT FirstName, LastName, MembershipTier, TotalSpend, 'Churned' AS Status
+FROM Customers
+WHERE Churned = 1
+
+ORDER BY TotalSpend DESC;
+```
+
+### Example: Deduplication with `UNION`
+
+`UNION` (without `ALL`) removes duplicates across both result sets. For example, to get a deduplicated list of all states that have either a FreshMart store or a VIC/NSW customer:
+
+```sql
+SELECT State FROM Stores
+UNION
+SELECT State FROM Customers WHERE State IN ('VIC', 'NSW');
+```
+
+Each state appears exactly once, even if it appears in both tables. In practice, `SELECT DISTINCT` is more natural for deduplication within a single table, but `UNION` is essential when deduplicating across separate queries or separate tables.
+
+::: {.callout-tip}
+## When to Use UNION
+
+Use `UNION` when you have two separate pools of data with the same structure that you want to analyse together:
+
+- Combining transaction data from two financial years stored in separate tables
+- Merging customer records from an old system and a new system during a migration
+- Building a report that shows "top 3 biggest spenders" and "bottom 3 spenders" in one list
+:::
+
+#### Exercises
+
+1. Write a query to create a combined list of all suburb names — one column from `Customers` and one from `Stores` — with a column called `Source` set to `'Customer'` or `'Store'`. Use `UNION ALL`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT Suburb, 'Customer' AS Source
+FROM Customers
+
+UNION ALL
+
+SELECT Suburb, 'Store' AS Source
+FROM Stores;
+```
+:::
+
+2. Write a query using `UNION ALL` to show the top 2 highest-spending customers and the top 2 largest stores (by `SquareMetres`) in a single result set. Include a `Category` column.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TOP 2
+    CONCAT(FirstName, ' ', LastName) AS Name,
+    TotalSpend AS KeyMetric,
+    'Customer' AS Category
+FROM Customers
+ORDER BY TotalSpend DESC
+
+UNION ALL
+
+SELECT TOP 2
+    StoreName AS Name,
+    CAST(SquareMetres AS DECIMAL(10,2)) AS KeyMetric,
+    'Store' AS Category
+FROM Stores
+ORDER BY SquareMetres DESC;
+```
+:::
+
+3. Write a query to produce a combined list of all VIC customers and all VIC stores, showing the name and suburb, sorted alphabetically by suburb. Use `UNION ALL`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT CONCAT(FirstName, ' ', LastName) AS Name, Suburb
+FROM Customers
+WHERE State = 'VIC'
+
+UNION ALL
+
+SELECT StoreName AS Name, Suburb
+FROM Stores
+WHERE State = 'VIC'
+
+ORDER BY Suburb;
+```
+:::
+
+---
+
+## Putting It All Together
+
+Real-world queries rarely use just one technique. Here is a query that combines several tools from this chapter to answer a practical analytical question.
+
+**Question:** For each customer who has made at least one transaction, show their full name, state, total amount spent across all transactions, number of transactions, spend tier, and whether their total transaction spend is above or below the average.
+
+```sql
+SELECT
+    CONCAT(C.FirstName, ' ', C.LastName) AS CustomerName,
+    C.State,
+    SUM(T.TotalAmount)                   AS TotalTransactionSpend,
+    COUNT(T.TransactionID)               AS NumberOfTransactions,
+    CASE
+        WHEN SUM(T.TotalAmount) >= 200 THEN 'High Spender'
+        WHEN SUM(T.TotalAmount) >= 80  THEN 'Mid Spender'
+        ELSE 'Light Spender'
+    END AS SpendTier,
+    CASE
+        WHEN SUM(T.TotalAmount) > (SELECT AVG(sub.CustomerTotal)
+                                   FROM (SELECT CustomerID, SUM(TotalAmount) AS CustomerTotal
+                                         FROM Transactions
+                                         GROUP BY CustomerID) AS sub)
+        THEN 'Above Average'
+        ELSE 'Below Average'
+    END AS SpendVsAverage
+FROM Customers AS C
+INNER JOIN Transactions AS T
+  ON C.CustomerID = T.CustomerID
+GROUP BY C.CustomerID, C.FirstName, C.LastName, C.State
+ORDER BY TotalTransactionSpend DESC;
+```
+
+This single query uses `INNER JOIN`, `CASE WHEN`, a subquery, aggregate functions, `GROUP BY`, and `ORDER BY`. If you can read and write a query like this, you are thinking like a data analyst.
+
+---
+
+You have now covered the full essential SQL toolkit for business data analysis. JOINs connect your tables. `CASE WHEN` classifies and labels your data. Subqueries let you compute in layers. String and date functions clean and enrich what you retrieve. `UNION` combines result sets from multiple directions.
+
+The next chapter takes things further with **CTEs** (Common Table Expressions) and **window functions** — tools that make complex multi-step queries far more readable, and that will become your best friends for any serious analytical work.

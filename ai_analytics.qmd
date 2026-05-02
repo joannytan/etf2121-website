@@ -1,0 +1,1158 @@
+---
+title: "AI in Business Analytics"
+webr:
+  packages: ['tidyverse', 'tidymodels', 'tidyclust']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 12</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">AI in Business Analytics</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    You have spent six weeks building machine learning models on real data. This week we step back and ask: <em style="-webkit-text-fill-color:#cbd5e1;">where do your skills fit in the broader AI landscape, what tools exist beyond what you've built, and what does responsible use of AI actually look like in practice?</em>
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyclust</span>
+  </div>
+</div>
+```
+
+:::{.callout-note}
+## 🔁 The Full Modelling Picture — Weeks 6–12
+
+| Chapter | Problem Type | Target | Model |
+|---------|-------------|--------|-------|
+| Week 6  | Exploration  | —      | EDA (ggplot2, summarise) |
+| Week 7  | Supervised   | TotalSpend ($) | Linear Regression |
+| Week 8  | Supervised   | IsHighValue (T/F) | Logistic Regression |
+| Week 9  | Supervised   | TotalSpend ($) | Decision Tree |
+| Week 10 | Supervised   | IsHighValue (T/F) | K-Nearest Neighbours |
+| Week 11 | Unsupervised | None | K-Means Clustering |
+| **Week 12** | **Capstone** | **—** | **AI Landscape + Responsible AI** |
+
+This week there is no new model to build. Instead, we map everything you've built onto the broader field of artificial intelligence — and ask what it means to use these tools responsibly.
+:::
+
+---
+
+It is FreshMart's quarterly strategy meeting. The CFO has just returned from a conference where a speaker said that "companies that don't adopt AI in the next three years will not exist in ten." The CMO has read three LinkedIn posts about large language models and has a slide with "Generative AI" in a large font. The Head of IT has put together a deck that uses the phrase "AI-powered" on every other page, usually next to a picture of a glowing brain.
+
+You, the junior analyst, have spent the last six weeks actually building models. Linear regression. Logistic regression. Decision trees. KNN. Clustering. You have run cross-validation, profiled customer segments, and written the report that told the CMO which customers to spend the retention budget on.
+
+Here is the quiet truth nobody in that meeting room knows: **you have been doing AI all along.**
+
+---
+
+## 12.1 The AI Landscape: Where Your Models Fit
+
+"Artificial intelligence" is not one thing. It is an umbrella term covering a wide family of techniques — some simple, some extraordinarily complex — that all share one goal: making computers perform tasks that typically require human judgment. Your models live inside that umbrella.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;">
+  <p style="font-weight:600;color:#1e293b;margin:0 0 14px;">The AI Family Tree</p>
+  <div style="display:grid;gap:10px;">
+    <div style="background:#e0f2fe;border-left:4px solid #0284c7;padding:10px 14px;border-radius:4px;">
+      <strong style="color:#0c4a6e;">Artificial Intelligence</strong>
+      <span style="color:#475569;font-size:0.88rem;"> — Any system that performs tasks typically requiring human intelligence: planning, reasoning, language, pattern recognition.</span>
+    </div>
+    <div style="background:#ede9fe;border-left:4px solid #7c3aed;padding:10px 14px;border-radius:4px;margin-left:20px;">
+      <strong style="color:#4c1d95;">Machine Learning</strong>
+      <span style="color:#475569;font-size:0.88rem;"> — AI that learns patterns directly from data, rather than following rules written by hand. <em>Everything in Weeks 7–11 is machine learning.</em></span>
+    </div>
+    <div style="background:#fce7f3;border-left:4px solid #db2777;padding:10px 14px;border-radius:4px;margin-left:40px;">
+      <strong style="color:#831843;">Deep Learning</strong>
+      <span style="color:#475569;font-size:0.88rem;"> — ML using many-layered neural networks. Powers image recognition, speech, and translation. Needs vastly more data than FreshMart's 500 customers.</span>
+    </div>
+    <div style="background:#fef3c7;border-left:4px solid #d97706;padding:10px 14px;border-radius:4px;margin-left:60px;">
+      <strong style="color:#78350f;">Generative AI</strong>
+      <span style="color:#475569;font-size:0.88rem;"> — Deep learning trained to generate new content — text, images, code — by predicting what comes next. ChatGPT, Claude, Gemini. A fundamentally different goal from your prediction models.</span>
+    </div>
+  </div>
+</div>
+```
+
+**Where your models sit:**
+
+| What you built | ML type | Branch |
+|----------------|---------|--------|
+| Linear Regression (Week 7) | Supervised — predicts a number | Machine Learning |
+| Logistic Regression (Week 8) | Supervised — predicts a category | Machine Learning |
+| Decision Trees (Week 9) | Supervised — rule-based prediction | Machine Learning |
+| K-Nearest Neighbours (Week 10) | Supervised — similarity-based | Machine Learning |
+| K-Means Clustering (Week 11) | Unsupervised — finds structure | Machine Learning |
+
+None of what you built is "just statistics." All of it is machine learning. Machine learning is a branch of artificial intelligence. When someone in your next strategy meeting says "we need AI for this," you are now entitled to ask: *"What kind? Because I've built five."*
+
+### Supervised vs unsupervised — what the difference looks like
+
+In Weeks 7–10 (**supervised learning**), every training row had a known label: a real TotalSpend value, a real IsHighValue status. The model learned by comparing its predictions to those known answers and adjusting.
+
+In Week 11 (**unsupervised learning**), there were no labels. You told the algorithm to find groups, and it found them purely from patterns of similarity in the data — no "right answer" to compare against.
+
+The plot below overlays both branches on the same 500 customers: cluster membership (unsupervised, colour) and IsHighValue status (supervised, shape).
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+library(tidyclust)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+# Refit the Week 11 K-means (K = 3) — self-contained, no state carried across blocks
+set.seed(42)
+km_fit <- workflow() |>
+  add_recipe(
+    recipe(~ TotalSpend + TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+           data = freshmart) |>
+      step_normalize(all_numeric_predictors())
+  ) |>
+  add_model(k_means(num_clusters = 3)) |>
+  fit(data = freshmart)
+
+freshmart |>
+  bind_cols(extract_cluster_assignment(km_fit)) |>
+  ggplot(aes(x = TotalTransactions, y = TotalSpend,
+             colour = .cluster, shape = IsHighValue)) +
+  geom_point(alpha = 0.6, size = 2.5) +
+  scale_colour_manual(values = c("Cluster_1" = "#9B8EC7",
+                                  "Cluster_2" = "#8FBFCA",
+                                  "Cluster_3" = "#f59e0b")) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "Two branches of ML — one dataset",
+    subtitle = "Colour = cluster (unsupervised, Week 11)  ·  Shape = IsHighValue (supervised, Week 8)",
+    x        = "Total Transactions",
+    y        = "Total Spend ($AUD)",
+    colour   = "Cluster",
+    shape    = "High Value?"
+  ) +
+  theme_minimal()
+```
+
+Both analyses used the same 500 FreshMart customers. The clusters were found with no labels — the algorithm had no idea what "High Value" meant. The IsHighValue shapes came from a supervised model trained on labelled data to predict a specific target. Same dataset, two completely different questions, two branches of AI.
+
+### How is Generative AI different?
+
+Your models each have a clear target: predict TotalSpend, classify IsHighValue, assign a cluster. Generative AI does something fundamentally different — it learns to predict **the next token** (word, pixel, code character) from enormous quantities of text or images. There is no "target variable" in the traditional sense.
+
+This makes Generative AI extraordinarily flexible — it can write, draw, and code. It also makes it extraordinarily hard to evaluate: there is no ground truth for "a good sentence," and the model has no built-in mechanism to distinguish true from false. It produces plausible outputs, not necessarily accurate ones.
+
+Your regression and classification models are precise, auditable, and fast to train. Generative AI is flexible, creative, and expensive to control. They are tools for different jobs — and knowing which job calls for which tool is one of the most valuable things a business analyst can know.
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.1
+
+**Q1.** A colleague says: "We don't use AI here — we just do logistic regression." How would you respond?
+
+**Q2.** Your manager asks whether ChatGPT could replace the customer churn prediction model you built. What would you say?
+
+**Q3.** Deep learning can achieve higher accuracy than logistic regression on many tasks. Name one reason you might still choose logistic regression.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Logistic regression is machine learning, and machine learning is a branch of artificial intelligence. "AI" is not just ChatGPT and robots — it is a broad family of techniques that learn patterns from data. The colleague is using a narrower definition than what the field actually uses. Logistic regression has been AI since well before the term became fashionable.
+
+**A2.** ChatGPT is a large language model designed to generate text. It is not designed for structured tabular prediction tasks like "given these customer attributes, predict churn probability from a CSV file." For that, a logistic regression or decision tree trained on labelled historical data is far more appropriate — more accurate, faster to run, and far easier to audit. ChatGPT could help you *explain* the model's results to stakeholders, but it cannot replace the model itself.
+
+**A3.** Interpretability, auditability, speed, and data requirements. Logistic regression produces coefficients that tell you exactly which variables matter and by how much, and you can trace any single prediction back to those coefficients. A deep learning model is typically a "black box" — you get a prediction but cannot explain it in human terms. In regulated industries (banking, insurance, healthcare), or any context where a decision must be justified to a customer or regulator, that interpretability is often legally required. Deep learning also needs far more training data than FreshMart's 500 customers to be reliable.
+:::
+
+---
+
+## 12.2 AI Tools Business Analysts Actually Use in 2025–2026
+
+Building models in R is one part of AI in business analytics. There is also a broad ecosystem of AI tools that analysts encounter in practice — often before they write a line of tidymodels code. Here is a practical tour of four categories you will see in your first job.
+
+### 1. AI code assistants
+
+Tools like GitHub Copilot, Claude, and ChatGPT can write R and Python code from a plain-English description. Given a prompt like *"fit a logistic regression in tidymodels to predict IsHighValue from TotalTransactions and AvgTransactionValue"*, they typically produce working code — and occasionally subtly wrong code.
+
+```{=html}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;">
+  <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:14px 16px;">
+    <p style="font-weight:600;color:#166534;margin:0 0 8px;">✅ Genuinely useful for</p>
+    <ul style="color:#166534;font-size:0.88rem;margin:0;padding-left:16px;line-height:1.9;">
+      <li>Getting a first draft of code quickly</li>
+      <li>Explaining what an unfamiliar function does</li>
+      <li>Translating code between R and Python</li>
+      <li>Generating boilerplate (loading data, basic plots)</li>
+    </ul>
+  </div>
+  <div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:14px 16px;">
+    <p style="font-weight:600;color:#7f1d1d;margin:0 0 8px;">⚠️ Where they fail</p>
+    <ul style="color:#7f1d1d;font-size:0.88rem;margin:0;padding-left:16px;line-height:1.9;">
+      <li>They don't know your data or domain</li>
+      <li>They hallucinate confident-sounding errors</li>
+      <li>They can't check whether output makes business sense</li>
+      <li>They can't validate a result against reality</li>
+    </ul>
+  </div>
+</div>
+```
+
+The rule: treat AI code assistants like a fast but overconfident colleague. Always check their work.
+
+### 2. AutoML platforms
+
+Azure AutoML, Google Vertex AI AutoML, and H2O.ai automatically try dozens of algorithms, tune hyperparameters, and return the "best" model. They automate the mechanical parts of modelling that you did by hand in Weeks 7–10.
+
+**What they automate:** algorithm selection, feature engineering, hyperparameter tuning, model comparison.
+
+**What they don't automate:** deciding what question to ask, cleaning and validating data, interpreting results to stakeholders, and understanding whether the "best" model by RMSE is actually best for the business. AutoML is a faster route to a model. It does not replace the analyst.
+
+### 3. BI platforms with embedded AI
+
+You used Power BI in Weeks 2–4. Power BI Copilot can auto-generate reports, answer questions in plain English, and surface anomalies: *"Sales dropped 18% last Tuesday — the main driver appears to be fewer transactions from Queensland."*
+
+These are real and useful features. But they are implementations of methods you already know — regression for trends, anomaly detection for outliers, aggregation for summaries — wrapped in a natural-language interface. Knowing what is under the hood lets you evaluate their output critically rather than accepting it without question.
+
+### 4. LLMs as a workflow tool — and how to use them well
+
+The most immediately useful AI tool for most business analysts in 2025–2026 is a large language model (LLM) — Claude, ChatGPT, or Gemini — used as a **thinking and writing partner**:
+
+- Draft the CMO report from your Week 11 clustering output
+- Explain a confusion matrix in plain English for a non-technical audience
+- Write the SQL query for a dataset you've already understood
+- Suggest predictor variables for a regression model
+- Debug R code that is producing an unexpected error
+- Summarise a 40-page research report on customer behaviour
+
+The bridge between your problem and a useful response is a skill called **prompt engineering**. Before we learn how to do it well, it helps to understand what is actually happening inside the model when you send it a message.
+
+### How an LLM works — the short version
+
+A large language model is, at its core, a very sophisticated autocomplete.
+
+It was trained on enormous quantities of text — books, websites, academic papers, code, news articles — and learned to do one thing: *"given everything that has been said so far, what word should come next?"* It does this by finding statistical patterns across billions of examples of human writing.
+
+That is the fundamental mechanism. The model has no memory between conversations, no real-time access to information, and no concept of truth. It produces the most statistically plausible continuation of your text, based on patterns in its training data.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;">
+  <p style="font-weight:600;color:#1e293b;margin:0 0 12px;">What happens when you send a prompt</p>
+  <ol style="color:#475569;margin:0;padding-left:20px;line-height:2.2;">
+    <li>Your message is split into <strong>tokens</strong> — roughly word fragments or punctuation</li>
+    <li>The model reads all tokens in your message as a single <strong>context window</strong></li>
+    <li>It predicts the most likely <strong>next token</strong>, based on patterns from training</li>
+    <li>It appends that token to the context and predicts the next one</li>
+    <li>This repeats, one token at a time, until the response is complete</li>
+  </ol>
+  <p style="color:#6b7280;font-size:0.88rem;margin:12px 0 0;">The model is <em>not</em> retrieving stored facts or searching a database. It is generating plausible text, token by token, from statistical patterns.</p>
+</div>
+```
+
+**A useful analogy:** imagine hiring an analyst who has read every business report, statistics textbook, and data science blog ever written — but has never worked at a real company, never touched actual data, and forgets every conversation the moment it ends. They are extraordinarily well-read. They can write convincingly about anything. They will sometimes confidently write something incorrect, because they are completing a pattern — not checking a fact.
+
+This explains both why LLMs are powerful (pattern-matching across more text than any human could read) and why they fail in predictable ways (they don't know your specific data, your company, or what actually happened last quarter).
+
+### Why prompting skill matters
+
+The same model, given two different prompts, produces outputs of wildly different quality. A vague prompt forces the model to make assumptions about your context, your audience, and your goal — and it will fill those gaps with generic defaults. A specific, well-structured prompt gives the model everything it needs to produce something genuinely useful.
+
+| | Vague prompt | Specific prompt |
+|--|---|---|
+| **What you type** | "explain my model" | "I built a logistic regression to predict whether a FreshMart customer is High Value (TotalSpend > $500). Accuracy = 91%, Sensitivity = 78%. Write two paragraphs in plain English for a CMO with no stats background. Focus on business implications, not method." |
+| **What you get** | A generic explanation of what logistic regression is | A draft CMO summary you can edit and send |
+| **Time saved** | None — you still have to rewrite it | 20–30 minutes of drafting |
+
+The difference is not luck. It is a learnable skill.
+
+### The anatomy of a good prompt
+
+A well-structured prompt typically includes five elements. You don't need all five every time, but the more context you provide, the less the model has to guess — and guessing is where it goes wrong.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;">
+  <div style="display:grid;gap:10px;">
+    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;">
+      <div style="background:#eff6ff;border-radius:6px;padding:8px 12px;font-weight:600;color:#1d4ed8;font-size:0.87rem;text-align:center;">1. Context</div>
+      <div style="color:#374151;font-size:0.88rem;padding-top:6px;">Who you are and the situation. <em style="color:#6b7280;">"I am a junior data analyst at FreshMart, an Australian supermarket with 500 loyalty members."</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;">
+      <div style="background:#f5f3ff;border-radius:6px;padding:8px 12px;font-weight:600;color:#6d28d9;font-size:0.87rem;text-align:center;">2. Role</div>
+      <div style="color:#374151;font-size:0.88rem;padding-top:6px;">What you want the AI to act as. <em style="color:#6b7280;">"Act as an experienced data storyteller."</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;">
+      <div style="background:#fef3c7;border-radius:6px;padding:8px 12px;font-weight:600;color:#b45309;font-size:0.87rem;text-align:center;">3. Input</div>
+      <div style="color:#374151;font-size:0.88rem;padding-top:6px;">The specific content the AI will work with — paste the actual numbers, code, or model output. Don't describe it; give it directly.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;">
+      <div style="background:#f0fdf4;border-radius:6px;padding:8px 12px;font-weight:600;color:#166534;font-size:0.87rem;text-align:center;">4. Output format</div>
+      <div style="color:#374151;font-size:0.88rem;padding-top:6px;">Length, structure, and audience. <em style="color:#6b7280;">"Two paragraphs, plain English, no jargon. Suitable for a CMO with no statistics background."</em></div>
+    </div>
+    <div style="display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:start;">
+      <div style="background:#fef2f2;border-radius:6px;padding:8px 12px;font-weight:600;color:#b91c1c;font-size:0.87rem;text-align:center;">5. Constraints</div>
+      <div style="color:#374151;font-size:0.88rem;padding-top:6px;">What to avoid or emphasise. <em style="color:#6b7280;">"Do not recommend a specific vendor. Focus on business implications, not technical method."</em></div>
+    </div>
+  </div>
+</div>
+```
+
+### Six ready-to-use prompt templates for analytics
+
+The following templates are structured using the five-element framework above. Each one is ready to copy, fill in the bracketed sections with your actual data, and use.
+
+---
+
+**Template 1 — Explain model output to a non-technical audience**
+
+> I am a data analyst at [company name]. I built a logistic regression model to classify customers as "High Value" (spending > $500 lifetime). The model results on the test set are:
+> - Accuracy: [X]%
+> - Sensitivity: [X]%
+> - Specificity: [X]%
+>
+> Act as a business communication expert. Write two paragraphs explaining these results to our Head of Marketing, who has no statistics background. Emphasise what the numbers mean for the business — not how the model works. Keep it under 150 words.
+
+---
+
+**Template 2 — Interpret a confusion matrix**
+
+> Here is the confusion matrix from my binary classification model. The positive class is "High Value customer."
+>
+> |  | Predicted: Not High Value | Predicted: High Value |
+> |--|--|--|
+> | **Actual: Not High Value** | [TN] | [FP] |
+> | **Actual: High Value** | [FN] | [TP] |
+>
+> Explain in plain English what each of the four numbers means. Then tell me: which type of error is more costly for a loyalty marketing team, and why? Finally, what does this matrix suggest about where the model is weakest?
+
+---
+
+**Template 3 — Debug R code**
+
+> I am learning R with the tidymodels package. This code produces the following error:
+>
+> ```
+> [paste the exact error message here]
+> ```
+>
+> Here is my code:
+>
+> ```r
+> [paste your code here]
+> ```
+>
+> Explain what is causing the error in one sentence. Then show me the corrected code. Do not change any part of the code that is already working correctly.
+
+---
+
+**Template 4 — Suggest predictors for a model**
+
+> I am building a model to predict [target variable] for [describe the business context]. My dataset contains these columns: [list all column names and a one-line description of each].
+>
+> Which columns would you recommend as predictors? For each one, explain in one sentence why it might be related to [target variable]. Separately, flag any columns that should NOT be used as predictors — for example, because they would cause data leakage — and explain why.
+
+---
+
+**Template 5 — Write a business recommendation from clustering output**
+
+> I ran K-means clustering (K=[number]) on [number] customers using [list variables]. The clusters have these profiles:
+>
+> [Paste the profile table here — avg spend, avg transactions, avg tenure, cluster size]
+>
+> Act as a marketing strategist. Give each cluster a short, memorable business label. Then write one specific, actionable marketing recommendation for each cluster in two sentences. Do not use statistical jargon. Assume the audience is a Head of Marketing.
+
+---
+
+**Template 6 — Write a SQL query from a plain-English description**
+
+> I have a database table called [table name] with these columns: [list columns and their data types or descriptions].
+>
+> I want to [describe what you want in plain English — filter conditions, groupings, sorting, etc.].
+>
+> Write the SQL query using standard SQL syntax. Add a one-line comment above each clause explaining what it does.
+
+---
+
+:::{.callout-note}
+## A prompt is a draft, not a final answer
+
+Even with a well-structured prompt, always review the output before using it. Check: Does the explanation match the actual numbers? Did the SQL query capture all the conditions I described? Does the business recommendation make sense given what I know about the customer base? LLM output is a fast first draft — the analyst's judgment is what makes it reliable.
+:::
+
+The block below demonstrates one concrete application — using R to auto-generate a plain-English model summary, the same way embedded AI tools do it under the hood.
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+set.seed(42)
+split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+
+lr_fit <- workflow() |>
+  add_recipe(
+    recipe(IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+           data = training(split)) |>
+      step_normalize(all_numeric_predictors())
+  ) |>
+  add_model(logistic_reg() |> set_engine("glm")) |>
+  fit(data = training(split))
+
+# Extract and rank coefficients by strength
+coeffs <- tidy(extract_fit_parsnip(lr_fit)) |>
+  filter(term != "(Intercept)") |>
+  arrange(desc(abs(estimate)))
+
+# Auto-generate a plain-English model summary
+top_term <- coeffs$term[1]
+top_est  <- round(coeffs$estimate[1], 2)
+
+cat(paste0(
+  "=== Auto-Generated Model Summary ===\n\n",
+  "Predictors: TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase\n\n",
+  "Strongest predictor: '", top_term,
+  "' (normalised coefficient = ", top_est, ").\n",
+  "A one standard-deviation increase in this variable is associated with ",
+  if (top_est > 0) "a higher" else "a lower",
+  " probability of being High Value.\n\n",
+  "All predictors are normalised — compare their magnitudes directly.\n"
+))
+
+coeffs
+```
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 12.2.1
+
+Using the model fitted above, run `augment()` on the test set and compute a full set of classification metrics using `conf_mat(...) |> summary()`. Is accuracy alone sufficient to decide whether this model is production-ready?
+
+*(Hint: load data and refit the model from the block above first, then run:*
+*`augment(lr_fit, new_data = testing(split)) |> conf_mat(truth = IsHighValue, estimate = .pred_class) |> summary()`)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+set.seed(42)
+split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+
+lr_fit <- workflow() |>
+  add_recipe(
+    recipe(IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+           data = training(split)) |>
+      step_normalize(all_numeric_predictors())
+  ) |>
+  add_model(logistic_reg() |> set_engine("glm")) |>
+  fit(data = training(split))
+
+augment(lr_fit, new_data = testing(split)) |>
+  conf_mat(truth = IsHighValue, estimate = .pred_class) |>
+  summary()
+```
+
+Accuracy alone is not enough. Check also:
+
+- **Sensitivity** (recall): what fraction of genuine High Value customers did the model catch? Low sensitivity means the model is missing people it should be identifying.
+- **Specificity**: what fraction of Not High Value customers did it correctly leave alone? Low specificity means wasted discount spend.
+- **Business cost**: is a missed High Value customer (false negative) more costly than a wasted offer on a non-High Value customer (false positive)? That asymmetry should drive your threshold choice — and possibly your choice of model.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.2
+
+**Q1.** An AI code assistant generates a tidymodels workflow that trains a random forest and reports 94% accuracy. What should you do before using it?
+
+**Q2.** Power BI Copilot reports: *"Sales dropped 15% in Brisbane last month."* What questions would you ask before presenting this to the CFO?
+
+**Q3.** What does AutoML automate compared to what you did in Weeks 7–10? What does it still not do?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Verify the model is actually doing what you think: check that the recipe has no data leakage, that 94% accuracy is not an artefact of class imbalance, that the predictions make sense for individual customers you know (Marcus Lee should be predicted High Value; Nina Patel should not), and that a random forest is the right choice for this problem rather than just the most impressive-sounding option. High accuracy does not guarantee a trustworthy or useful model.
+
+**A2.** Is 15% unusual for Brisbane in this period — is there a seasonal baseline? What does "sales" mean — revenue or transaction count? Is the month complete or is this a partial-month comparison? Is it one store or all Brisbane stores? How confident is the anomaly detection that this is a real drop rather than noise in a small market?
+
+**A3.** AutoML automates algorithm selection, hyperparameter tuning, feature engineering, and model comparison. What it still does not do: deciding what question to ask, understanding data quality and its limitations, interpreting results in business terms, making the interpretability vs. accuracy tradeoff, and communicating findings to non-technical stakeholders. You did all of those in Weeks 7–10.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.2 (Prompt Engineering)
+
+**Q1.** A classmate sends an LLM this prompt: *"explain clustering."* They get a generic textbook definition. They try again with: *"I ran K-means with K=3 on FreshMart's 500 loyalty customers. The three clusters have average spend of $4,200, $890, and $120. Write one marketing recommendation for each cluster in two sentences each. No jargon — my audience is the Head of Marketing."* The second response is dramatically more useful. Which of the five prompt elements most explains the improvement?
+
+**Q2.** An LLM confidently tells you that the R function `step_normalize()` normalises using the median and IQR. You know from Week 10 that it uses the mean and standard deviation. Why did the model give you the wrong answer, and what does this tell you about when to trust LLM output?
+
+**Q3.** You ask an LLM to write a SQL query that returns "all FreshMart customers who spent more than $500 and joined before 2022." It returns a query with a `WHERE` clause that looks correct. Before using it, what should you do?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The combination of **Input** (the actual cluster profile numbers), **Output format** (one recommendation per cluster, two sentences each), and **Constraints** (no jargon, audience is Head of Marketing) made the biggest difference. The first prompt gave the model no data to work with and no specification of what "useful" looks like — so it defaulted to a textbook definition. The second prompt gave it the actual content to reason about and clear boundaries for what the output should look like.
+
+**A2.** The model is not retrieving facts from a database — it is generating statistically plausible text based on patterns in its training data. Text about normalisation in statistics often mentions both z-score normalisation (mean/SD) and robust normalisation (median/IQR), and the model may have completed the pattern incorrectly. This is a hallucination: a confident, fluent, plausible-sounding response that is factually wrong. The lesson: always verify LLM claims about specific functions, packages, or technical details against the actual documentation. Trust the R help file (`?step_normalize`) over the LLM.
+
+**A3.** Test it. Run the query on a small known subset of the data and manually check whether the results match what you expect. For example: find a customer you know joined before 2022 and spent more than $500 (Marcus Lee, CustomerID 501, joined 2021) — check that he appears in the results. Find a customer who should NOT appear (Nina Patel, $0 spend) — check she does not. SQL is easy to test; always test before relying on AI-generated queries in production.
+:::
+
+---
+
+## 12.3 Responsible AI: Bias, Fairness, and the Analyst's Duty
+
+Building a model that works is not the same as building a model that is fair, trustworthy, or appropriate to deploy. This section covers three responsible-AI concepts every business analyst will encounter — illustrated throughout with the FreshMart data you've worked with all semester.
+
+### Sampling bias
+
+A model is only as good as the data it was trained on. If the training data is biased, the model inherits that bias and then applies it systematically to every future prediction.
+
+**FreshMart example:** Suppose FreshMart collected its customer data entirely during a pre-Christmas promotional period, when customers spent 40% more than usual. A model trained on this data will systematically overestimate spend for customers acquired in January or July — those customers will look "Not High Value" even if they are loyal, moderate-spending regulars. The model is not broken; it learned faithfully from the data. The data was the problem.
+
+The analyst's responsibility: understand *when and how* the training data was collected, and whether those conditions still hold for the customers you are predicting on.
+
+### Disparate impact
+
+Even when training data is unbiased, a model can produce outcomes that differ systematically across subgroups — by city, age bracket, or membership tier. This is called **disparate impact**.
+
+It matters because model output is often used to make real decisions: which customers get a discount offer, which ones get a loyalty tier upgrade, which ones get a churn-prevention call. If the model systematically misses genuine High Value customers in one city, those customers are excluded from opportunities they deserve — and the business decision is unfair, even if unintentionally.
+
+The key practice is **disaggregated evaluation**: checking model performance not just overall, but separately for each subgroup. The block below computes the **false negative rate** (missed High Value customers as a fraction of all actual High Value customers) broken down by city.
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+set.seed(42)
+split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+train <- training(split)
+test  <- testing(split)
+
+lr_fit <- workflow() |>
+  add_recipe(
+    recipe(IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+           data = train) |>
+      step_normalize(all_numeric_predictors())
+  ) |>
+  add_model(logistic_reg() |> set_engine("glm")) |>
+  fit(data = train)
+
+# Fairness audit: false negative rate by City
+# False negative rate = missed High Value customers / all actual High Value customers
+augment(lr_fit, new_data = test) |>
+  group_by(City) |>
+  summarise(
+    n         = n(),
+    actual_hv = sum(IsHighValue == "True"),
+    missed_hv = sum(.pred_class == "False" & IsHighValue == "True"),
+    fnr_pct   = if_else(actual_hv > 0,
+                        round(missed_hv / actual_hv * 100, 1),
+                        NA_real_)
+  ) |>
+  filter(!is.na(fnr_pct)) |>
+  arrange(desc(fnr_pct))
+```
+
+### Interpretability vs accuracy
+
+Not all models are equally explainable. The models you've built sit on a spectrum from fully transparent to opaque.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;overflow-x:auto;">
+  <p style="font-weight:600;color:#1e293b;margin:0 0 14px;">The Interpretability Spectrum</p>
+  <div style="display:flex;align-items:stretch;gap:0;min-width:520px;">
+    <div style="text-align:center;flex:1;padding:12px 6px;background:#dcfce7;border-radius:6px 0 0 6px;border:1px solid #86efac;">
+      <div style="font-size:0.8rem;font-weight:600;color:#166534;">Linear Regression</div>
+      <div style="font-size:0.72rem;color:#15803d;margin-top:4px;">Fully interpretable.<br>Equation explains every prediction.</div>
+    </div>
+    <div style="text-align:center;flex:1;padding:12px 6px;background:#d1fae5;border:1px solid #6ee7b7;border-left:0;">
+      <div style="font-size:0.8rem;font-weight:600;color:#065f46;">Logistic Regression</div>
+      <div style="font-size:0.72rem;color:#047857;margin-top:4px;">Coefficients readable.<br>Log-odds requires care.</div>
+    </div>
+    <div style="text-align:center;flex:1;padding:12px 6px;background:#fef9c3;border:1px solid #fde047;border-left:0;">
+      <div style="font-size:0.8rem;font-weight:600;color:#713f12;">Decision Tree</div>
+      <div style="font-size:0.72rem;color:#854d0e;margin-top:4px;">Rules are human-readable.<br>Deep trees get complex.</div>
+    </div>
+    <div style="text-align:center;flex:1;padding:12px 6px;background:#ffedd5;border:1px solid #fdba74;border-left:0;">
+      <div style="font-size:0.8rem;font-weight:600;color:#7c2d12;">KNN</div>
+      <div style="font-size:0.72rem;color:#9a3412;margin-top:4px;">Can explain individual predictions.<br>No global summary.</div>
+    </div>
+    <div style="text-align:center;flex:1;padding:12px 6px;background:#fee2e2;border-radius:0 6px 6px 0;border:1px solid #fca5a5;border-left:0;">
+      <div style="font-size:0.8rem;font-weight:600;color:#7f1d1d;">Deep Learning</div>
+      <div style="font-size:0.72rem;color:#991b1b;margin-top:4px;">Black box. Needs separate explanation tools.</div>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.72rem;color:#64748b;">
+    <span>← More interpretable, less accurate on complex tasks</span>
+    <span>More accurate on complex tasks, less interpretable →</span>
+  </div>
+</div>
+```
+
+In regulated industries — financial services, healthcare, insurance — an algorithm that cannot explain a specific decision may face legal challenges. The EU AI Act (2024) and Australia's AI Safety Standard proposals both include explainability requirements for high-risk AI applications. A logistic regression that is 3% less accurate than a neural network, but whose every prediction can be traced to a coefficient, is often the better business choice.
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 12.3.1
+
+Change `City` to `SpendCategory` in the fairness audit block above. Which spend category has the highest false negative rate? What does this tell you about which customers the model is most likely to miss?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+augment(lr_fit, new_data = test) |>
+  group_by(SpendCategory) |>
+  summarise(
+    n         = n(),
+    actual_hv = sum(IsHighValue == "True"),
+    missed_hv = sum(.pred_class == "False" & IsHighValue == "True"),
+    fnr_pct   = if_else(actual_hv > 0,
+                        round(missed_hv / actual_hv * 100, 1),
+                        NA_real_)
+  ) |>
+  filter(!is.na(fnr_pct)) |>
+  arrange(desc(fnr_pct))
+```
+
+Customers in the "Medium" spend category are most likely to be misclassified as Not High Value. This makes intuitive sense — they sit closest to the decision boundary (TotalSpend ≈ $500) and the model is least certain about them. Priya Sharma ($433 spend) and Jake Nguyen ($340 spend) are in this zone. If FreshMart is using the model to allocate loyalty tier upgrades, these are the customers most in need of manual review before an automated decision is made.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.3
+
+**Q1.** FreshMart wants to use the logistic regression model on customers at a new store in regional Victoria. What responsible-AI concern does this raise?
+
+**Q2.** The fairness audit shows Brisbane customers have a 15% higher false negative rate than Sydney customers. A manager says: "That's fine — Brisbane customers are just lower spenders overall." Is this a satisfying explanation? What would you check?
+
+**Q3.** A new deep learning model achieves 96% accuracy compared to 91% for logistic regression. Name two questions you would ask before recommending it for production use.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The model was trained entirely on metropolitan customers from five cities. It has never seen rural buying patterns, different store density, or different product mixes. Applying it to a new context outside the training distribution is a sampling bias problem — the model may be systematically wrong for exactly the customers it is most needed for. You would need to collect data from the new store before trusting the model's predictions there.
+
+**A2.** Not satisfying on its own. You need to check: after controlling for actual spend level, are Brisbane customers still more likely to be missed? If the false negative rate remains high even among Brisbane customers who genuinely are High Value (TotalSpend > $500), then the model is penalising Brisbane customers based on some other correlated feature — perhaps city-level transaction patterns in the training data. That would be disparate impact, not a real spending difference, and it would need to be addressed.
+
+**A3.** (1) Can the model explain individual predictions? If a customer is denied a loyalty tier upgrade, can we tell them and our compliance team why, in terms they can understand? (2) Is the 5% accuracy gain worth the cost — in computation, maintenance, regulatory risk, and the loss of readable coefficients? A small accuracy improvement from an opaque model is often not worth the compliance and trust tradeoff in a customer-facing business context.
+:::
+
+---
+
+## 12.4 What AI Cannot (Yet) Do
+
+AI tools are genuinely powerful for the things they are designed for. They are also genuinely limited in five ways that matter enormously in business analytics.
+
+### 1. Frame the problem
+
+No algorithm decided that FreshMart needed customer segmentation. No model suggested that predicting IsHighValue was the right target. Those were human judgments — based on domain knowledge, business priorities, and conversations with the CMO. The question *"what should we measure?"* is still entirely a human question.
+
+### 2. Know when the data is wrong
+
+Nina Patel (CustomerID 503) has $0 spend and 0 transactions. The model correctly classifies her as Not High Value — but it has no idea whether she is a genuine inactive customer, a duplicate account, or a data entry error from someone testing the loyalty system. The model treats every row as valid. The analyst is the one who notices the anomaly and asks whether it should be there.
+
+### 3. Translate output into action
+
+The K-means result produces: *"Cluster_2 has a WSS contribution of 1,412 and a mean TotalSpend of $2,340."* The CMO needs to hear: *"This is your Loyal Champions group — 127 customers who drive 43% of your revenue, and you should be protecting them with exclusive rewards."*
+
+That translation is judgment, narrative, and domain knowledge. Algorithms produce numbers; analysts produce meaning.
+
+### 4. Be accountable
+
+When a model makes a wrong decision — flags a genuine High Value customer as low priority and that customer leaves — the model cannot be held responsible. A human is accountable: the analyst who built it, the manager who deployed it, the business that used it without oversight. AI does not absorb responsibility.
+
+### 5. Reason about causation
+
+In the EDA chapter (Week 6), you found that LoyaltyPoints and TotalSpend are strongly correlated (r ≈ 0.85). The logistic regression uses LoyaltyPoints as a predictor. But **correlation is not causation** — giving every FreshMart customer free loyalty points will not cause them to spend more. The causal arrow almost certainly runs the other way: customers who spend more earn more points. AI models learn correlations; deciding which correlations represent causal relationships, and which would support a real intervention, is still a human reasoning task.
+
+The block below demonstrates one specific limitation: the model produces confident predictions even for inputs it has never seen anything like.
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+set.seed(42)
+split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+
+lr_fit <- workflow() |>
+  add_recipe(
+    recipe(IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+           data = training(split)) |>
+      step_normalize(all_numeric_predictors())
+  ) |>
+  add_model(logistic_reg() |> set_engine("glm")) |>
+  fit(data = training(split))
+
+# Feed impossible inputs to the model
+edge_cases <- tibble(
+  label                  = c("Nina Patel (real, $0 spend)",
+                              "Impossible: negative transactions",
+                              "Impossible: $50k avg transaction"),
+  TotalTransactions      = c(0,   -5,    10),
+  AvgTransactionValue    = c(0,    0, 50000),
+  DaysSinceFirstPurchase = c(0,    0,   365)
+)
+
+predictions <- augment(lr_fit, new_data = edge_cases |> select(-label))
+
+bind_cols(edge_cases |> select(label), predictions |> select(.pred_class, .pred_False, .pred_True)) |>
+  mutate(across(where(is.numeric), ~ round(., 3)))
+```
+
+The model predicts a confident classification for customers with negative transactions and $50,000 average transaction values — inputs that are physically impossible and completely outside anything it was trained on. This is not a bug; it is how statistical models work. They extrapolate beyond the training data, often without any signal that they are doing so. The analyst's job is to prevent nonsense inputs from reaching the model in production, and to question predictions on new data that looks very different from training data.
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.4
+
+**Q1.** Gary McSnarl (CustomerID 502) made exactly one purchase for $34.90 and has not returned. The model classifies him as Not High Value. Is the model wrong?
+
+**Q2.** FreshMart's Head of Analytics proposes fully automating loyalty tier upgrades — if the model says High Value, the customer is upgraded automatically, with no human review. What is the strongest argument against this approach?
+
+**Q3.** A data scientist shows you that increasing TotalTransactions is strongly correlated with higher TotalSpend in the training data. She suggests a marketing campaign to give customers more transaction opportunities (e.g., smaller, more frequent offers). What causal reasoning question should you ask first?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Not wrong — Gary really does look like a Not High Value customer based on his behaviour. But the model doesn't know *why* Gary has one transaction: it could be that he genuinely disliked the experience (legitimate prediction), or that he bought once at a checkout and never received his loyalty card (data collection issue), or that his purchase was mis-attributed to the wrong account (data quality issue). The model predicts correctly on his data; the analyst still needs to assess whether that data is accurate.
+
+**A2.** The model makes mistakes — at 91% accuracy, roughly 9% of classifications are wrong. Some of those errors are false negatives: genuine High Value customers classified as not high value, who would be denied an upgrade they deserve. For those customers, there is no human in the loop to catch the error before harm is done. Additionally, customers have a reasonable expectation of being able to query a decision that affects them. An automated system with no human review point is both operationally risky and increasingly difficult to defend legally.
+
+**A3.** Does higher transaction frequency *cause* higher spend, or do high-spend customers naturally transact more? If the causal arrow runs from spend to transactions (customers who spend more simply buy more often), then incentivising more transactions — giving smaller, more frequent offers — may not increase total spend at all. You'd be subsidising behaviour that was already happening. To answer the causal question, you would need an experiment: randomly assign some customers to the campaign and observe whether their total spend increases relative to a control group.
+:::
+
+---
+
+## 12.5 The Skills You Now Have, and What Comes Next
+
+Six weeks ago, you could not write an R function. Now look at what you can do.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;">
+  <p style="font-weight:600;color:#1e293b;margin:0 0 14px;">Your Analytics Competency Map</p>
+  <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+    <thead>
+      <tr style="background:#f1f5f9;">
+        <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;border-bottom:2px solid #e2e8f0;">What you did</th>
+        <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;border-bottom:2px solid #e2e8f0;">What employers call it</th>
+        <th style="padding:8px 12px;text-align:left;color:#475569;font-weight:600;border-bottom:2px solid #e2e8f0;">Week</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Loaded, inspected, and summarised data in R</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Data wrangling / ETL</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">6</td></tr>
+      <tr style="background:#f8fafc;"><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Visualised distributions, outliers, and correlations</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Exploratory data analysis</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">6</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Built and evaluated a regression model with train/test split</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Predictive modelling</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">7</td></tr>
+      <tr style="background:#f8fafc;"><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Classified customers and read a confusion matrix</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Binary classification</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">8</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Compared multiple algorithms, chose between them</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Algorithm selection</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">7–10</td></tr>
+      <tr style="background:#f8fafc;"><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Used cross-validation to tune a hyperparameter</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Model tuning / optimisation</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">10</td></tr>
+      <tr><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Clustered customers and named the segments</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">Customer segmentation</td><td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">11</td></tr>
+      <tr style="background:#f8fafc;"><td style="padding:8px 12px;">Wrote the CMO report from technical output</td><td style="padding:8px 12px;">Data storytelling / stakeholder communication</td><td style="padding:8px 12px;">11</td></tr>
+    </tbody>
+  </table>
+</div>
+```
+
+### Three paths from here
+
+```{=html}
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0;">
+  <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#1d4ed8;margin:0 0 8px;">📊 More statistical depth</p>
+    <p style="color:#374151;font-size:0.87rem;margin:0 0 10px;">Time series forecasting, A/B testing, causal inference, survival analysis.</p>
+    <p style="color:#1d4ed8;font-size:0.82rem;font-weight:600;margin:0;">Start with: ETF3231, R for Data Science (Hadley Wickham, free online)</p>
+  </div>
+  <div style="background:#f5f3ff;border:1px solid #c4b5fd;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#6d28d9;margin:0 0 8px;">💻 More computing depth</p>
+    <p style="color:#374151;font-size:0.87rem;margin:0 0 10px;">Python, SQL beyond this course, cloud data warehouses (BigQuery, Snowflake), version control with Git.</p>
+    <p style="color:#6d28d9;font-size:0.82rem;font-weight:600;margin:0;">Start with: Python for Everybody (Coursera, free to audit)</p>
+  </div>
+  <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#b45309;margin:0 0 8px;">🤖 More AI depth</p>
+    <p style="color:#374151;font-size:0.87rem;margin:0 0 10px;">Neural networks, deep learning, natural language processing, large language model APIs.</p>
+    <p style="color:#b45309;font-size:0.82rem;font-weight:600;margin:0;">Start with: fast.ai Practical Deep Learning (free online)</p>
+  </div>
+</div>
+```
+
+### Choosing the right model for the right question
+
+The block below poses three different FreshMart business questions. Each calls for a different type of model. Explore all three — the scaffold is provided for the first one.
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
+
+# Three business questions — each needs a different model type:
+#
+# Q1: "How much will a new customer spend in their first year?"
+#     → Linear regression (numeric target: TotalSpend)
+#
+# Q2: "Which existing customers are likely to stop shopping with us?"
+#     → Logistic regression (binary target: use Churned if available, or IsHighValue as proxy)
+#
+# Q3: "Are there customer types we haven't noticed yet?"
+#     → Clustering (no target — unsupervised)
+
+# Example: Q1 — linear regression for TotalSpend
+set.seed(42)
+split <- initial_split(freshmart, prop = 0.75)
+
+lm_fit <- workflow() |>
+  add_recipe(
+    recipe(TotalSpend ~ TotalTransactions + AvgTransactionValue +
+             DaysSinceFirstPurchase + LoyaltyPoints,
+           data = training(split))
+  ) |>
+  add_model(linear_reg() |> set_engine("lm")) |>
+  fit(data = training(split))
+
+# How well does the regression model predict on the test set?
+augment(lm_fit, new_data = testing(split)) |>
+  metrics(truth = TotalSpend, estimate = .pred)
+
+# Try Q2: swap in logistic_reg() and change the recipe outcome to IsHighValue
+# Try Q3: use k_means() from tidyclust with no outcome variable
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — 12.5
+
+**Q1.** A graduate analyst is asked to "build an AI model to improve customer retention." Before writing a single line of R, what are the first two questions they should ask?
+
+**Q2.** You have built a logistic regression (91% accurate) and a KNN model (89% accurate) for the same classification problem. The logistic regression is slower to update when new data arrives but produces readable coefficients. Which would you recommend, and why?
+
+**Q3.** Looking back at Week 6, you calculated that `r = 0.705` between TotalTransactions and TotalSpend. At the time this was an EDA finding. How would you use this same information to make a modelling decision in Week 7?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** (1) What does "retention" mean — are we predicting who will churn, or predicting which customers to target with a retention offer, or both? These are different problems with different targets, different success metrics, and different model choices. (2) What data do we have, and how was it collected? Specifically: do we have labelled historical churn data, what time period does it cover, and is the data representative of the customers we want to predict on? The answers to these two questions shape every subsequent modelling decision.
+
+**A2.** The logistic regression is likely the better recommendation in most business contexts: it is more accurate, its coefficients let you explain to the CMO which factors drive High Value status, it satisfies interpretability requirements for any regulated use, and a 2% accuracy difference is often within the noise of real deployment conditions. Recommendation: use the logistic regression, and document the KNN result as a benchmark for comparison.
+
+**A3.** A correlation of 0.705 between TotalTransactions and TotalSpend means these two variables share substantial information. If both are included as predictors in a Week 7 multiple regression, we risk multicollinearity — the model will have difficulty separating their individual effects on the outcome. You could either choose one over the other as a predictor, or use AvgTransactionValue (which captures spend per visit) alongside TotalTransactions to capture both dimensions without redundancy.
+:::
+
+---
+
+## 12.6 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 12.1 — Mapping the Models
+
+Place each of the five models you built (linear regression, logistic regression, decision tree, KNN, K-means) into the correct cell of this grid:
+
+|  | Supervised | Unsupervised |
+|--|--|--|
+| **Predicts a number** | | |
+| **Predicts a category** | | |
+| **Finds hidden structure** | | |
+
+For each cell you fill in, give one real-world business example of that type of model being used — not from FreshMart, and not from class.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+|  | Supervised | Unsupervised |
+|--|--|--|
+| **Predicts a number** | Linear Regression, Decision Tree (regression mode) | — |
+| **Predicts a category** | Logistic Regression, KNN | — |
+| **Finds hidden structure** | — | K-Means Clustering |
+
+Real-world examples (many valid answers):
+
+- **Supervised regression:** a bank predicting house prices from property features; a streaming service predicting how many minutes a user will watch a new show.
+- **Supervised classification:** a bank predicting whether a credit card transaction is fraudulent; a hospital predicting whether a patient will be readmitted within 30 days.
+- **Unsupervised clustering:** a retailer grouping products by purchasing patterns to redesign store layouts; a music platform grouping listeners by taste to create personalised radio stations.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.2 — Reading Coefficients
+
+Run the logistic regression from Section 12.2 and examine the `coeffs` table. Then answer:
+
+(a) Which predictor has the largest normalised coefficient in absolute value?
+
+(b) A colleague says: "The coefficient for `DaysSinceFirstPurchase` is the smallest, so it barely matters." What is missing from this statement?
+
+(c) These coefficients are on *normalised* predictors. If you wanted to compare the raw business impact of TotalTransactions vs AvgTransactionValue, what additional information would you need?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+**(a)** Run the code in Section 12.2 to find the top predictor — typically `TotalTransactions` or `AvgTransactionValue`.
+
+**(b)** The colleague is correct that `DaysSinceFirstPurchase` has the smallest coefficient magnitude — but is missing two things. First, statistical uncertainty: a small coefficient with a small standard error may still be reliably non-zero and worth including. Second, business context: even a small coefficient on tenure (DaysSinceFirstPurchase) may matter a lot for new customer acquisition decisions, even if it explains less variance in the model overall.
+
+**(c)** You would need the standard deviation of each raw predictor in the training data. A normalised coefficient represents the effect of a one-standard-deviation change. To compare business impact in natural units (e.g., "one extra transaction" vs "one extra dollar of average transaction value"), you would divide the normalised coefficient by the original standard deviation of the predictor. `tidy(extract_fit_parsnip(lr_fit))` gives normalised estimates; `training(split) |> summarise(sd_txns = sd(TotalTransactions), sd_atv = sd(AvgTransactionValue))` gives the standard deviations to convert back.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.3 — Fairness Audit Extension
+
+Run the fairness audit block from Section 12.3. Then:
+
+(a) Which city has the highest false negative rate in your test set?
+
+(b) A manager sees this and says "we should collect more data from that city and retrain the model." Is this the right first response? What questions should come before it?
+
+(c) A false negative rate difference of 10 percentage points across cities — is that a model problem, a data problem, or a real-world pattern? Describe one way you would investigate.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+**(a)** Run the block in Section 12.3. The result depends on your test split, but typically Canberra or Brisbane (smaller sample sizes in the test set) may show higher false negative rates due to fewer observations rather than genuine model bias.
+
+**(b)** Not the right first response. Questions to ask first: Is the difference statistically meaningful given the small sample sizes per city in the test set? Does the city with the highest false negative rate also have fewer actual High Value customers in the test set (making the rate more volatile)? Is the false negative rate difference consistent if you re-run with a different random seed? Only after ruling out noise and sample size effects should you investigate whether the model genuinely behaves differently across cities.
+
+**(c)** It could be any of the three. Investigate by: (1) running the model with `set.seed` varied across multiple splits and checking whether the same city consistently has a high false negative rate — if it does, it's more likely a model issue than noise; (2) checking whether High Value customers in that city have different feature distributions from the training data (data distribution shift); (3) looking at whether there is a real business reason customers in that city spend differently (e.g., a different store format, different product range) — which would make it a real-world pattern rather than a model artefact.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.4 — The Impossible Customer
+
+Using the edge case block from Section 12.4:
+
+(a) Add a fourth impossible customer: `TotalTransactions = 1000`, `AvgTransactionValue = 0.01`, `DaysSinceFirstPurchase = 36500` (100 years as a customer). What does the model predict?
+
+(b) Why does the model produce a confident prediction for inputs it has never seen anything like?
+
+(c) In a production system — where real customers submit data to get a loyalty tier decision — how would you guard against nonsense inputs reaching the model?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+**(a)** Add the row to `edge_cases` and re-run `augment()`. The model will produce a prediction — most likely "True" (High Value) due to the very high TotalTransactions count, even though the scenario is physically impossible.
+
+**(b)** Logistic regression is a mathematical function — it takes any numeric input and produces an output. It has no concept of "this input makes no sense" or "I've never seen anything like this before." The recipe normalises the inputs, which scales the impossible values to extreme positions on the standard normal scale — the model then extrapolates linearly in log-odds space. There is no alarm mechanism for out-of-distribution inputs in a standard logistic regression.
+
+**(c)** Input validation at the application layer: before a prediction is made, check that all input values fall within the plausible range of the training data (e.g., `TotalTransactions` between 0 and 100, `AvgTransactionValue` between $0 and $500). Inputs outside these ranges should be flagged for human review rather than fed to the model. This is a standard practice in any production ML system and is the analyst/engineer's responsibility, not the model's.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.5 — Four Clusters
+
+Re-run the K-means clustering from Week 11 with K=4 (adapt the code from Exercise 11.1). Profile all four clusters and compare them to the K=3 solution.
+
+(a) Does the fourth cluster represent a genuinely distinct customer type, or does it split an existing cluster roughly in half?
+
+(b) Name the four clusters if they represent meaningfully different groups. If they don't, explain why K=3 was sufficient.
+
+(c) If you were presenting to FreshMart's CMO, would you recommend K=3 or K=4? Give one business reason for your choice.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+library(tidyverse)
+library(tidymodels)
+library(tidyclust)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+)
+
+fm_cluster <- freshmart |>
+  select(CustomerID, FirstName, LastName,
+         TotalSpend, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase)
+
+km_recipe <- recipe(
+  ~ TotalSpend + TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+  data = fm_cluster
+) |>
+  step_normalize(all_numeric_predictors())
+
+set.seed(42)
+km_fit_4 <- workflow() |>
+  add_recipe(km_recipe) |>
+  add_model(k_means(num_clusters = 4)) |>
+  fit(data = fm_cluster)
+
+fm_cluster |>
+  bind_cols(extract_cluster_assignment(km_fit_4)) |>
+  group_by(.cluster) |>
+  summarise(
+    n                = n(),
+    avg_spend        = round(mean(TotalSpend), 0),
+    avg_transactions = round(mean(TotalTransactions), 1),
+    avg_tenure_days  = round(mean(DaysSinceFirstPurchase), 0)
+  ) |>
+  arrange(desc(avg_spend))
+```
+
+**(a)** Compare the K=4 profile table to the K=3 profile from Week 11. If the fourth cluster has a profile that is meaningfully different from all three Week 11 clusters (e.g., separating "high spend, long tenure" from "high spend, recent"), it adds value. If it just splits an existing cluster with similar average characteristics in both halves, K=3 was sufficient.
+
+**(b)** If K=4 is meaningful, possible names: Loyal Veterans (high spend, very long tenure), High-Value New Arrivals (high spend, short tenure), Growing Regulars (medium spend, building frequency), Dormant/Inactive (low spend, few visits). If the split is not meaningful, K=3 with the original three names is preferable.
+
+**(c)** For CMO presentation, K=3 is usually the better choice unless K=4 unlocks a genuinely new marketing action. Three distinct groups with clear names ("Champion," "Growing," "Dormant") and three corresponding strategies is cognitively manageable for a non-technical audience. Four clusters adds complexity; if the fourth cluster does not prompt a different marketing response from the existing three, the complexity is not worth it.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.6 — AutoML Scenario
+
+FreshMart's Head of IT has purchased an AutoML platform subscription. The platform claims to "automatically select the best model and optimise it — no data science expertise required." It runs overnight and returns a gradient boosting model with 96% accuracy on a held-out test set.
+
+(a) Name two specific things the AutoML platform genuinely automated.
+
+(b) Name two things the platform cannot automate, even with the best tools available in 2025–2026.
+
+(c) The gradient boosting model achieves 96% accuracy compared to your logistic regression's 91%. What additional questions would you ask before recommending the AutoML result for production use?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+**(a)** Algorithm selection (trying gradient boosting, random forests, linear models, etc. automatically) and hyperparameter tuning (optimising the number of trees, learning rate, max depth, etc. through automated search).
+
+**(b)** (1) **Problem framing:** the platform needed to be told what to predict (IsHighValue), what the training data looked like, and what metric to optimise. Those decisions were human. (2) **Interpreting results for stakeholders:** the platform produces an accuracy number and a model file. It cannot explain to the CMO which types of customers the model identifies as High Value and why, or make a business recommendation about how to use the predictions. That translation is human work.
+
+**(c)** (1) Can the gradient boosting model explain individual predictions? If a customer is denied a loyalty upgrade, can we tell them why in a way that is both accurate and legally defensible? (2) Was the test set clean — was there any data leakage during the AutoML feature engineering process that could inflate the accuracy? (3) Is the 5% accuracy gain worth the increased computational cost (gradient boosting is far slower to run on new customers at scale than logistic regression), the loss of interpretable coefficients, and the maintenance overhead of a more complex model?
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.7 — Automated Decisions
+
+FreshMart's marketing team proposes using the logistic regression model to automatically upgrade — or deny upgrades to — customers' loyalty tiers, with no human review of individual cases. Tier upgrades come with a $50 benefit; the model achieves 91% accuracy.
+
+(a) Identify two specific risks of fully automating this decision.
+
+(b) The model has 91% accuracy overall. Is this sufficient for automated decision-making in this context? What other metrics would change your assessment?
+
+(c) Propose a policy for how the model's output should be used — what decisions should be automated, and what should require human review?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+**(a)** (1) **False negatives at scale:** with 500 customers and 91% accuracy, roughly 45 customers may be wrongly classified. For High Value customers wrongly denied an upgrade, the error has a direct financial and relationship cost — they may churn precisely because they feel undervalued. With no human review, there is no mechanism to catch these cases before harm is done. (2) **Regulatory and reputational exposure:** if a customer queries why they were denied an upgrade and is told "the algorithm decided," FreshMart has no human-readable explanation to offer. Depending on the jurisdiction and context, this may be legally problematic and is almost certainly bad for trust.
+
+**(b)** 91% overall accuracy is insufficient on its own. More relevant metrics: (1) **Sensitivity** — what fraction of genuine High Value customers receive an upgrade? If sensitivity is low (say, 70%), then 30% of FreshMart's most valuable customers are being wrongly denied benefits. That is a serious business problem. (2) **Cost asymmetry** — a false negative (denying a High Value customer) costs more than a false positive (giving a $50 benefit to a borderline customer). The decision threshold should be adjusted to reflect this asymmetry, not left at the default 50%.
+
+**(c)** A reasonable policy: (1) Automate upgrades for customers with `.pred_True > 0.85` (high-confidence High Value) — these are very unlikely to be false positives. (2) Automate rejections only for customers with `.pred_False > 0.90` (high-confidence Not High Value). (3) Route the middle band (prediction probability between 0.50 and 0.85) to a human analyst for manual review. This captures the value of automation on the confident cases while protecting against errors in the uncertain zone where mistakes are most likely.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 12.8 — The CFO Briefing
+
+Write a 400–500 word briefing document addressed to FreshMart's CFO. The CFO has attended a conference where the keynote speaker said "every company needs to be an AI company," and they want to know whether FreshMart should invest significantly in AI capabilities beyond the analytics team's current work.
+
+Your briefing must:
+
+1. Briefly describe what FreshMart already does with AI and machine learning — be specific (name the models and what they do)
+2. Identify **one area** where additional AI investment would have a clear return on investment — explain why
+3. Identify **one area** where AI adoption would carry meaningful risk without proper governance — explain the risk
+4. End with a single, specific, actionable recommendation
+
+**Requirement:** The briefing must be readable by someone with no statistics or programming background. Any technical term must be explained in one plain-English sentence when first used.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+**To:** FreshMart CFO
+**From:** Analytics Team
+**Re:** AI capability at FreshMart — current state and recommended next step
+
+---
+
+**What FreshMart already does with AI**
+
+FreshMart's analytics team has been using machine learning — a form of artificial intelligence that finds patterns in data — throughout this year. Specifically, we have built:
+
+- A **spend prediction model** that estimates how much a new customer is likely to spend in their first year, based on their early transaction behaviour. This uses a technique called linear regression.
+- A **customer value classifier** that identifies which customers are "High Value" (spending more than $500 lifetime), enabling us to prioritise retention spend. This uses logistic regression.
+- A **customer segmentation model** that groups our 500 loyalty members into three distinct types — Loyal Champions, Growing Shoppers, and Dormant/At Risk — without any pre-defined labels. This uses K-means clustering, a form of unsupervised learning.
+
+These models run on R, an open-source analytics platform, at no licensing cost.
+
+**Where additional investment would deliver clear return**
+
+Demand forecasting — predicting which products will sell in which volumes, by location and week — is currently done manually by the buying team. Machine learning models trained on historical sales data, weather data, and calendar events can reduce forecast error by 20–40% (based on published results from comparable retailers). For a business FreshMart's size, a 10% reduction in overstock alone could recover the cost of one analyst's annual salary. This is a high-confidence, low-risk application with measurable outcomes.
+
+**Where AI adoption carries meaningful risk**
+
+Automating loyalty tier upgrade decisions — where an algorithm alone decides whether a customer receives a benefit — carries real risk. At our current model accuracy of 91%, approximately 45 of our 500 customers would receive an incorrect classification in any given period. For a wrongly denied High Value customer, the error may cause them to leave — the opposite of the intended outcome. Automated decisions also create audit and explanation obligations: customers have a reasonable expectation of knowing why a decision was made about them. Without a human review step, we cannot meet that obligation.
+
+**Recommendation**
+
+Invest in a demand forecasting project with one additional data analyst, scoped to six months, with a clearly defined success metric (forecast error reduction). Do not automate loyalty tier decisions without a human review process for the 15–20% of cases where the model is least confident. Both decisions can be made with tools and skills already in the analytics team.
+
+---
+
+*This is a sample answer. Any well-reasoned response that correctly identifies FreshMart's existing models, proposes a plausible ROI case with justification, identifies a genuine governance risk, and makes a specific recommendation will receive full credit.*
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:36px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 8px;">✅ Statistical Modelling Module Complete — Weeks 6–12</p>
+  <p style="color:#166534;margin:0 0 12px;font-size:0.93rem;">You have now covered the full arc of applied statistical modelling and AI for business analytics:</p>
+  <ul style="color:#166534;font-size:0.92rem;margin:0;padding-left:20px;line-height:2.1;">
+    <li><strong>Week 6:</strong> Explored and described real customer data in R using ggplot2 and tidyverse</li>
+    <li><strong>Week 7:</strong> Predicted a continuous outcome (TotalSpend) with linear regression</li>
+    <li><strong>Week 8:</strong> Classified a binary outcome (IsHighValue) with logistic regression</li>
+    <li><strong>Week 9:</strong> Produced interpretable prediction rules with decision trees</li>
+    <li><strong>Week 10:</strong> Classified customers by similarity with K-nearest neighbours</li>
+    <li><strong>Week 11:</strong> Discovered hidden customer segments with K-means clustering</li>
+    <li><strong>Week 12:</strong> Mapped your skills onto the AI landscape and applied responsible-AI thinking</li>
+  </ul>
+  <p style="color:#166534;margin:12px 0 0;font-size:0.93rem;">The skills in this module — data wrangling, model building, evaluation, and stakeholder communication — are the foundation of a career in business analytics. Everything else builds on this.</p>
+</div>
+```

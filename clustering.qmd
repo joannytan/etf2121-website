@@ -1,0 +1,714 @@
+---
+title: "Clustering"
+webr:
+  packages: ['tidyverse', 'tidymodels', 'tidyclust']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 11</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">Clustering</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    Every model we've built so far had a target variable to predict. This week there is no target. We ask a more open-ended question: <em style="-webkit-text-fill-color:#cbd5e1;">"Are there natural groups of customers hiding in this data?"</em> Clustering finds them without any labels — and the answers often surprise even experienced analysts.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyclust</span>
+  </div>
+</div>
+```
+
+:::{.callout-note}
+## 🔁 The Full Picture — Five Weeks of Modelling
+
+Before we dive in, here's the complete map of what we've built:
+
+| Chapter | Problem | Target | Model |
+|---------|---------|--------|-------|
+| Week 7 | Regression | TotalSpend ($) | Linear Regression |
+| Week 8 | Classification | IsHighValue (T/F) | Logistic Regression |
+| Week 9 | Regression | TotalSpend ($) | Decision Tree |
+| Week 10 | Classification | IsHighValue (T/F) | KNN |
+| **Week 11** | **Unsupervised** | **None** | **K-Means Clustering** |
+
+Weeks 7–10 are called **supervised learning** — every observation in the training data has a known label, and we teach the model using those labels. Week 11 is **unsupervised learning** — there are no labels, and we let the data reveal its own structure.
+:::
+
+---
+
+## 11.1 Supervised vs Unsupervised Learning
+
+**Supervised learning** (Chapters 7–10): We have a labelled dataset where the "right answer" is known for each training observation. The model learns to predict that answer for new observations.
+
+**Unsupervised learning** (this chapter): There is no right answer. We're not predicting — we're *discovering*. We want to find structure, patterns, or natural groupings in the data that weren't defined in advance.
+
+**FreshMart's business question today:** The CMO calls you into a meeting and says: *"I don't think all our customers are the same. I feel like we have different types of customers — frequent shoppers, occasional big spenders, people who signed up but barely come back. Can you show me the data on this?"*
+
+This is a clustering problem. We're not predicting whether someone is "High Value" — we're discovering what types of customers actually exist in the data.
+
+:::{.callout-important}
+## ✏️ Concept Check — 11.1
+
+**Q1.** In supervised learning, we use a target variable to train the model. What is used to guide clustering instead?
+
+**Q2.** After running a clustering algorithm and finding 3 groups, a colleague says "these are the only 3 types of FreshMart customers." Is this a fair statement? Why not?
+
+**Q3.** Name one real-world business application of clustering other than customer segmentation.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Clustering is guided purely by **similarity** (distance) between observations. Points that are close together in the feature space end up in the same cluster. There is no external label or correct answer — only the structure of the data itself.
+
+**A2.** No — clustering is a simplification. The number of clusters K is chosen by the analyst, and the resulting groups are the algorithm's best approximation of natural groupings. With K=3 we find 3 groups, with K=5 we'd find 5. The "true" number of customer types is unknowable; clustering gives us a useful approximation.
+
+**A3.** Examples: grouping news articles by topic (text clustering), grouping geographic areas by demographic similarity (for store location decisions), detecting unusual transactions (anomaly detection), grouping genes by expression pattern in biology.
+:::
+
+---
+
+## 11.2 The K-Means Algorithm
+
+K-means is the most widely used clustering algorithm. It works by repeatedly improving a set of K cluster centres (called **centroids**):
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;">
+  <p style="font-weight:600;color:#1e293b;margin:0 0 10px;">K-Means: Step by Step</p>
+  <ol style="color:#475569;margin:0;padding-left:20px;line-height:2;">
+    <li><strong>Initialise:</strong> Randomly place K centroids in the data space</li>
+    <li><strong>Assign:</strong> Each data point is assigned to its nearest centroid</li>
+    <li><strong>Update:</strong> Each centroid moves to the mean of the points assigned to it</li>
+    <li><strong>Repeat</strong> steps 2–3 until cluster assignments stop changing</li>
+  </ol>
+  <p style="color:#6b7280;font-size:0.88rem;margin:10px 0 0;">The algorithm converges when no points change cluster — usually within 10–50 iterations.</p>
+</div>
+```
+
+### K-means measures within-cluster distance
+
+The quality of a clustering solution is measured by **Within-Cluster Sum of Squares (WSS)**: the total squared distance of every point from its centroid. A lower WSS means tighter, more compact clusters.
+
+Formally, K-means solves:
+
+$$\text{Minimise WSS} = \sum_{k=1}^{K} \sum_{i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|^2$$
+
+where $C_k$ is the set of customers assigned to cluster $k$, and $\boldsymbol{\mu}_k$ is the **centroid** — the variable-by-variable mean of that cluster. Each term is the squared Euclidean distance of a customer from their cluster's centre. Minimising the total means making every cluster as tight as possible simultaneously.
+
+**The local minimum problem:** K-means is not guaranteed to find the *global* minimum of WSS. It finds a *local* minimum — a solution where no single reassignment would improve WSS, but a different set of starting centroids might have produced a better overall clustering. This is why the random initialisation step matters.
+
+```{=html}
+<div style="background:#fef9c3;border:1px solid #fde68a;border-radius:8px;padding:16px 20px;margin:12px 0;">
+  <p style="font-weight:600;color:#713f12;margin:0 0 6px;">Practical implication</p>
+  <p style="color:#374151;font-size:0.9rem;margin:0;">Always use <code>set.seed()</code> before fitting K-means so results are reproducible. Behind the scenes, R runs the algorithm multiple times from different random starting positions and keeps the best solution — substantially reducing the chance of a poor local minimum.</p>
+</div>
+```
+
+**Important:** Like KNN, K-means uses distance — so **scaling is essential** before running it.
+
+:::{.callout-important}
+## ✏️ Concept Check — 11.2
+
+**Q1.** K-means requires you to specify K before running. What is a drawback of this requirement?
+
+**Q2.** K-means uses distance to assign points to clusters. Why must we scale variables before running it?
+
+**Q3.** K-means is sensitive to the random initial placement of centroids. Two runs of K-means on the same data with different random seeds can produce different results. How does `set.seed()` help with this?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** We must guess or search for the right number of clusters before we know the answer. In practice we run K-means for several values of K and use metrics (like the elbow method) to choose.
+
+**A2.** A variable with a large range (e.g., TotalSpend: $0–$12,000) will dominate the distance calculation over a variable with a small range (e.g., TotalTransactions: 0–65). Scaling ensures every variable contributes equally.
+
+**A3.** `set.seed()` fixes the random number generator, so the algorithm always starts with the same initial centroids. This makes the results reproducible — you and a colleague running the same code get the same clusters.
+:::
+
+The animation below shows K-means converging from randomly placed starting centroids (✕ markers). Each iteration, points are reassigned to their nearest centroid and the centroids shift to the new cluster means. Watch them home in on the true cluster centres.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(plotly)
+
+set.seed(42)
+n_per <- 35
+cluster_df <- rbind(
+  data.frame(x = rnorm(n_per, 2, 0.9), y = rnorm(n_per, 2, 0.9)),
+  data.frame(x = rnorm(n_per, 8, 0.9), y = rnorm(n_per, 3, 0.9)),
+  data.frame(x = rnorm(n_per, 5, 0.9), y = rnorm(n_per, 8, 0.9))
+)
+K        <- 3
+cls_cols <- c("#8FBFCA", "#9B8EC7", "#f59e0b")
+
+init_cents <- data.frame(x = c(1, 5, 9), y = c(8, 5, 1))
+
+run_kmeans <- function(data, cents, max_iter = 15) {
+  history <- list()
+  for (iter in seq_len(max_iter)) {
+    dists <- sapply(seq_len(K), function(k)
+      sqrt((data$x - cents$x[k])^2 + (data$y - cents$y[k])^2))
+    asgn <- apply(dists, 1, which.min)
+    history[[iter]] <- list(asgn = asgn, cents = cents)
+    new_cents <- data.frame(
+      x = sapply(seq_len(K), function(k) mean(data$x[asgn == k])),
+      y = sapply(seq_len(K), function(k) mean(data$y[asgn == k]))
+    )
+    if (max(abs(new_cents$x - cents$x) + abs(new_cents$y - cents$y)) < 0.001) {
+      history[[iter + 1]] <- list(asgn = asgn, cents = new_cents)
+      break
+    }
+    cents <- new_cents
+  }
+  history
+}
+
+history <- run_kmeans(cluster_df, init_cents)
+n_iter  <- length(history)
+
+frames <- lapply(seq_len(n_iter), function(i) {
+  h   <- history[[i]]
+  pc  <- cls_cols[h$asgn]
+  ttl <- if (i == n_iter)
+    paste0("Iteration ", i, " — Converged! Clusters are stable.")
+  else
+    paste0("Iteration ", i, " — Reassigning points, then moving centroids")
+  list(
+    name = as.character(i),
+    group = "sweep",
+    data = list(
+      list(x = cluster_df$x, y = cluster_df$y,
+           marker = list(color = pc, size = 8, opacity = 0.8)),
+      list(x = h$cents$x, y = h$cents$y,
+           marker = list(color = cls_cols, size = 20, symbol = "x",
+                         line = list(color = "#0f172a", width = 3)))
+    ),
+    traces = c(0L, 1L),
+    layout = list(title = list(text = ttl, font = list(size = 13, color = "#0f172a")))
+  )
+})
+
+slider_steps <- lapply(seq_len(n_iter), function(i) {
+  list(method = "animate",
+       args = list(list(as.character(i)),
+                   list(mode = "immediate",
+                        frame = list(duration = 0, redraw = FALSE),
+                        transition = list(duration = 0))),
+       label = paste0("Iter ", i))
+})
+
+h0  <- history[[1]]
+pc0 <- cls_cols[h0$asgn]
+
+fig <- plot_ly() |>
+  add_trace(x = cluster_df$x, y = cluster_df$y,
+            type = "scatter", mode = "markers",
+            marker = list(color = pc0, size = 8, opacity = 0.8),
+            showlegend = FALSE, name = "Customers") |>
+  add_trace(x = h0$cents$x, y = h0$cents$y,
+            type = "scatter", mode = "markers",
+            marker = list(color = cls_cols, size = 20, symbol = "x",
+                          line = list(color = "#0f172a", width = 3)),
+            name = "Centroids")
+
+fig$x$frames <- frames
+
+fig |>
+  layout(
+    title = list(
+      text = "Iteration 1 — Reassigning points, then moving centroids",
+      font = list(size = 13, color = "#0f172a"), x = 0.5, xanchor = "center"
+    ),
+    xaxis = list(title = "Feature 1 (e.g. TotalSpend, normalised)",
+                 zeroline = FALSE, gridcolor = "#f1f5f9"),
+    yaxis = list(title = "Feature 2 (e.g. TotalTransactions, normalised)",
+                 zeroline = FALSE, gridcolor = "#f1f5f9"),
+    plot_bgcolor = "white", paper_bgcolor = "white",
+    legend = list(orientation = "h", x = 0.5, xanchor = "center", y = -0.18, yanchor = "top"),
+    margin = list(t = 55, b = 130, l = 65, r = 20),
+    font = list(family = "system-ui, sans-serif"),
+    updatemenus = list(list(
+      type = "buttons", showactive = FALSE,
+      x = 0.05, xanchor = "left", y = -0.12, yanchor = "top",
+      buttons = list(
+        list(label = "▶  Play", method = "animate",
+             args = list("sweep", list(fromcurrent = TRUE, mode = "immediate",
+               frame = list(duration = 900, redraw = FALSE),
+               transition = list(duration = 400, easing = "linear")))),
+        list(label = "⏸  Pause", method = "animate",
+             args = list(list(), list(mode = "immediate",
+               frame = list(duration = 0, redraw = FALSE),
+               transition = list(duration = 0))))
+      )
+    )),
+    sliders = list(list(
+      active = 0,
+      currentvalue = list(prefix = "", font = list(size = 11, color = "#64748b")),
+      pad = list(t = 55, b = 10),
+      steps = slider_steps
+    ))
+  )
+```
+
+---
+
+## 11.3 Fitting K-Means with tidyclust
+
+The `tidyclust` package (from the tidymodels team at Posit) brings K-means into the familiar tidymodels workflow. The syntax is almost identical to everything we've done in Chapters 7–10.
+
+### Setup and data preparation
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+library(tidyclust)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+)
+
+# Select only the variables we'll cluster on
+# (No target variable — no IsHighValue, no SpendCategory)
+fm_cluster <- freshmart |>
+  select(CustomerID, FirstName, LastName,
+         TotalSpend, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase)
+
+glimpse(fm_cluster)
+```
+
+### Fit K-means with K = 3
+
+```{webr-r}
+# Recipe: no outcome variable — use ~ . notation (or list predictors)
+km_recipe <- recipe(
+  ~ TotalSpend + TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+  data = fm_cluster
+) |>
+  step_normalize(all_numeric_predictors())
+
+# Specify K-means with K = 3
+km_spec <- k_means(num_clusters = 3)
+
+km_workflow <- workflow() |>
+  add_recipe(km_recipe) |>
+  add_model(km_spec)
+
+set.seed(42)
+km_fit <- km_workflow |> fit(data = fm_cluster)
+
+# What cluster was each customer assigned to?
+extract_cluster_assignment(km_fit) |>
+  count(.cluster)
+```
+
+### Profiling the clusters
+
+Knowing which cluster each customer is in is only the starting point. The real insight comes from understanding *what makes each cluster different*.
+
+```{webr-r}
+# Add cluster labels back to the original data
+freshmart_clustered <- fm_cluster |>
+  bind_cols(extract_cluster_assignment(km_fit))
+
+# Profile each cluster by their average characteristics
+freshmart_clustered |>
+  group_by(.cluster) |>
+  summarise(
+    n                   = n(),
+    avg_spend           = round(mean(TotalSpend), 0),
+    avg_transactions    = round(mean(TotalTransactions), 1),
+    avg_txn_value       = round(mean(AvgTransactionValue), 2),
+    avg_tenure_days     = round(mean(DaysSinceFirstPurchase), 0)
+  ) |>
+  arrange(desc(avg_spend))
+```
+
+```{webr-r}
+# Visualise the clusters
+ggplot(freshmart_clustered,
+       aes(x = TotalTransactions, y = TotalSpend, colour = .cluster)) +
+  geom_point(alpha = 0.55, size = 2) +
+  scale_colour_manual(values = c("Cluster_1" = "#9B8EC7",
+                                  "Cluster_2" = "#8FBFCA",
+                                  "Cluster_3" = "#f59e0b"),
+                      na.value = "#94a3b8") +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "FreshMart Customer Segments — K = 3",
+    subtitle = "Each colour is one cluster; points are individual customers",
+    x        = "Total Transactions",
+    y        = "Total Spend ($AUD)",
+    colour   = "Cluster"
+  ) +
+  theme_minimal()
+```
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 11.3.1
+
+Find Marcus Lee, Gary McSnarl, Bev O'Brien, and Nina Patel in `freshmart_clustered`. Which cluster is each person assigned to? Does the assignment match your intuition about their spending behaviour?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart_clustered |>
+  filter(FirstName %in% c("Marcus", "Gary", "Bev", "Nina")) |>
+  select(FirstName, LastName, TotalSpend, TotalTransactions, .cluster)
+```
+
+Expect Marcus Lee and Bev O'Brien in the high-spend cluster; Gary McSnarl and Nina Patel in the low-spend/inactive cluster. If two different characters end up in the same cluster, discuss what they have in common.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 11.3
+
+**Q1.** The recipe uses `~ TotalSpend + TotalTransactions + ...` with no outcome on the left side of `~`. Why is there no outcome variable here?
+
+**Q2.** Two customers are assigned to the same cluster. Does this mean they are identical? What does it mean?
+
+**Q3.** We chose K=3 for this initial fit. What information would you use to decide whether 3 is the right choice?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Clustering is unsupervised — there is no variable we're trying to predict. The `~` notation with predictors on the right side tells the recipe which variables to use for measuring distance. Nothing appears on the left because there is no "target."
+
+**A2.** Not identical — they are the most similar group the algorithm could construct given K=3. Within a cluster, customers will vary; they're just more similar to each other than to customers in other clusters. The cluster is a simplification.
+
+**A3.** The **elbow method** — plot WSS (within-cluster sum of squares) against K and look for the "elbow" where adding more clusters gives diminishing returns. We cover this in Section 11.4.
+:::
+
+---
+
+## 11.4 Choosing K: The Elbow Method
+
+There is no single "correct" K. We use the **elbow method** to find a K where adding more clusters stops providing much improvement.
+
+**WSS (Within-Cluster Sum of Squares)** measures how compact the clusters are. As K increases, WSS always decreases — with K equal to the number of data points, every point is its own cluster and WSS = 0. We want the K beyond which WSS barely improves.
+
+```{webr-r}
+# Calculate WSS for K = 1 to 8
+k_vals <- 1:8
+
+wss_results <- map(k_vals, function(k) {
+  spec <- k_means(num_clusters = k)
+  wf   <- workflow() |> add_recipe(km_recipe) |> add_model(spec)
+  set.seed(42)
+  fit  <- wf |> fit(data = fm_cluster)
+  tibble(
+    k   = k,
+    wss = sse_within_total(fit, fm_cluster)
+  )
+}) |> list_rbind()
+
+ggplot(wss_results, aes(x = k, y = wss)) +
+  geom_line(colour = "#9B8EC7", linewidth = 1.1) +
+  geom_point(colour = "#9B8EC7", size = 4) +
+  labs(
+    title    = "Elbow Method — Choosing the Number of Clusters",
+    subtitle = "Look for the 'elbow': the point where improvement levels off",
+    x        = "Number of Clusters (K)",
+    y        = "Total Within-Cluster Sum of Squares"
+  ) +
+  scale_x_continuous(breaks = 1:8) +
+  theme_minimal()
+```
+
+**Interpreting the plot:** Find the "elbow" — the point where the curve bends and the improvement starts to flatten. If the WSS drops sharply from K=1 to K=3 but barely changes from K=3 to K=4, then K=3 is likely a good choice. Beyond the elbow, extra clusters add complexity without much gain in quality.
+
+:::{.callout-note}
+## There's no perfect answer
+The elbow is often a judgement call, not a precise point. Two analysts looking at the same plot might choose K=3 or K=4. That's normal — clustering is exploratory, and the "best" solution is the one that tells the most useful business story. Always ask: do these clusters make sense? Can we name them and use them?
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 11.4
+
+**Q1.** WSS always decreases as K increases. Does a smaller WSS always mean a better clustering? Why not?
+
+**Q2.** The elbow plot shows a sharp drop from K=1 to K=2, a moderate drop to K=3, and tiny drops from K=4 onwards. What K would you choose?
+
+**Q3.** Two colleagues both look at the same elbow plot — one suggests K=3, the other K=4. How would you decide between them?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** No. With K equal to the number of data points, WSS = 0 — but 500 clusters of 1 customer each is meaningless for business purposes. We want the fewest clusters that still capture meaningful differences.
+
+**A2.** **K=3** — the point of diminishing returns begins at K=4. Adding a 4th cluster only slightly reduces WSS, meaning the data doesn't naturally support a 4th distinct group.
+
+**A3.** Fit both K=3 and K=4, profile each cluster's characteristics, and ask: does the 4th cluster in K=4 tell a meaningfully different business story, or is it just splitting an existing group? If the extra cluster doesn't have a clear interpretation or actionable implication, K=3 is preferable.
+:::
+
+---
+
+## 11.5 Naming the Clusters and Business Recommendations
+
+Numbers are not a story. "Cluster 2" means nothing to a CMO. After profiling, we give each cluster a name that describes its business meaning — and then propose an action.
+
+```{webr-r}
+# Detailed profile with SpendCategory distribution
+freshmart_clustered |>
+  left_join(freshmart |> select(CustomerID, SpendCategory, City), by = "CustomerID") |>
+  group_by(.cluster) |>
+  summarise(
+    n                = n(),
+    avg_spend        = round(mean(TotalSpend), 0),
+    avg_transactions = round(mean(TotalTransactions), 1),
+    avg_tenure_days  = round(mean(DaysSinceFirstPurchase), 0),
+    pct_high_value   = round(mean(TotalSpend > 500) * 100, 1)
+  ) |>
+  arrange(desc(avg_spend))
+```
+
+```{webr-r}
+# Show which named characters ended up in each cluster
+freshmart_clustered |>
+  filter(FirstName %in% c("Marcus","Bev","Amara","Priya","Jake","Gary","Nina")) |>
+  select(FirstName, LastName, TotalSpend, TotalTransactions, DaysSinceFirstPurchase, .cluster) |>
+  arrange(.cluster)
+```
+
+Based on the profile output, we can name the clusters. A typical K=3 result on FreshMart data produces something like:
+
+```{=html}
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0;">
+  <div style="background:#f5f3ff;border:1px solid #c4b5fd;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#5b21b6;margin:0 0 6px;">🌟 Loyal Champions</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0;">High spend, frequent visits, long tenure. FreshMart's most valuable customers.</p>
+    <p style="color:#5b21b6;font-weight:600;font-size:0.88rem;margin:8px 0 0;">→ Action: reward & retain</p>
+  </div>
+  <div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#0369a1;margin:0 0 6px;">💛 Growing Shoppers</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0;">Moderate spend, building visit frequency, mixed tenure.</p>
+    <p style="color:#0369a1;font-weight:600;font-size:0.88rem;margin:8px 0 0;">→ Action: upsell & grow</p>
+  </div>
+  <div style="background:#fefce8;border:1px solid #fde047;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#854d0e;margin:0 0 6px;">💤 Dormant / At Risk</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0;">Low spend, few visits, some newly joined and some long-inactive.</p>
+    <p style="color:#854d0e;font-weight:600;font-size:0.88rem;margin:8px 0 0;">→ Action: re-engage</p>
+  </div>
+</div>
+```
+
+### Visualise with segment labels
+
+```{webr-r}
+# Add interpretive segment names based on your cluster profile
+# (Adjust cluster labels to match YOUR output above)
+segment_names <- c(
+  "Cluster_1" = "Loyal Champions",
+  "Cluster_2" = "Growing Shoppers",
+  "Cluster_3" = "Dormant / At Risk"
+)
+
+freshmart_clustered |>
+  mutate(Segment = segment_names[as.character(.cluster)]) |>
+  ggplot(aes(x = TotalTransactions, y = TotalSpend,
+             colour = Segment, shape = Segment)) +
+  geom_point(alpha = 0.55, size = 2) +
+  scale_colour_manual(values = c(
+    "Loyal Champions"   = "#9B8EC7",
+    "Growing Shoppers"  = "#8FBFCA",
+    "Dormant / At Risk" = "#f59e0b"
+  )) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "FreshMart Customer Segments",
+    subtitle = "K-means clustering on TotalSpend, Transactions, AvgValue, Tenure",
+    x        = "Total Transactions",
+    y        = "Total Spend ($AUD)",
+    colour   = "Segment", shape = "Segment"
+  ) +
+  theme_minimal()
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — 11.5
+
+**Q1.** Cluster names like "Loyal Champions" and "Dormant / At Risk" are invented by the analyst — the algorithm only produces numbers. Why is naming the clusters an important step?
+
+**Q2.** The "Dormant / At Risk" cluster contains both new customers (few transactions, recently joined) and older inactive ones (few transactions, joined years ago). Is this a problem? What does it suggest?
+
+**Q3.** FreshMart's CMO asks: "Can we add a fourth segment for high-spending but infrequent customers?" How would you respond?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Names connect the statistical output to business action. "Cluster_2" cannot be acted on; "Growing Shoppers — upsell & grow" can. Naming is also how you communicate findings to non-technical stakeholders and make the analysis actually useful.
+
+**A2.** It suggests these two groups may actually be distinct in the data — they just got merged because K=3 isn't granular enough. Running K=4 or K=5 and re-profiling might separate "recently joined, not yet engaged" from "long-term inactive, at risk of churning" — which would call for different marketing responses.
+
+**A3.** "Yes — that's a testable idea. If we run K=4 or K=5 and one of the new clusters matches the profile you're describing (high spend + low transaction count, i.e., high AvgTransactionValue), then it exists in the data. Let's try it and see."
+:::
+
+---
+
+## 11.6 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 11.1 — Interpreting the Elbow Plot
+
+From the elbow plot in Section 11.4, identify your chosen K and explain the reasoning in two sentences. Then re-run the K-means with K=4 and produce a profile table. Does the extra cluster add a meaningful new story, or does it just split an existing cluster?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+# Fit K = 4
+set.seed(42)
+km_fit_4 <- workflow() |>
+  add_recipe(km_recipe) |>
+  add_model(k_means(num_clusters = 4)) |>
+  fit(data = fm_cluster)
+
+fm_cluster |>
+  bind_cols(extract_cluster_assignment(km_fit_4)) |>
+  group_by(.cluster) |>
+  summarise(
+    n             = n(),
+    avg_spend     = round(mean(TotalSpend), 0),
+    avg_txns      = round(mean(TotalTransactions), 1),
+    avg_tenure    = round(mean(DaysSinceFirstPurchase), 0)
+  ) |>
+  arrange(desc(avg_spend))
+```
+
+Compare the K=4 profile to K=3. Does the fourth cluster represent a genuinely new customer type (e.g., separating "high spend, long tenure" from "high spend, short tenure")? If yes, it adds value. If it just splits an existing cluster roughly in half with similar profiles, K=3 was sufficient.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 11.2 — Finding the Characters
+
+Using `freshmart_clustered` from Section 11.3, find all 7 named FreshMart characters (Marcus Lee, Gary McSnarl, Nina Patel, Jake Nguyen, Bev O'Brien, Amara Diallo, Priya Sharma). For each one, state which cluster they are in and whether the assignment makes intuitive sense given what we know about them from the SQL chapters.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart_clustered |>
+  filter(FirstName %in% c("Marcus","Gary","Nina","Jake","Bev","Amara","Priya")) |>
+  select(FirstName, LastName, TotalSpend, TotalTransactions, DaysSinceFirstPurchase, .cluster) |>
+  arrange(desc(TotalSpend))
+```
+
+Expected assignments:
+- **Marcus Lee** → Loyal Champions (highest spend, 48 transactions)
+- **Bev O'Brien** → Loyal Champions (long tenure, consistent shopper)
+- **Amara Diallo** → Loyal Champions or Growing Shoppers (high recent spend)
+- **Priya Sharma** → Growing Shoppers (medium-tier profile)
+- **Jake Nguyen** → Growing Shoppers (moderate spend, regular visits)
+- **Gary McSnarl** → Dormant / At Risk (1 transaction, very low spend)
+- **Nina Patel** → Dormant / At Risk (0 transactions, never purchased)
+
+Discussion point: Gary McSnarl and Nina Patel are both "low engagement" but for different reasons — Nina never bought anything, Gary bought once and left. K=3 puts them together; K=4 might separate them.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 11.3 — Connecting to Earlier Chapters
+
+We spent four chapters (7–10) building supervised models that classified customers into `IsHighValue = TRUE/FALSE`. Now in Chapter 11 we've clustered them without using that label.
+
+Answer these two questions:
+
+1. Does the "Loyal Champions" cluster roughly correspond to the `IsHighValue = TRUE` group from Chapter 8? Calculate the percentage of each cluster that is High Value.
+2. Is clustering doing the same job as logistic regression? What is the fundamental difference?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+# Add IsHighValue back to the clustered data
+freshmart_clustered |>
+  left_join(freshmart |> select(CustomerID, IsHighValue), by = "CustomerID") |>
+  group_by(.cluster) |>
+  summarise(
+    pct_high_value = round(mean(IsHighValue) * 100, 1)
+  )
+```
+
+The Loyal Champions cluster should have a very high % of High Value customers. But the clusters are NOT the same as IsHighValue:
+
+- Clustering finds groups that are internally similar across **all four variables simultaneously** — spend, transactions, value, and tenure together.
+- Logistic regression only cares about predicting `IsHighValue` — it optimises for that single boundary.
+- A customer could be in the "Growing Shoppers" cluster despite being technically "High Value" (if their spend just crossed $500 but their visit pattern is still developing).
+
+They answer different questions: logistic regression asks *"is this customer high value?"*; clustering asks *"what type of customer is this?"*
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 11.4 — The CMO Report
+
+Write a one-page summary (4–5 short paragraphs) that you would present to FreshMart's CMO. Include:
+
+1. What question you were trying to answer
+2. What method you used (in plain language — no technical jargon)
+3. What the three customer segments look like
+4. One specific marketing recommendation for each segment
+5. One limitation of the analysis the CMO should be aware of
+
+This is the final exercise of the statistical modelling module — it ties together everything from Chapters 6–11.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+**Question:** We wanted to understand whether FreshMart's 500 customers naturally group into distinct types — without assuming in advance what those types should be.
+
+**Method:** We used a technique called K-means clustering, which places each customer into a group based on how similar they are to their groupmates across four measures: total lifetime spend, number of store visits, average spend per visit, and length of time as a customer. We tested several numbers of groups and found that three was the natural sweet spot.
+
+**What we found:**
+
+- **Loyal Champions (approx. X customers):** Long-term, frequent visitors who consistently spend more per trip. Marcus Lee and Bev O'Brien are in this group. They drive a disproportionate share of FreshMart's revenue.
+- **Growing Shoppers (approx. Y customers):** Moderately active customers who visit regularly but haven't yet hit the highest spend tiers. Priya Sharma and Jake Nguyen typify this segment.
+- **Dormant / At Risk (approx. Z customers):** Customers with very few transactions and low spend — some newly registered and not yet engaged, others inactive for a long time. Gary McSnarl and Nina Patel are here.
+
+**Recommendations:**
+
+- *Loyal Champions:* Protect and reward. Offer exclusive loyalty tier benefits — early access to specials, personalised "thank you" messages. Losing one of these customers costs far more than keeping them.
+- *Growing Shoppers:* Invest to grow. Targeted offers on slightly higher-value product categories, gentle prompts to reach the next loyalty tier.
+- *Dormant / At Risk:* Re-engage or accept churn. A simple "We miss you — here's $5 off" campaign. If unresponsive after two touch points, focus resources elsewhere.
+
+**Limitation:** The three segments are a simplification of reality — customers exist on a continuous spectrum. Two customers in the same segment may have very different stories (e.g., Nina Patel never bought; Gary McSnarl tried and left). The model is a useful starting point, not a complete picture.
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 8px;">✅ Statistical Modelling Module Complete — Weeks 6–11</p>
+  <p style="color:#166534;margin:0 0 10px;font-size:0.93rem;">You've covered the full arc of applied statistical modelling:</p>
+  <ul style="color:#166534;font-size:0.92rem;margin:0;padding-left:20px;line-height:2;">
+    <li><strong>Week 6:</strong> Explored and described real customer data in R</li>
+    <li><strong>Week 7:</strong> Predicted a continuous number (TotalSpend) with linear regression</li>
+    <li><strong>Week 8:</strong> Predicted a yes/no outcome (IsHighValue) with logistic regression</li>
+    <li><strong>Week 9:</strong> Produced interpretable prediction rules with decision trees</li>
+    <li><strong>Week 10:</strong> Classified customers by similarity with K-nearest neighbours</li>
+    <li><strong>Week 11:</strong> Discovered hidden customer segments with K-means clustering</li>
+  </ul>
+  <p style="color:#166534;margin:10px 0 0;font-size:0.93rem;">In <strong>Week 12</strong> we step back and look at the big picture: where AI and data analytics are heading, and how the skills you've built fit into the broader industry landscape.</p>
+</div>
+```

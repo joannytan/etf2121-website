@@ -8,7 +8,7 @@
 
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
-<title>2&nbsp; Introduction to R – Data Analysis in Business (First edition)</title>
+<title>8&nbsp; Introduction to R &amp; Exploratory Data Analysis – Data Analysis in Business (First edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -31,8 +65,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./powerbi.html" rel="next">
-<link href="./dbms.html" rel="prev">
+<link href="./linear_reg.html" rel="next">
+<link href="./powerbi2.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -347,7 +381,7 @@ iframe.qwebr-output-code-browse {
 // Document level settings ----
 
 // Determine if we need to install R packages
-globalThis.qwebrInstallRPackagesList = [''];
+globalThis.qwebrInstallRPackagesList = ['tidyverse', 'GGally', 'corrr'];
 
 // Specify possible locations to search for the repository
 globalThis.qwebrPackageRepoURLS = ['https://repo.r-wasm.org/'];
@@ -357,7 +391,7 @@ globalThis.qwebrSetupRPackages = !(qwebrInstallRPackagesList.indexOf("") !== -1)
 globalThis.qwebrAutoloadRPackages = true;
 
 // Display a startup message?
-globalThis.qwebrShowStartupMessage = false;
+globalThis.qwebrShowStartupMessage = true;
 globalThis.qwebrShowHeaderMessage = false;
 
 // Describe the webR settings that should be used
@@ -369,7 +403,7 @@ globalThis.qwebrCustomizedWebROptions = {
 };
 
 // Store cell data
-globalThis.qwebrCellDetails = [{"code":"print(\"Hello World\")","id":1,"options":{"fig-cap":"","context":"interactive","fig-height":5,"editor-word-wrap":"true","dpi":72,"output":"true","editor-font-scale":"1","read-only":"false","comment":"","label":"unnamed-chunk-1","editor-max-height":"","warning":"true","out-width":"700px","message":"true","editor-quick-suggestions":"false","results":"markup","classes":"","fig-width":7,"out-height":"","autorun":"false"}}];
+globalThis.qwebrCellDetails = [{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-1","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":1,"code":"library(tidyverse)\n\nfreshmart <- read_csv(\n  \"https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv\",\n  show_col_types = FALSE\n)\n\n# Confirm it loaded\ncat(\"Rows:\", nrow(freshmart), \"\\n\")\ncat(\"Columns:\", ncol(freshmart), \"\\n\")"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-2","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":2,"code":"glimpse(freshmart)"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-3","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":3,"code":"head(freshmart, 8)"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-4","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":4,"code":"freshmart |>\n  summarise(\n    n_customers   = n(),\n    avg_spend     = mean(TotalSpend),\n    median_spend  = median(TotalSpend),\n    sd_spend      = sd(TotalSpend),\n    min_spend     = min(TotalSpend),\n    max_spend     = max(TotalSpend)\n  )"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-5","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":5,"code":"freshmart |>\n  group_by(City) |>\n  summarise(\n    n_customers  = n(),\n    avg_spend    = round(mean(TotalSpend), 2),\n    median_spend = round(median(TotalSpend), 2),\n    sd_spend     = round(sd(TotalSpend), 2)\n  ) |>\n  arrange(desc(avg_spend))"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-6","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":6,"code":"# How many customers fall into each spend category?\nfreshmart |>\n  group_by(SpendCategory) |>\n  summarise(\n    count      = n(),\n    pct        = round(n() / nrow(freshmart) * 100, 1),\n    avg_spend  = round(mean(TotalSpend), 2)\n  )"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-7","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":7,"code":"# High-value customers only\nfreshmart |>\n  filter(IsHighValue == TRUE) |>\n  summarise(\n    count       = n(),\n    pct_total   = round(n() / nrow(freshmart) * 100, 1),\n    avg_spend   = round(mean(TotalSpend), 2),\n    avg_loyalty = round(mean(LoyaltyPoints), 0)\n  )"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-8","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":8,"code":"# Find the top 5 customers by TotalSpend\nfreshmart |>\n  select(FirstName, LastName, City, TotalSpend, SpendCategory) |>\n  arrange(desc(TotalSpend)) |>\n  slice_head(n = 5)"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-9","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":9,"code":"ggplot(freshmart, aes(x = TotalSpend)) +\n  geom_histogram(bins = 35, fill = \"#8FBFCA\", colour = \"white\") +\n  labs(\n    title   = \"Distribution of Customer Total Spend — FreshMart\",\n    subtitle = \"500 customers · all cities combined\",\n    x       = \"Total Spend ($AUD, lifetime)\",\n    y       = \"Number of Customers\"\n  ) +\n  theme_minimal()"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-10","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":10,"code":"freshmart |>\n  filter(TotalSpend > 0) |>   # remove Nina Patel (0 spend)\n  ggplot(aes(x = TotalSpend)) +\n  geom_histogram(bins = 35, fill = \"#9B8EC7\", colour = \"white\") +\n  scale_x_log10(labels = scales::dollar) +\n  labs(\n    title   = \"Customer Spend on a Log Scale\",\n    subtitle = \"Each step on the x-axis is a 10× increase\",\n    x       = \"Total Spend ($AUD) — log scale\",\n    y       = \"Number of Customers\"\n  ) +\n  theme_minimal()"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-11","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":11,"code":"ggplot(freshmart, aes(x = SpendCategory, y = TotalSpend, fill = SpendCategory)) +\n  geom_boxplot(alpha = 0.75, outlier.colour = \"#475569\", outlier.size = 1.5) +\n  scale_fill_manual(values = c(\"Low\" = \"#F0EBE3\", \"Medium\" = \"#8FBFCA\", \"High\" = \"#9B8EC7\")) +\n  scale_y_continuous(labels = scales::dollar) +\n  labs(\n    title = \"Spend Distribution by Category — FreshMart\",\n    x     = NULL,\n    y     = \"Total Spend ($AUD)\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-12","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":12,"code":"ggplot(freshmart, aes(x = TotalTransactions, y = TotalSpend, colour = SpendCategory)) +\n  geom_point(alpha = 0.5, size = 1.8) +\n  geom_smooth(method = \"lm\", se = TRUE, colour = \"#1e293b\", linewidth = 0.8) +\n  scale_colour_manual(values = c(\"Low\" = \"#F0EBE3\", \"Medium\" = \"#8FBFCA\", \"High\" = \"#9B8EC7\")) +\n  scale_y_continuous(labels = scales::dollar) +\n  labs(\n    title    = \"Total Transactions vs Total Spend — FreshMart Customers\",\n    subtitle = \"The line shows the linear trend; shaded band shows uncertainty\",\n    x        = \"Number of Transactions\",\n    y        = \"Total Spend ($AUD)\",\n    colour   = \"Spend Category\"\n  ) +\n  theme_minimal()"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-13","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":13,"code":"library(corrr)\n\nfreshmart |>\n  select(TotalSpend, LoyaltyPoints, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>\n  correlate() |>\n  shave() |>     # remove upper triangle (it's a mirror)\n  fashion()      # round and format nicely"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-14","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":14,"code":"# Visual correlation plot\nfreshmart |>\n  select(TotalSpend, LoyaltyPoints, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>\n  correlate() |>\n  rplot(print_cor = TRUE) +\n  theme_minimal() +\n  labs(title = \"Correlation Matrix — FreshMart Numeric Variables\")"},{"options":{"out-height":"","autorun":"false","message":"true","fig-cap":"","output":"true","editor-max-height":"","context":"interactive","classes":"","out-width":"700px","read-only":"false","fig-height":5,"label":"unnamed-chunk-15","editor-font-scale":"1","editor-quick-suggestions":"false","results":"markup","fig-width":7,"dpi":72,"warning":"true","editor-word-wrap":"true","comment":""},"id":15,"code":"library(GGally)\n\nfreshmart |>\n  select(TotalSpend, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>\n  ggpairs(\n    lower  = list(continuous = wrap(\"points\", alpha = 0.3, size = 0.8, colour = \"#8FBFCA\")),\n    diag   = list(continuous = wrap(\"densityDiag\", fill = \"#9B8EC7\", alpha = 0.5)),\n    upper  = list(continuous = wrap(\"cor\", size = 3.5))\n  ) +\n  theme_minimal() +\n  labs(title = \"Pairwise Relationships — FreshMart Customer Variables\")"}];
 
 </script>
 <script type="module">
@@ -1624,6 +1658,7 @@ globalThis.qwebrExecuteCode = async function (
 </script>
 
 
+<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -1635,7 +1670,7 @@ globalThis.qwebrExecuteCode = async function (
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mod_eda.html">Statistical Modelling with R</a></li><li class="breadcrumb-item"><a href="./mod_eda.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -1717,12 +1752,30 @@ globalThis.qwebrExecuteCode = async function (
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Communication and Story Telling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1730,8 +1783,20 @@ globalThis.qwebrExecuteCode = async function (
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
   </div>
 </li>
       </ul>
@@ -1739,7 +1804,7 @@ globalThis.qwebrExecuteCode = async function (
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Power BI</span></a>
+ <span class="menu-text">Statistical Modelling with R</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -1747,15 +1812,47 @@ globalThis.qwebrExecuteCode = async function (
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Power BI</span></a>
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Data Visualization</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -1771,11 +1868,35 @@ globalThis.qwebrExecuteCode = async function (
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-is-r" id="toc-what-is-r" class="nav-link active" data-scroll-target="#what-is-r"><span class="header-section-number">2.1</span> What is R?</a></li>
-  <li><a href="#why-r" id="toc-why-r" class="nav-link" data-scroll-target="#why-r"><span class="header-section-number">2.2</span> Why R?</a></li>
-  <li><a href="#posit-rstudio-desktop" id="toc-posit-rstudio-desktop" class="nav-link" data-scroll-target="#posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</a></li>
-  <li><a href="#installing-r-and-posit-rstudio-desktop" id="toc-installing-r-and-posit-rstudio-desktop" class="nav-link" data-scroll-target="#installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started"><span class="header-section-number">2.5</span> Getting Started</a></li>
+  <li><a href="#why-r-for-business-analytics" id="toc-why-r-for-business-analytics" class="nav-link active" data-scroll-target="#why-r-for-business-analytics"><span class="header-section-number">8.1</span> 6.1 Why R for Business Analytics?</a>
+  <ul class="collapse">
+  <li><a href="#the-tidyverse" id="toc-the-tidyverse" class="nav-link" data-scroll-target="#the-tidyverse"><span class="header-section-number">8.1.1</span> The tidyverse</a></li>
+  </ul></li>
+  <li><a href="#the-freshmart-customer-dataset" id="toc-the-freshmart-customer-dataset" class="nav-link" data-scroll-target="#the-freshmart-customer-dataset"><span class="header-section-number">8.2</span> 6.2 The FreshMart Customer Dataset</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data"><span class="header-section-number">8.2.1</span> Loading the data</a></li>
+  <li><a href="#inspecting-the-structure" id="toc-inspecting-the-structure" class="nav-link" data-scroll-target="#inspecting-the-structure"><span class="header-section-number">8.2.2</span> Inspecting the structure</a></li>
+  </ul></li>
+  <li><a href="#descriptive-statistics-with-dplyr" id="toc-descriptive-statistics-with-dplyr" class="nav-link" data-scroll-target="#descriptive-statistics-with-dplyr"><span class="header-section-number">8.3</span> 6.3 Descriptive Statistics with dplyr</a>
+  <ul class="collapse">
+  <li><a href="#the-pipe-operator" id="toc-the-pipe-operator" class="nav-link" data-scroll-target="#the-pipe-operator"><span class="header-section-number">8.3.1</span> The pipe operator <code>|&gt;</code></a></li>
+  <li><a href="#summarising-the-whole-dataset" id="toc-summarising-the-whole-dataset" class="nav-link" data-scroll-target="#summarising-the-whole-dataset"><span class="header-section-number">8.3.2</span> Summarising the whole dataset</a></li>
+  <li><a href="#summarising-by-group" id="toc-summarising-by-group" class="nav-link" data-scroll-target="#summarising-by-group"><span class="header-section-number">8.3.3</span> Summarising by group</a></li>
+  <li><a href="#filtering-rows" id="toc-filtering-rows" class="nav-link" data-scroll-target="#filtering-rows"><span class="header-section-number">8.3.4</span> Filtering rows</a></li>
+  </ul></li>
+  <li><a href="#visualising-distributions-with-ggplot2" id="toc-visualising-distributions-with-ggplot2" class="nav-link" data-scroll-target="#visualising-distributions-with-ggplot2"><span class="header-section-number">8.4</span> 6.4 Visualising Distributions with ggplot2</a>
+  <ul class="collapse">
+  <li><a href="#histograms-seeing-the-shape-of-a-distribution" id="toc-histograms-seeing-the-shape-of-a-distribution" class="nav-link" data-scroll-target="#histograms-seeing-the-shape-of-a-distribution"><span class="header-section-number">8.4.1</span> Histograms — seeing the shape of a distribution</a></li>
+  <li><a href="#log-scale-for-skewed-data" id="toc-log-scale-for-skewed-data" class="nav-link" data-scroll-target="#log-scale-for-skewed-data"><span class="header-section-number">8.4.2</span> Log scale for skewed data</a></li>
+  <li><a href="#boxplots-comparing-groups" id="toc-boxplots-comparing-groups" class="nav-link" data-scroll-target="#boxplots-comparing-groups"><span class="header-section-number">8.4.3</span> Boxplots — comparing groups</a></li>
+  </ul></li>
+  <li><a href="#relationships-between-variables" id="toc-relationships-between-variables" class="nav-link" data-scroll-target="#relationships-between-variables"><span class="header-section-number">8.5</span> 6.5 Relationships Between Variables</a>
+  <ul class="collapse">
+  <li><a href="#scatter-plots" id="toc-scatter-plots" class="nav-link" data-scroll-target="#scatter-plots"><span class="header-section-number">8.5.1</span> Scatter plots</a></li>
+  <li><a href="#correlation-matrix-with-corrr" id="toc-correlation-matrix-with-corrr" class="nav-link" data-scroll-target="#correlation-matrix-with-corrr"><span class="header-section-number">8.5.2</span> Correlation matrix with <code>corrr</code></a></li>
+  <li><a href="#pairwise-scatter-plots-with-ggally" id="toc-pairwise-scatter-plots-with-ggally" class="nav-link" data-scroll-target="#pairwise-scatter-plots-with-ggally"><span class="header-section-number">8.5.3</span> Pairwise scatter plots with <code>GGally</code></a></li>
+  </ul></li>
+  <li><a href="#chapter-exercises" id="toc-chapter-exercises" class="nav-link" data-scroll-target="#chapter-exercises"><span class="header-section-number">8.6</span> 6.6 Chapter Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -1861,10 +1982,177 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
   // Load the Monaco Editor and create an instance
   let editor;
   require(['vs/editor/editor.main'], function () {
+
+    // ── Register custom R tokenizer under a private language ID ──
+    // We use 'r-etf2121' instead of 'r' because Monaco 0.47.0 bundles its own
+    // R language and lazily loads it when language:'r' is set on the editor,
+    // which fires AFTER our setMonarchTokensProvider call and silently wipes it.
+    // A custom ID Monaco has never heard of is never lazy-loaded — our tokenizer
+    // stays in place permanently. Only register once per page.
+    if (!globalThis._qwebrRTokenizerRegistered) {
+      globalThis._qwebrRTokenizerRegistered = true;
+
+      monaco.languages.register({ id: 'r-etf2121' });
+
+      monaco.languages.setMonarchTokensProvider('r-etf2121', {
+        defaultToken: 'identifier',
+        tokenPostfix: '',
+
+        keywords: [
+          'if', 'else', 'for', 'while', 'repeat', 'in',
+          'next', 'break', 'return', 'function'
+        ],
+
+        constants: [
+          'TRUE', 'FALSE', 'T', 'F', 'NULL',
+          'NA', 'Inf', 'NaN',
+          'NA_integer_', 'NA_real_', 'NA_complex_', 'NA_character_'
+        ],
+
+        tokenizer: {
+          root: [
+            // Comments
+            [/#.*$/, 'comment'],
+
+            // Strings — double-quoted
+            [/"/, { token: 'string', next: '@string_double' }],
+            // Strings — single-quoted
+            [/'/, { token: 'string', next: '@string_single' }],
+
+            // Numbers: hex, decimal, integer suffix L, imaginary i
+            [/0x[0-9A-Fa-f]+[Ll]?/, 'number'],
+            [/\d+\.?\d*([eE][+-]?\d+)?[iL]?/, 'number'],
+            [/\.\d+([eE][+-]?\d+)?[iL]?/, 'number'],
+
+            // Pipe and special infix operators: |> %>% %in% %*% etc.
+            [/\|>/, 'operator'],
+            [/%[^%\s]*%/, 'operator'],
+
+            // Assignment and arrow operators
+            [/<<-|<-|->|->>/, 'operator'],
+
+            // :: and ::: namespace operators (before identifier rules)
+            [/:::?/, 'operator'],
+
+            // $ and @ accessors (type colour)
+            [/[$@]/, 'type'],
+
+            // Control-flow keywords followed by ( — keep keyword colour
+            // Must come BEFORE the function-call rule
+            [/(if|else|for|while|repeat|function|return|next|break|in)(\()/, ['keyword', 'delimiter']],
+
+            // Function calls: use capture groups (not lookahead) so the name
+            // and paren are matched together and split into two tokens.
+            // Covers: ggplot(  geom_point(  filter(  read_csv(  etc.
+            [/([a-zA-Z_.][a-zA-Z0-9_.]*)(\()/, ['predefined', 'delimiter']],
+
+            // Identifiers / keywords / constants NOT followed by (
+            [/[a-zA-Z_.][a-zA-Z0-9_.]*/, {
+              cases: {
+                '@keywords':  'keyword',
+                '@constants': 'constant',
+                '@default':   'identifier'
+              }
+            }],
+
+            // Arithmetic and comparison operators
+            [/[+\-*\/^]/, 'operator'],
+            [/[=!<>]=?/, 'operator'],
+            [/[&|!~]/, 'operator'],
+            [/:/, 'operator'],
+
+            // Remaining brackets and delimiters
+            [/[()[\]{}]/, 'delimiter'],
+            [/[,;]/, 'delimiter'],
+
+            // Whitespace
+            [/\s+/, 'white']
+          ],
+
+          string_double: [
+            [/[^\\"]+/, 'string'],
+            [/\\./, 'string.escape'],
+            [/"/, { token: 'string', next: '@pop' }]
+          ],
+
+          string_single: [
+            [/[^\\']+/, 'string'],
+            [/\\./, 'string.escape'],
+            [/'/, { token: 'string', next: '@pop' }]
+          ]
+        }
+      });
+    }
+
+    // Define Dracula-inspired theme for ETF2121
+    monaco.editor.defineTheme('dracula-etf2121', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        // ── keywords: if else for while function return … ──
+        { token: 'keyword',          foreground: 'ff79c6', fontStyle: 'bold'   },
+        { token: 'keyword.r',        foreground: 'ff79c6', fontStyle: 'bold'   },
+
+        // ── strings ──
+        { token: 'string',           foreground: 'f1fa8c'                      },
+        { token: 'string.r',         foreground: 'f1fa8c'                      },
+        { token: 'string.escape',    foreground: 'f1fa8c'                      },
+        { token: 'string.escape.r',  foreground: 'f1fa8c'                      },
+
+        // ── numbers ──
+        { token: 'number',           foreground: 'bd93f9'                      },
+        { token: 'number.r',         foreground: 'bd93f9'                      },
+
+        // ── comments ──
+        { token: 'comment',          foreground: '6272a4', fontStyle: 'italic' },
+        { token: 'comment.r',        foreground: '6272a4', fontStyle: 'italic' },
+
+        // ── operators: <- |> %in% + == … ──
+        { token: 'operator',         foreground: 'ff79c6'                      },
+        { token: 'operator.r',       foreground: 'ff79c6'                      },
+
+        // ── constants: TRUE FALSE NULL NA Inf NaN ──
+        { token: 'constant',         foreground: 'ffb86c'                      },
+        { token: 'constant.r',       foreground: 'ffb86c'                      },
+
+        // ── function calls: filter() mutate() ggplot() … ──
+        { token: 'predefined',       foreground: '50fa7b'                      },
+        { token: 'predefined.r',     foreground: '50fa7b'                      },
+
+        // ── $ and @ accessors ──
+        { token: 'type',             foreground: '8be9fd'                      },
+        { token: 'type.r',           foreground: '8be9fd'                      },
+
+        // ── plain identifiers / variables ──
+        { token: 'identifier',       foreground: 'f8f8f2'                      },
+        { token: 'identifier.r',     foreground: 'f8f8f2'                      },
+
+        // ── brackets and punctuation ──
+        { token: 'delimiter',        foreground: 'f8f8f2'                      },
+        { token: 'delimiter.r',      foreground: 'f8f8f2'                      },
+
+        // ── fallback ──
+        { token: '',                 foreground: 'f8f8f2'                      }
+      ],
+      colors: {
+        'editor.background':           '#0f172a',
+        'editor.foreground':           '#f8f8f2',
+        'editor.lineHighlightBackground': '#1e2a3a',
+        'editorLineNumber.foreground': '#6272a4',
+        'editorCursor.foreground':     '#f8f8f2',
+        'editor.selectionBackground':  '#44475a',
+        'editor.inactiveSelectionBackground': '#2d3748',
+        'editorWhitespace.foreground': '#3d4f5c',
+        'editorIndentGuide.background': '#3d4f5c',
+        'editorBracketMatch.background': '#44475a',
+        'editorBracketMatch.border':   '#f8f8f2'
+      }
+    });
+
     editor = monaco.editor.create(editorDiv, {
       value: initialCode,
-      language: 'r',
-      theme: 'vs-light',
+      language: 'r-etf2121',
+      theme: 'dracula-etf2121',
       automaticLayout: true,           // Works wonderfully with RevealJS
       scrollBeyondLastLine: false,
       minimap: {
@@ -2066,9 +2354,9 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 }
 </script>
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introR.html">Data Analysis</a></li><li class="breadcrumb-item"><a href="./introR.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./mod_eda.html">Statistical Modelling with R</a></li><li class="breadcrumb-item"><a href="./mod_eda.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></h1>
 </div>
 
 
@@ -2085,45 +2373,858 @@ globalThis.qwebrCreateMonacoEditorInstance = function (cellData) {
 </header>
 
 
-<section id="what-is-r" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="what-is-r"><span class="header-section-number">2.1</span> What is R?</h2>
-<p>R is a programming language and free software environment for statistical computing and graphics supported by the R Foundation for Statistical Computing. The R language is widely used among statisticians and data miners for developing statistical software and data analysis.</p>
-</section>
-<section id="why-r" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="why-r"><span class="header-section-number">2.2</span> Why R?</h2>
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 6</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;" class="anchored">Introduction to R &amp; Exploratory Data Analysis</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    You've just joined FreshMart's analytics team as a junior analyst. The Head of Marketing has a stack of questions about customer behaviour — but before building any model, your job is to <em style="-webkit-text-fill-color:#cbd5e1;">understand the data first</em>. This chapter is about that: loading, inspecting, summarising, and visualising the FreshMart customer dataset in R.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 GGally</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 corrr</span>
+  </div>
+</div>
+<section id="why-r-for-business-analytics" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="why-r-for-business-analytics"><span class="header-section-number">8.1</span> 6.1 Why R for Business Analytics?</h2>
+<p>R is a free, open-source programming language designed for statistical computing and data analysis. It is widely used by data analysts, statisticians, and data scientists across industries — from banking and retail to healthcare and government.</p>
+<p>You might be wondering: <em>I can already do calculations in Excel — why learn R?</em></p>
+<p>That’s a fair question. Excel is a powerful tool, and you’ll keep using it. But R can do things that are either impossible or very tedious in Excel:</p>
 <ul>
-<li>R is open-source and free</li>
-<li>R is a powerful tool for data analysis</li>
-<li>R has a large and active community</li>
-<li>R has a large number of packages for data analysis</li>
-<li>R is a great tool for reproducible research</li>
+<li><strong>Repeatable analysis.</strong> An R script is a complete record of every step you took. Run it again tomorrow on fresh data and you get updated results in seconds. No clicking, no re-doing.</li>
+<li><strong>Handles large datasets easily.</strong> FreshMart processes thousands of transactions per day. R handles millions of rows without breaking a sweat.</li>
+<li><strong>Publication-quality graphics.</strong> The <code>ggplot2</code> package produces graphics that belong in annual reports, not just in a spreadsheet.</li>
+<li><strong>Statistical modelling.</strong> Regression, classification, clustering — all built-in or one package away.</li>
 </ul>
-</section>
-<section id="posit-rstudio-desktop" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="posit-rstudio-desktop"><span class="header-section-number">2.3</span> Posit (RStudio Desktop)</h2>
-<p>Posit (formerly RStudio) is an integrated development environment (IDE) for R. It includes a console, syntax-highlighting editor that supports direct code execution, as well as plotting (displaying graphs), history, debugging and workspace management tools.</p>
+<section id="the-tidyverse" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="the-tidyverse"><span class="header-section-number">8.1.1</span> The tidyverse</h3>
+<p>The <strong>tidyverse</strong> is a collection of R packages designed to work together, all sharing a common philosophy: data in, insight out. The key packages we’ll use are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Package</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>readr</code></td>
+<td>Reads CSV and other data files into R</td>
+</tr>
+<tr class="even">
+<td><code>dplyr</code></td>
+<td>Filters, groups, summarises, and transforms data</td>
+</tr>
+<tr class="odd">
+<td><code>ggplot2</code></td>
+<td>Creates graphics using a “grammar of graphics”</td>
+</tr>
+<tr class="even">
+<td><code>tidyr</code></td>
+<td>Reshapes data between wide and long formats</td>
+</tr>
+</tbody>
+</table>
+<p>All tidyverse packages are free, maintained by the Posit team (the company behind RStudio), and run in the interactive code blocks on this page via <strong>webR</strong> — no installation required.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-“R vs.&nbsp;RStudio”
+What is webR?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>R is the programming language, while RStudio (now Posit) is an IDE that makes it easier to write and run R code. You can use R without RStudio, but RStudio provides a user-friendly interface and additional features that make working with R more efficient.</p>
+<p>Every code block on this page is <strong>live and interactive</strong>. Click the ▶ Run button to execute it — R is running directly in your browser. You can edit any code block and re-run it to experiment. Your changes don’t affect anyone else.</p>
 </div>
 </div>
+<hr>
 </section>
-<section id="installing-r-and-posit-rstudio-desktop" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="installing-r-and-posit-rstudio-desktop"><span class="header-section-number">2.4</span> Installing R and Posit (RStudio Desktop)</h2>
-<p>Insert a video here.</p>
 </section>
-<section id="getting-started" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="getting-started"><span class="header-section-number">2.5</span> Getting Started</h2>
+<section id="the-freshmart-customer-dataset" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="the-freshmart-customer-dataset"><span class="header-section-number">8.2</span> 6.2 The FreshMart Customer Dataset</h2>
+<p>Throughout the statistical modelling chapters we’ll work with a single dataset: <strong>FreshMart customers</strong>. This table was built by combining the Customers and Transactions database tables you worked with in the SQL chapters — each row now represents one customer, summarising their entire history with FreshMart.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 20%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>CustomerID</code></td>
+<td>Integer</td>
+<td>Unique customer identifier</td>
+</tr>
+<tr class="even">
+<td><code>FirstName</code> / <code>LastName</code></td>
+<td>Character</td>
+<td>Customer name</td>
+</tr>
+<tr class="odd">
+<td><code>City</code></td>
+<td>Character</td>
+<td>Customer’s city</td>
+</tr>
+<tr class="even">
+<td><code>JoinDate</code></td>
+<td>Date</td>
+<td>Date they registered</td>
+</tr>
+<tr class="odd">
+<td><code>LoyaltyPoints</code></td>
+<td>Integer</td>
+<td>Accumulated loyalty points</td>
+</tr>
+<tr class="even">
+<td><code>TotalSpend</code></td>
+<td>Numeric</td>
+<td>Total $ spent at FreshMart (lifetime)</td>
+</tr>
+<tr class="odd">
+<td><code>TotalTransactions</code></td>
+<td>Integer</td>
+<td>Number of purchase visits</td>
+</tr>
+<tr class="even">
+<td><code>AvgTransactionValue</code></td>
+<td>Numeric</td>
+<td>Average $ per visit</td>
+</tr>
+<tr class="odd">
+<td><code>DaysSinceFirstPurchase</code></td>
+<td>Integer</td>
+<td>How long they’ve been active</td>
+</tr>
+<tr class="even">
+<td><code>IsHighValue</code></td>
+<td>Logical</td>
+<td>TRUE if TotalSpend &gt; $500</td>
+</tr>
+<tr class="odd">
+<td><code>SpendCategory</code></td>
+<td>Character</td>
+<td>“Low” (&lt;$200), “Medium” ($200–$500), “High” (&gt;$500)</td>
+</tr>
+</tbody>
+</table>
+<p>You’ll notice some familiar faces in this dataset — Marcus Lee, Gary McSnarl, Jake Nguyen, and the others from the SQL chapters are all here.</p>
+<section id="loading-the-data" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="loading-the-data"><span class="header-section-number">8.2.1</span> Loading the data</h3>
+<p>Run this block first. It loads the tidyverse and reads in the FreshMart dataset. Every code block in this chapter depends on having this run first.</p>
 <div id="qwebr-insertion-location-1"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="inspecting-the-structure" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="inspecting-the-structure"><span class="header-section-number">8.2.2</span> Inspecting the structure</h3>
+<p><code>glimpse()</code> gives you a compact summary of every column — its name, data type, and the first few values. Think of it as the first thing you run whenever you load a new dataset.</p>
+<div id="qwebr-insertion-location-2"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p><code>head()</code> shows the first few rows as a table.</p>
+<div id="qwebr-insertion-location-3"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✏️ Concept Check — Section 6.2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Q1.</strong> How many customers are in the dataset?</p>
+<p><strong>Q2.</strong> What does <code>&lt;dbl&gt;</code> mean next to a column name in <code>glimpse()</code> output?</p>
+<p><strong>Q3.</strong> Look at row 1. Is this customer high-value? How can you tell from the <code>IsHighValue</code> column?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>A1.</strong> 500 customers (500 rows).</p>
+<p><strong>A2.</strong> <code>&lt;dbl&gt;</code> stands for “double” — a numeric variable that can have decimal places. You’ll also see <code>&lt;int&gt;</code> (whole numbers), <code>&lt;chr&gt;</code> (text/character), <code>&lt;lgl&gt;</code> (TRUE/FALSE logical), and <code>&lt;date&gt;</code> (dates).</p>
+<p><strong>A3.</strong> Check the <code>IsHighValue</code> column. If it reads <code>TRUE</code>, the customer has spent more than $500 lifetime. If <code>FALSE</code>, they haven’t reached that threshold yet.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="descriptive-statistics-with-dplyr" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="descriptive-statistics-with-dplyr"><span class="header-section-number">8.3</span> 6.3 Descriptive Statistics with dplyr</h2>
+<p>Before drawing any graphs or fitting any models, we always start with numbers. The <code>dplyr</code> package makes it easy to calculate summary statistics — even broken down by groups.</p>
+<section id="the-pipe-operator" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="the-pipe-operator"><span class="header-section-number">8.3.1</span> The pipe operator <code>|&gt;</code></h3>
+<p>In R, the <strong>pipe</strong> (<code>|&gt;</code>) passes the result of one step into the next. Read it as <em>“and then”</em>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span>         <span class="co"># start with freshmart, AND THEN</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(...) <span class="sc">|&gt;</span>    <span class="co"># filter rows, AND THEN</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(...)    <span class="co"># summarise</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This style keeps code readable and matches how we think: “take the data, then do this, then do that.”</p>
+</section>
+<section id="summarising-the-whole-dataset" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="summarising-the-whole-dataset"><span class="header-section-number">8.3.2</span> Summarising the whole dataset</h3>
+<p><code>summarise()</code> computes a summary of the entire dataset. <code>mean()</code>, <code>median()</code>, <code>sd()</code>, <code>min()</code>, <code>max()</code>, and <code>n()</code> are the most useful functions inside it.</p>
+<div id="qwebr-insertion-location-4"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Notice that the mean ($414) is much higher than the median ($215). This happens when a small number of high-spending customers (like Marcus Lee with $12,300) pull the average upward. The median — the middle value — is not affected by extreme values and often better represents the “typical” customer.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📚 Recall: Mean vs Median
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>From first-year statistics: the <strong>mean</strong> is sensitive to outliers; the <strong>median</strong> is not. When a distribution is right-skewed (a long tail to the right), the mean &gt; median. This is exactly what we see with customer spend data.</p>
+</div>
+</div>
+</section>
+<section id="summarising-by-group" class="level3" data-number="8.3.3">
+<h3 data-number="8.3.3" class="anchored" data-anchor-id="summarising-by-group"><span class="header-section-number">8.3.3</span> Summarising by group</h3>
+<p><code>group_by()</code> splits the dataset into groups before summarising. This is one of the most powerful ideas in data analysis.</p>
+<div id="qwebr-insertion-location-5"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div id="qwebr-insertion-location-6"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+</section>
+<section id="filtering-rows" class="level3" data-number="8.3.4">
+<h3 data-number="8.3.4" class="anchored" data-anchor-id="filtering-rows"><span class="header-section-number">8.3.4</span> Filtering rows</h3>
+<p><code>filter()</code> keeps only the rows that match a condition.</p>
+<div id="qwebr-insertion-location-7"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div id="qwebr-insertion-location-8"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Recognise Marcus Lee in the top spot? And Bev O’Brien in the top 5?</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✏️ Concept Check — Section 6.3
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Q1.</strong> The mean spend for Sydney is higher than for Melbourne. Does this mean every Sydney customer spends more than every Melbourne customer? Explain.</p>
+<p><strong>Q2.</strong> Why might the marketing team prefer to look at <em>median</em> spend by city rather than <em>mean</em> spend?</p>
+<p><strong>Q3.</strong> Write the dplyr code to find the 3 cities with the <strong>lowest</strong> median spend. <em>(Hint: change <code>arrange(desc(...))</code> to <code>arrange(...)</code>)</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>A1.</strong> No.&nbsp;The mean is an average across all customers in that city. Individual customers in Melbourne may spend far more than some Sydney customers. The city average doesn’t tell us about any individual.</p>
+<p><strong>A2.</strong> A single very high-spending customer (like Marcus Lee in Sydney) can inflate the mean for that city, making it look like Sydney customers typically spend more when most of them might not.</p>
+<p><strong>A3.</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(City) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_spend =</span> <span class="fu">median</span>(TotalSpend)) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(median_spend) <span class="sc">|&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="visualising-distributions-with-ggplot2" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="visualising-distributions-with-ggplot2"><span class="header-section-number">8.4</span> 6.4 Visualising Distributions with ggplot2</h2>
+<p>Numbers tell us the centre and spread, but a graph tells us the <em>shape</em>. The <code>ggplot2</code> package builds graphics using the <strong>grammar of graphics</strong> — a consistent layering system.</p>
+<p>Every ggplot has three essential parts:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> variable)) <span class="sc">+</span>   <span class="co"># 1. What data and which variable?</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span>                 <span class="co"># 2. What kind of geometry (shape)?</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"My Plot"</span>)            <span class="co"># 3. Labels and styling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="histograms-seeing-the-shape-of-a-distribution" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="histograms-seeing-the-shape-of-a-distribution"><span class="header-section-number">8.4.1</span> Histograms — seeing the shape of a distribution</h3>
+<div id="qwebr-insertion-location-9"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p><strong>What does this tell us?</strong></p>
+<p>The distribution is strongly <strong>right-skewed</strong>: most customers cluster in the $0–$500 range, but a long tail extends to the right where a small group of high-spending customers live (including Marcus Lee at $12,300). This is typical for retail spending data.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📚 Recall: Distribution Shape
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Symmetric</strong>: mean ≈ median; bell-shaped</li>
+<li><strong>Right-skewed</strong> (positive skew): long tail to the right; mean &gt; median</li>
+<li><strong>Left-skewed</strong> (negative skew): long tail to the left; mean &lt; median</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="log-scale-for-skewed-data" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="log-scale-for-skewed-data"><span class="header-section-number">8.4.2</span> Log scale for skewed data</h3>
+<p>When data is this skewed, a <strong>log scale</strong> can make patterns clearer:</p>
+<div id="qwebr-insertion-location-10"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>On a log scale, the distribution looks much more symmetric — a useful reminder that the underlying purchasing patterns aren’t as extreme as the raw numbers suggest.</p>
+</section>
+<section id="boxplots-comparing-groups" class="level3" data-number="8.4.3">
+<h3 data-number="8.4.3" class="anchored" data-anchor-id="boxplots-comparing-groups"><span class="header-section-number">8.4.3</span> Boxplots — comparing groups</h3>
+<p>A boxplot summarises a distribution in five numbers: minimum, Q1, median, Q3, maximum. It’s ideal for comparing groups side by side.</p>
+<div id="qwebr-insertion-location-11"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>Notice how the “High” category has much more spread (tall box, long whiskers) than “Low” — this tells us that high-value customers vary a lot in how much they spend, while low-value customers cluster tightly in a small range.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📦 R Practice — Exercise 6.4.1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Modify the histogram code above to show the distribution of <code>TotalTransactions</code> instead of <code>TotalSpend</code>. Change the title and axis labels appropriately. Does it have the same skewed shape?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(freshmart, <span class="fu">aes</span>(<span class="at">x =</span> TotalTransactions)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"#8FBFCA"</span>, <span class="at">colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Number of Transactions — FreshMart"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">"Total Number of Transactions"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="st">"Number of Customers"</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Yes — it has a similar right-skewed shape. Most customers visit FreshMart only a few times, but a small group are very frequent shoppers.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📦 R Practice — Exercise 6.4.2
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create a boxplot comparing <code>AvgTransactionValue</code> across cities. Which city has the highest typical transaction value? Are there any outliers?</p>
+<p><em>(Hint: use <code>City</code> on the x-axis and add <code>+ coord_flip()</code> at the end to make it easier to read the city names.)</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(freshmart, <span class="fu">aes</span>(<span class="at">x =</span> City, <span class="at">y =</span> AvgTransactionValue, <span class="at">fill =</span> City)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average Transaction Value by City"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="cn">NULL</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="st">"Average Transaction Value ($)"</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✏️ Concept Check — Section 6.4
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Q1.</strong> The box in a boxplot spans from Q1 to Q3. What is this range called, and what fraction of the data does it contain?</p>
+<p><strong>Q2.</strong> In ggplot2, what does <code>aes()</code> stand for, and what kind of information goes inside it?</p>
+<p><strong>Q3.</strong> A histogram for customer ages looks like a bell curve (symmetric). Would the mean or median be a better description of the “typical” customer age? Why?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>A1.</strong> The interquartile range (IQR). It contains the <strong>middle 50%</strong> of the data.</p>
+<p><strong>A2.</strong> <code>aes()</code> stands for <strong>aesthetics</strong> — the visual properties mapped to variables in the data: which variable goes on the x-axis, which on the y-axis, which controls colour, fill, size, etc.</p>
+<p><strong>A3.</strong> For a symmetric distribution, mean and median are approximately equal, so either works. In practice, analysts often report the mean for symmetric data and the median for skewed data.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="relationships-between-variables" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="relationships-between-variables"><span class="header-section-number">8.5</span> 6.5 Relationships Between Variables</h2>
+<p>So far we’ve looked at one variable at a time. But the interesting questions are usually about <em>relationships</em>: does spending more money earn more loyalty points? Do customers who visit more often also spend more per visit?</p>
+<section id="scatter-plots" class="level3" data-number="8.5.1">
+<h3 data-number="8.5.1" class="anchored" data-anchor-id="scatter-plots"><span class="header-section-number">8.5.1</span> Scatter plots</h3>
+<p>A scatter plot shows the relationship between two numeric variables. Each dot is one customer.</p>
+<div id="qwebr-insertion-location-12"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>There’s a clear <strong>positive relationship</strong>: customers who visit more often tend to spend more overall. The trend isn’t perfect (there’s scatter around the line), but the direction is unmistakable. This is exactly the kind of relationship a regression model can quantify — something we’ll do in Chapter 7.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📚 Recall: Correlation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>From first-year statistics: the <strong>correlation coefficient</strong> (<em>r</em>) measures the strength and direction of a linear relationship between two variables.</p>
+<ul>
+<li><em>r</em> ranges from <strong>−1</strong> (perfect negative) to <strong>+1</strong> (perfect positive)</li>
+<li><em>r</em> = 0 means no linear relationship</li>
+<li><em>r</em> = 0.7 is a strong positive relationship</li>
+<li><em>r</em> = −0.3 is a weak negative relationship</li>
+</ul>
+<p>Correlation measures linear relationships only. A curved relationship may have r ≈ 0 even if the relationship is strong.</p>
+</div>
+</div>
+</section>
+<section id="correlation-matrix-with-corrr" class="level3" data-number="8.5.2">
+<h3 data-number="8.5.2" class="anchored" data-anchor-id="correlation-matrix-with-corrr"><span class="header-section-number">8.5.2</span> Correlation matrix with <code>corrr</code></h3>
+<p>The <code>corrr</code> package (part of the tidymodels ecosystem) makes tidy correlation tables easy to read and visualise.</p>
+<div id="qwebr-insertion-location-13"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<div id="qwebr-insertion-location-14"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p><strong>What do we see?</strong></p>
+<ul>
+<li><code>TotalSpend</code> and <code>LoyaltyPoints</code> have near-perfect correlation — they were both earned from the same purchasing behaviour.</li>
+<li><code>TotalSpend</code> and <code>TotalTransactions</code> are strongly correlated (r ≈ 0.7) — customers who visit more spend more.</li>
+<li><code>DaysSinceFirstPurchase</code> has a moderate positive correlation with spend — longer-tenured customers have had more time to accumulate spend.</li>
+<li><code>AvgTransactionValue</code> is less strongly related — some customers make fewer but bigger purchases.</li>
+</ul>
+</section>
+<section id="pairwise-scatter-plots-with-ggally" class="level3" data-number="8.5.3">
+<h3 data-number="8.5.3" class="anchored" data-anchor-id="pairwise-scatter-plots-with-ggally"><span class="header-section-number">8.5.3</span> Pairwise scatter plots with <code>GGally</code></h3>
+<p>For a quick visual overview of all pairwise relationships at once, <code>GGally::ggpairs()</code> is invaluable:</p>
+<div id="qwebr-insertion-location-15"></div>
+<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
+<p>The diagonal shows each variable’s distribution; the lower panels show scatter plots; the upper panels show correlation coefficients. This is the analyst’s “first look” chart — run it before every modelling project.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📦 R Practice — Exercise 6.5.1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The scatter plot above coloured points by <code>SpendCategory</code>. Try colouring by <code>City</code> instead. Which cities seem to have the most high-spending customers?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(freshmart, <span class="fu">aes</span>(<span class="at">x =</span> TotalTransactions, <span class="at">y =</span> TotalSpend, <span class="at">colour =</span> City)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title  =</span> <span class="st">"Total Transactions vs Total Spend, coloured by City"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x      =</span> <span class="st">"Number of Transactions"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y      =</span> <span class="st">"Total Spend ($AUD)"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"City"</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sydney and Melbourne customers appear across the full range of spend levels because they make up the largest share of customers.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✏️ Concept Check — Section 6.5
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Q1.</strong> The correlation between <code>TotalSpend</code> and <code>LoyaltyPoints</code> is very close to 1.0. Does this mean LoyaltyPoints <em>caused</em> the high spend? Explain.</p>
+<p><strong>Q2.</strong> A scatter plot shows that customers with higher <code>DaysSinceFirstPurchase</code> tend to have higher <code>TotalSpend</code>, but there’s a lot of scatter. What does “a lot of scatter” tell you about the strength of the relationship?</p>
+<p><strong>Q3.</strong> FreshMart’s CEO says: “Customers who have more loyalty points spend more, so if we give everyone 1000 free points, they’ll spend more.” What’s the flaw in this reasoning?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Answers
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-18" class="callout-18-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>A1.</strong> No.&nbsp;Correlation tells us two variables <em>move together</em> — but it says nothing about cause and effect. In this case, both variables are driven by the same underlying behaviour (purchasing). Loyalty points are <em>earned</em> by spending, so they naturally correlate — but points didn’t cause the spending.</p>
+<p><strong>A2.</strong> A lot of scatter means the relationship is not very tight — knowing someone’s tenure doesn’t precisely predict their spend. There’s a general tendency, but many individual exceptions exist.</p>
+<p><strong>A3.</strong> This is a classic <strong>correlation ≠ causation</strong> error. High points and high spend are correlated because they both come from the same purchasing behaviour. Giving away free points doesn’t change underlying purchasing habits.</p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="chapter-exercises" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="chapter-exercises"><span class="header-section-number">8.6</span> 6.6 Chapter Exercises</h2>
+<p>Work through these exercises independently. Each builds on the code from this chapter — you can copy, modify, and run it in the webR blocks above.</p>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.1 — Exploring a Different Variable
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using <code>summarise()</code> and <code>group_by()</code>, calculate the mean, median, and standard deviation of <code>TotalTransactions</code> broken down by <code>City</code>. Which city has the most variable number of transactions per customer?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(City) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_txns   =</span> <span class="fu">round</span>(<span class="fu">mean</span>(TotalTransactions), <span class="dv">1</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_txns =</span> <span class="fu">median</span>(TotalTransactions),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd_txns     =</span> <span class="fu">round</span>(<span class="fu">sd</span>(TotalTransactions), <span class="dv">1</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(sd_txns))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The city with the highest <code>sd_txns</code> has the most variable number of transactions — a large standard deviation means customers there range widely from very infrequent to very frequent shoppers.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.2 — Finding Our Characters
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use <code>filter()</code> to find the rows for Marcus Lee, Jake Nguyen, and Nina Patel. Display their <code>FirstName</code>, <code>City</code>, <code>TotalSpend</code>, <code>TotalTransactions</code>, and <code>IsHighValue</code>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-22-contents" aria-controls="callout-22" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-22" class="callout-22-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(FirstName <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Marcus"</span>, <span class="st">"Jake"</span>, <span class="st">"Nina"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(FirstName, LastName, City, TotalSpend, TotalTransactions, IsHighValue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should see Marcus Lee at $12,300 (high value), Jake Nguyen at $340 (not high value), and Nina Patel at $0 (never purchased).</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.3 — Histogram Choice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Create a histogram of <code>DaysSinceFirstPurchase</code>. Describe its shape. Is this what you’d expect — why or why not?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(freshmart, <span class="fu">aes</span>(<span class="at">x =</span> DaysSinceFirstPurchase)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"#8FBFCA"</span>, <span class="at">colour =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"How Long Have Customers Been with FreshMart?"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">"Days Since First Purchase"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="st">"Number of Customers"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The distribution is roughly uniform (flat) — customers joined FreshMart at all different times, so there’s no particular “peak.” This makes sense for a dataset representing active customers across several years.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.4 — Counting Categories
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Using <code>count()</code>, find how many customers are in each combination of <code>City</code> and <code>SpendCategory</code>. Which city-category combination has the most customers?</p>
+<p><em>(Hint: <code>count(City, SpendCategory)</code> then <code>arrange(desc(n))</code>)</em></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-26-contents" aria-controls="callout-26" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-26" class="callout-26-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(City, SpendCategory) <span class="sc">|&gt;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sydney and Melbourne dominate the top rows, as expected given their larger population weights in the dataset.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.5 — Outlier Identification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use <code>filter()</code> to find all customers with <code>TotalSpend</code> greater than $3,000. How many are there? List their names and cities.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TotalSpend <span class="sc">&gt;</span> <span class="dv">3000</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(FirstName, LastName, City, TotalSpend) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(TotalSpend))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There are very few customers above $3,000 — this is the extreme right tail of the distribution. Marcus Lee ($12,300) and Bev O’Brien ($3,240) will appear here.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.6 — A Better Scatter Plot
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Recreate the <code>TotalTransactions</code> vs <code>TotalSpend</code> scatter plot, but this time <strong>exclude Nina Patel</strong> (who has 0 transactions and 0 spend) and add <strong>axis labels</strong> that include dollar signs on the y-axis. Does removing Nina change the trend line noticeably?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-30" class="callout-30-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>freshmart <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(TotalSpend <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> TotalTransactions, <span class="at">y =</span> TotalSpend)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">colour =</span> <span class="st">"#8FBFCA"</span>, <span class="at">size =</span> <span class="fl">1.8</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">colour =</span> <span class="st">"#9B8EC7"</span>) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>dollar) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Transactions vs Spend (Nina Patel excluded)"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">"Total Transactions"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="st">"Total Spend ($AUD)"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The trend line should be very similar — one data point at (0, 0) has minimal effect on a 500-row dataset.</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.7 — Correlation Interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The correlation matrix shows <code>r = 0.705</code> between <code>TotalSpend</code> and <code>TotalTransactions</code>. Write 2–3 sentences interpreting this value for a non-technical FreshMart manager. Avoid the word “correlation” — explain it in plain business language.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-32" class="callout-32-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><em>Sample answer:</em> “Customers who visit FreshMart more often tend to spend more money overall — but this relationship isn’t perfectly predictable. A customer who visits twice as often doesn’t necessarily spend exactly twice as much; some infrequent visitors spend a lot per trip, while some frequent visitors only pop in for small purchases. Overall though, visit frequency is a reliable indicator of total customer value.”</p>
+</div>
+</div>
+</div>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise 6.8 — Putting It Together
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write a short paragraph (4–6 sentences) summarising the key findings from your exploratory analysis of the FreshMart customer dataset. Imagine you are presenting to the Head of Marketing before the modelling team begins building predictive models. What do they need to know about the data?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+✅ Sample Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-34" class="callout-34-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>“The FreshMart customer dataset contains 500 customers from seven Australian cities, with Sydney and Melbourne making up the majority. Customer spending is highly right-skewed: most customers spend less than $500 lifetime, but a small group of high-value customers (about 25% of the base) drive a disproportionate share of revenue — Marcus Lee alone accounts for over $12,000 in lifetime spend. The number of transactions a customer makes is the strongest predictor of their total spend (r ≈ 0.70), suggesting that visit frequency is a key driver of customer value. Loyalty points are almost perfectly correlated with total spend, meaning they contain very similar information. One customer (Nina Patel) has registered but never purchased — she may represent a segment worth targeting with a first-purchase incentive.”</p>
+</div>
+</div>
+</div>
+<hr>
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 6 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">You've loaded, explored, and visualised the FreshMart dataset. In <strong>Week 7</strong> we'll take the next step: building a regression model to <em>predict</em> how much a customer is likely to spend — moving from description to prediction.</p>
+</div>
 
 
 </section>
@@ -2551,13 +3652,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./dbms.html" class="pagination-link" aria-label="Database Management System">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span>
+      <a href="./powerbi2.html" class="pagination-link" aria-label="Power BI: Building Your Dashboard">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./powerbi.html" class="pagination-link" aria-label="Power BI">
-        <span class="nav-page-text">Power BI</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./linear_reg.html" class="pagination-link" aria-label="Linear Regression">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,592 @@
+# Power BI: Building Your Dashboard
+
+In the previous chapter, you set up Power BI, loaded the FreshMart data, defined relationships, and built three basic visuals. You now have a functioning data model and a canvas with something on it. Good. But a collection of charts is not yet a dashboard.
+
+A **dashboard** tells a story. It has a clear audience, a defined purpose, and visuals that work together rather than sitting side by side ignoring each other. In this chapter, you will learn the features that transform a page of charts into a polished, interactive analytical tool: slicers, DAX measures, drill-down, maps, action buttons, and interactivity between visuals.
+
+By the end of this chapter, you will have a complete two-page FreshMart Sales Dashboard.
+
+---
+
+## Planning Your Dashboard
+
+Before touching Power BI, spend two minutes thinking about what your dashboard needs to answer. A dashboard without a question is just decoration.
+
+Our FreshMart Sales Dashboard will answer three questions for a FreshMart regional manager:
+
+1. **How is overall sales performance tracking?** (total revenue, transaction count, average order value)
+2. **Which stores and products are performing best?** (revenue by store, revenue by category)
+3. **Who are our most valuable customers, and how are they distributed?** (customer map, loyalty tier breakdown, top spenders)
+
+These three questions map neatly to two pages:
+
+- **Page 1 — Sales Overview**: KPI cards + revenue by store + revenue by category + a slicer to filter by month
+- **Page 2 — Customer Insights**: Revenue by customer + membership tier chart + map visual + top products table
+
+Let us build it.
+
+---
+
+## Setting Up Pages
+
+At the bottom of the canvas, you will see a tab labelled **Page 1**. You can rename it and add more pages.
+
+**Step 1.** Right-click the **Page 1** tab at the bottom → **Rename page** → type **Sales Overview**.
+
+**Step 2.** Click the **+** button next to the tab to add a new page. Right-click the new tab → **Rename page** → type **Customer Insights**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+Two tabs at the bottom of the canvas: "Sales Overview" and "Customer Insights". The Sales Overview tab is active.
+:::
+
+---
+
+## Building Page 1: Sales Overview
+
+Make sure you are on the **Sales Overview** page.
+
+### Step 1: Move Your Existing Visuals
+
+If you still have the three KPI Cards, the Table, and the Column Chart from Chapter 1, move them to sensible positions. If you are starting fresh, you will build them now.
+
+The recommended layout for Page 1:
+
+```
+[Card: Total Revenue] [Card: Transactions] [Card: Avg Order Value]   [Slicer: Month]
+[Column Chart: Revenue by Store                                     ]
+[Column Chart: Revenue by Category                                  ]
+```
+
+A wide chart takes up the bottom two-thirds, KPI cards sit across the top, and a slicer filters everything.
+
+---
+
+### Step 2: Create a DAX Measure for Total Revenue
+
+So far, when you drag `TotalAmount` onto the canvas, Power BI automatically sums it. This works, but a named **measure** gives you more control and is reusable across visuals.
+
+**What is DAX?** DAX (Data Analysis Expressions) is Power BI's formula language — similar to Excel formulas, but designed to work on entire columns and tables rather than individual cells. A **measure** is a DAX calculation you define once and then reuse anywhere.
+
+**Step 1.** In the Data pane, right-click the **transactions** table → **New measure**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A formula bar appears at the top of the screen (similar to the Excel formula bar), with a blinking cursor ready for your formula. The new measure is temporarily named "Measure" in the Data pane.
+:::
+
+**Step 2.** Type the following formula. The existing text ("Measure =") will be replaced:
+
+```
+Total Revenue = SUM(transactions[TotalAmount])
+```
+
+**Step 3.** Press **Enter** or click the tick (✓) button in the formula bar.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The measure "Total Revenue" now appears in the `transactions` table in the Data pane, with a small calculator icon (🧮) next to it — distinguishing it from a regular column.
+:::
+
+**Step 4.** Create two more measures the same way (right-click transactions → New measure):
+
+```
+Transaction Count = COUNTROWS(transactions)
+```
+
+```
+Avg Order Value = DIVIDE([Total Revenue], [Transaction Count], 0)
+```
+
+::: {.callout-tip}
+## Why DIVIDE instead of /
+`DIVIDE([Total Revenue], [Transaction Count], 0)` safely handles division by zero — if `Transaction Count` is zero, it returns 0 instead of crashing. Plain division with `/` would return an error. Use DIVIDE for any division in DAX.
+:::
+
+**Step 5.** Update your three KPI Cards to use these named measures instead of the raw columns:
+
+- Click each Card visual and replace the field in the Fields well with the corresponding measure from the Data pane (`Total Revenue`, `Transaction Count`, `Avg Order Value`).
+
+---
+
+### Step 3: Add a Slicer for Month Filtering
+
+A **Slicer** is a visual filter. When a user clicks a value in a slicer, every other visual on the page filters to show only data matching that selection. It is the most important interactivity tool in Power BI.
+
+We want a slicer that lets the manager filter the entire page by month.
+
+**Step 1.** First, create a new measure to extract the month name from the transaction date:
+
+Right-click `transactions` → New measure:
+
+```
+Month = FORMAT(transactions[TransactionDate], "MMM YYYY")
+```
+
+::: {.callout-tip}
+## Actually, use a calculated column here
+A Slicer works better with a **column** than a measure because slicers need to show a list of distinct values. Right-click `transactions` → **New column** instead:
+
+```
+MonthLabel = FORMAT(transactions[TransactionDate], "MMM YYYY")
+```
+
+Calculated columns are computed row-by-row and stored in the table — perfect for categories like month names.
+:::
+
+**Step 2.** In the Visualizations pane, click the **Slicer** icon (it looks like a funnel).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A blank slicer visual appears on the canvas.
+:::
+
+**Step 3.** From the `transactions` table in the Data pane, drag **`MonthLabel`** (the calculated column you just created) into the **Field** well of the slicer.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The slicer now shows a list of month-year labels: "Jan 2024", "Feb 2024", "Mar 2024", etc.
+:::
+
+**Step 4.** By default, the slicer shows as a vertical list. To change it to a dropdown (saves space): In the Format visual pane → **Slicer settings** → **Options** → **Style** → change from **List** to **Dropdown**.
+
+**Step 5.** Test the slicer: click **Jan 2024** in the slicer. Notice how every other visual on the page — the KPI cards, the column charts — all update to show only January data. Click it again to deselect, or click the eraser icon on the slicer to clear all filters.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+After clicking "Jan 2024" in the slicer, the Total Revenue card shows January's total only (~$103), the Transaction Count drops to 10, and the column charts show only January transactions.
+:::
+
+::: {.callout-tip}
+## Multi-select in slicers
+Hold **Ctrl** and click multiple months to select them simultaneously. For example, Ctrl+click "Jan 2024" and "Feb 2024" to see Q1 data (first two months combined).
+:::
+
+---
+
+### Step 4: Revenue by Store (Column Chart)
+
+**Step 1.** Add a **Clustered column chart**.
+
+**Step 2.** X-axis: `StoreName` from `stores`. Y-axis: `Total Revenue` (the measure you created).
+
+**Step 3.** Add a **data label** so values appear above each bar: Format visual → Data labels → toggle **On**.
+
+**Step 4.** Title: `Revenue by Store`. Set font size 14, bold.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A column chart showing 5 stores (FreshMart Darwin has no sales). FreshMart Parramatta is likely the tallest bar. FreshMart Darwin does not appear — it has zero transactions, so it is effectively invisible in an INNER JOIN style aggregation.
+:::
+
+---
+
+### Step 5: Revenue by Product Category (Column Chart)
+
+**Step 1.** Add another **Clustered column chart** below the store chart.
+
+**Step 2.** X-axis: `Category` from `products`. Y-axis: `Total Revenue`.
+
+**Step 3.** Sort descending (three dots → Sort axis → Sum of Total Revenue → Descending).
+
+**Step 4.** Title: `Revenue by Product Category`.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A column chart with product categories on the X-axis. Dairy and Meat & Seafood should be among the highest — Marcus Lee's bulk chicken purchases and Priya Sharma's milk runs add up quickly.
+:::
+
+### Finishing Page 1
+
+Your Sales Overview page should now have:
+
+- 3 KPI Cards (Total Revenue, Transaction Count, Avg Order Value) across the top
+- A Slicer (Month dropdown) in the top-right corner
+- A Column Chart: Revenue by Store
+- A Column Chart: Revenue by Product Category
+
+Add a **Text Box** to label the page: Home tab → Insert → Text box → type **FreshMart Sales Overview — 2024**. Format it as a page title (large, bold text at the very top of the canvas).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The completed Sales Overview page: a title text box at top, three KPI cards and a month slicer in a row, and two column charts below.
+:::
+
+---
+
+## Building Page 2: Customer Insights
+
+Click the **Customer Insights** tab at the bottom to switch pages.
+
+---
+
+### Step 6: Revenue by Customer (Bar Chart)
+
+A horizontal bar chart is better than a column chart when you have long category labels — like full customer names.
+
+**Step 1.** Add a **Clustered bar chart** (horizontal bars, not vertical columns — look for the icon with horizontal bars).
+
+**Step 2.** Y-axis: drag **`FirstName`** from `customers`. Then also drag **`LastName`** from `customers` — Power BI will combine them.
+
+::: {.callout-tip}
+## Combining First and Last Name
+Instead of dragging two separate columns, create a calculated column in the `customers` table:
+
+Right-click `customers` → New column:
+
+```
+FullName = customers[FirstName] & " " & customers[LastName]
+```
+
+Now drag `FullName` to the Y-axis. Much cleaner.
+:::
+
+**Step 3.** X-axis: `Total Revenue` (the measure).
+
+**Step 4.** Sort descending.
+
+**Step 5.** Title: `Revenue by Customer`.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A horizontal bar chart. Marcus Lee has the longest bar (highest spend), followed by Priya Sharma. Nina Patel appears at the bottom with $0 — she is present in the customers table but has zero transactions. She shows up in this bar chart because Power BI is performing an outer join between customers and the aggregated transactions data.
+:::
+
+---
+
+### Step 7: Membership Tier Breakdown (Doughnut Chart)
+
+A **Doughnut Chart** is ideal for showing proportions. We want to see the revenue split across membership tiers (Bronze, Silver, Gold).
+
+**Step 1.** In the Visualizations pane, click the **Doughnut chart** icon (a circle with a hole in the middle).
+
+**Step 2.** Drag `MembershipTier` from `customers` into the **Legend** field well.
+
+**Step 3.** Drag `Total Revenue` into the **Values** field well.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A doughnut chart divided into three coloured segments: Gold, Silver, and Bronze. Gold should make up the largest segment — Marcus Lee and Priya Sharma are both Gold members and together account for the majority of revenue.
+:::
+
+**Step 4.** Format: turn on **Detail labels** → set label style to **Category, Percent of total**. This shows each segment's tier name and its percentage of total revenue.
+
+**Step 5.** Title: `Revenue by Membership Tier`.
+
+---
+
+### Step 8: Customer Map
+
+Power BI has a **Map** visual that can plot data by city, state, country, or coordinates. We will plot revenue by state to show where FreshMart's customers are concentrated.
+
+**Step 1.** In the Visualizations pane, click the **Map** icon (it looks like a location pin on a globe).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A map visual appears with a greyed-out world map background. Bubble placeholders appear until you add location data.
+:::
+
+**Step 2.** Drag **`State`** from the `customers` table into the **Location** field well.
+
+**Step 3.** Drag **`Total Revenue`** into the **Bubble size** field well. Larger bubbles = more revenue.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The map zooms to Australia and shows bubbles over VIC, NSW, and QLD. Victoria (VIC) has the largest bubble because Marcus Lee and Priya Sharma are both from Victoria. There are no bubbles over SA or NT — Gary McSnarl (SA) has churned, and FreshMart Darwin has no customer transactions.
+:::
+
+::: {.callout-tip}
+## If the map shows bubbles in the wrong country
+Power BI's geocoding can occasionally misidentify abbreviations. If "VIC" maps to somewhere in the USA, try: Format visual → Map settings → add the country context manually, or spell out "Victoria" by creating a mapping table. For this exercise, it should resolve to Australia automatically since Power BI recognises AU state abbreviations.
+:::
+
+**Step 4.** Title: `Revenue by State`.
+
+---
+
+### Step 9: Top Products Table
+
+A detail table that shows which products are selling best — useful for the store manager's product ordering decisions.
+
+**Step 1.** Add a **Table** visual.
+
+**Step 2.** Add the following columns:
+- `ProductName` from `products`
+- `Category` from `products`
+- `Total Revenue` (the measure)
+- `Transaction Count` (the measure)
+
+**Step 3.** Add one more calculated measure for average quantity sold:
+
+Right-click `transactions` → New measure:
+
+```
+Avg Quantity = AVERAGE(transactions[Quantity])
+```
+
+Add `Avg Quantity` as a fifth column in the table.
+
+**Step 4.** Sort by `Total Revenue` descending.
+
+**Step 5.** Title: `Top Products`.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A five-column table listing products by revenue. Chicken Breast 500g should rank near the top — it has a high unit price ($8.50) and appears frequently in Marcus Lee's shopping. Full Cream Milk 2L will rank high in transaction count even if not the top revenue generator, because it is bought in small amounts very frequently.
+:::
+
+---
+
+## Step 10: Drill-Down on Column Charts
+
+**Drill-down** lets users click into a chart to see more detail. On the Revenue by Category chart, a drill-down could reveal individual product names within each category.
+
+**Step 1.** Go back to **Sales Overview** page (or add drill-down to the Revenue by Category chart on Customer Insights — either works).
+
+**Step 2.** Click on the Revenue by Category column chart to select it.
+
+**Step 3.** In the X-axis field well, you currently have `Category`. Now also drag **`ProductName`** from `products` into the X-axis field well **below** `Category`. (The order matters: Category is the top level, ProductName is the detail level.)
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The X-axis field well now shows two items stacked: Category (top) and ProductName (below). The chart looks the same as before — drill-down mode is active but you are currently viewing the top level.
+:::
+
+**Step 4.** Hover over the chart. In the top-right corner of the visual, small arrow icons appear — these are the drill-down controls:
+
+- **↓** (single down arrow) — drill down on a specific bar when you click it
+- **⇊** (double down arrow) — show the next level for **all** bars at once
+- **↑** (up arrow) — drill back up
+- **⊞** (expand all) — expand one level down while keeping the hierarchy
+
+**Step 5.** Click the **single down arrow** (↓) to enable drill mode. Then click on the **Dairy** bar.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The chart zooms into the Dairy category and now shows individual products within Dairy: "Full Cream Milk 2L" and "Free Range Eggs 12pk" as separate bars. A breadcrumb at the top of the visual shows "Category > Dairy".
+:::
+
+**Step 6.** Click the **up arrow** (↑) to drill back up to the category view.
+
+---
+
+## Step 11: Small Multiples
+
+**Small Multiples** splits a chart into a grid of identical charts — one per category. This is a very efficient way to compare the same metric across groups without requiring the user to filter manually.
+
+Let us create a small multiples column chart showing monthly revenue, with one panel per store.
+
+**Step 1.** Add a new **Clustered column chart**.
+
+**Step 2.** X-axis: `MonthLabel` (the calculated column from the `transactions` table).
+
+**Step 3.** Y-axis: `Total Revenue`.
+
+**Step 4.** In the Visualizations pane, scroll down to find the **Small multiples** field well. Drag `StoreName` from `stores` into the Small multiples field well.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The single chart splits into a grid of 5 smaller charts (one per store that has data). Each mini-chart shows the same X-axis (month) and Y-axis (revenue), but filtered to one store. FreshMart Darwin is absent because it has no sales.
+:::
+
+**Step 5.** Format the visual → Small multiples → adjust the number of **rows** and **columns** to arrange the panels neatly (e.g., 2 rows × 3 columns).
+
+**Step 6.** Title: `Monthly Revenue by Store`.
+
+---
+
+## Step 12: Action Buttons for Page Navigation
+
+**Action Buttons** allow users to navigate between report pages with a click — like buttons on a website. This gives your dashboard a polished, app-like feel.
+
+**Step 1.** Go to the **Sales Overview** page.
+
+**Step 2.** In the ribbon, click **Insert** → **Buttons** → **Navigator** → **Page navigator**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+Power BI automatically creates a set of navigation buttons — one button per page — and places them on the canvas. They read "Sales Overview" and "Customer Insights."
+:::
+
+::: {.callout-tip}
+## Alternatively: custom buttons
+You can also make custom buttons. Insert → Buttons → **Blank** → then in Format visual, set the Action type to **Page navigation** and specify which page it goes to. This lets you design your own labelled navigation buttons.
+:::
+
+**Step 3.** Move the navigation buttons to the top-right corner of the canvas.
+
+**Step 4.** Test: click **Customer Insights** in the navigator. The report switches to Page 2.
+
+**Step 5.** Go to the Customer Insights page and add the same page navigator there (Insert → Buttons → Navigator → Page navigator). This way the user can navigate from either page.
+
+---
+
+## Step 13: Interactivity Between Visuals
+
+By default, clicking any visual on a page filters all other visuals on the same page. This is called **cross-filtering**. You can control this behaviour — useful when you want certain visuals to remain unaffected by user clicks.
+
+**Step 1.** On the Sales Overview page, click the **Revenue by Store** column chart to select it.
+
+**Step 2.** In the ribbon, click **Format** → **Edit interactions**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+Small icons appear in the top-right corner of every other visual on the page. Each icon has a filter icon (to enable filtering), a highlight icon, and an X (to disable interaction entirely).
+:::
+
+**Step 3.** For each KPI Card, click the **filter icon** (funnel) above the card to confirm that clicking on a store bar will filter the KPI cards. This should already be on by default.
+
+**Step 4.** To prevent a visual from being filtered — for example, if you want the KPI cards to always show the totals regardless of chart clicks — click the **X** (none) icon above each card instead.
+
+**Step 5.** Click **Edit interactions** again in the ribbon to turn off edit mode.
+
+**Step 6.** Test: click the **FreshMart Parramatta** bar in the Revenue by Store chart. All other visuals filter to show only Parramatta data — the Revenue by Category chart now shows only what Parramatta customers bought, and the KPI cards update to Parramatta-only totals.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+After clicking the Parramatta bar, the Revenue by Category chart shows a different distribution — reflecting that Parramatta customers (Jake Nguyen and Amara Diallo) have different buying habits from, say, Carlton customers. The Parramatta KPI card shows lower revenue than Carlton's Marcus Lee alone.
+:::
+
+---
+
+## Step 14: Final Polish
+
+Before presenting your dashboard, apply consistent formatting across both pages.
+
+### Colour theme
+
+**Step 1.** In the **View** tab of the ribbon, click **Themes** → browse the built-in themes. Choose a clean professional theme — **Executive** or **Accessible default** work well for business reports.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The ribbon shows the Themes dropdown. Hovering over a theme previews how it will change the colours of your visuals.
+:::
+
+### Page background
+
+**Step 2.** Right-click the canvas → **Format page** → Wallpaper → set a light grey colour (e.g., #F5F5F5). This creates a subtle background that makes your white visuals pop.
+
+### Consistent titles
+
+**Step 3.** Make sure every visual has a clear title. Use the same font, size, and colour for all titles. This is what separates an amateur dashboard from a professional one.
+
+### Alignment
+
+**Step 4.** Select multiple visuals (hold Shift and click each one). In the **Format** tab → **Align** → align edges and distribute spacing evenly. A well-aligned dashboard looks intentional; a messy one looks rushed.
+
+---
+
+## The Completed FreshMart Dashboard
+
+**Page 1 — Sales Overview**:
+
+```
+┌─────────────────────────────────────────────────────┐
+│        FreshMart Sales Overview — 2024               │
+│  [Total Revenue] [Transactions] [Avg Order Value]  [Month Slicer] │
+│  [======== Revenue by Store ==================]     │
+│  [======== Revenue by Category ===============]     │
+└─────────────────────────────────────────────────────┘
+```
+
+**Page 2 — Customer Insights**:
+
+```
+┌─────────────────────────────────────────────────────┐
+│        FreshMart Customer Insights — 2024            │
+│  [====== Revenue by Customer =====] [Doughnut: Tier] │
+│  [========== Map: by State =========] [Top Products] │
+└─────────────────────────────────────────────────────┘
+```
+
+A regional manager can open this dashboard and immediately answer:
+
+- *How much did we make in March?* → Click March in the Month slicer
+- *Which store is underperforming?* → Revenue by Store chart
+- *What do our Gold-tier customers buy?* → Click "Gold" in the Doughnut chart, check Revenue by Category
+- *Where are we losing customers geographically?* → Map visual, compare with Churned column in the Customers table
+
+---
+
+## Exercises
+
+**Exercise 1.** Create a new DAX measure called `Churned Customers` that counts the number of customers where `Churned = 1`. Add it as a KPI Card on the Customer Insights page.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+Right-click the `customers` table → New measure:
+
+```
+Churned Customers = CALCULATE(COUNTROWS(customers), customers[Churned] = 1)
+```
+
+`CALCULATE` evaluates an expression (COUNTROWS) within a filter context (Churned = 1). It is one of the most powerful functions in DAX — the equivalent of `WHERE` in SQL.
+
+Add a Card visual to the Customer Insights page and drag `Churned Customers` into the Fields well. The result should be **2** — Gary McSnarl and Bev O'Brien have both churned.
+:::
+
+**Exercise 2.** The Revenue by Customer bar chart currently shows Nina Patel with $0 revenue. Create a filter to exclude customers with zero transactions from this visual (without removing Nina from the model entirely).
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+Click the Revenue by Customer bar chart. In the Filters pane (right side, above Visualizations), expand **Filters on this visual**. Drag `Total Revenue` into this filter area. Change the filter type to **is greater than** and enter **0**. Apply filter.
+
+Nina Patel now disappears from this chart — she has no revenue, so she is excluded. She still exists in the `customers` table (and in the map, if you are filtering by state rather than revenue). This is a visual-level filter and does not affect any other visuals on the page.
+:::
+
+**Exercise 3.** Add a second slicer to Page 1 for **MembershipTier**. Test it: select "Gold" tier — which stores serve Gold-tier customers?
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. On the Sales Overview page, add a Slicer visual.
+2. Drag `MembershipTier` from `customers` into the Field well.
+3. The slicer shows three options: Bronze, Gold, Silver.
+4. Click **Gold**.
+
+The Revenue by Store chart filters to show only transactions by Gold-tier customers (Marcus Lee in Carlton, Priya Sharma in Fitzroy). FreshMart Carlton and FreshMart Fitzroy should be the only stores with revenue. All other stores disappear or show zero — none of the other customers are Gold tier.
+:::
+
+**Exercise 4.** Create a **Line Chart** on Page 1 showing monthly revenue trend (X-axis: MonthLabel, Y-axis: Total Revenue). A line chart is better than a column chart for showing a trend over time. Add a trend line to the visual.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. Add a **Line chart** visual (the icon with a zigzag line).
+2. X-axis: `MonthLabel` from `transactions`.
+3. Y-axis: `Total Revenue` measure.
+4. To add a trend line: Format visual → Analytics → Trend line → toggle **On**.
+
+The line chart shows monthly revenue from January to June 2024. The trend line provides a statistical average direction. If revenue appears relatively flat, it reflects that the FreshMart dataset was constructed with consistent monthly spend — in a real business, you would expect seasonal variation.
+
+Note: MonthLabel sorts alphabetically by default (Apr, Feb, Jan...) which looks wrong. To fix the sort order, you need a sort column. Create a new calculated column in `transactions`: `MonthSort = FORMAT(transactions[TransactionDate], "YYYYMM")` — then in the Data view, select `MonthLabel` column, go to Column tools in the ribbon → Sort by column → select `MonthSort`. The line chart will now display months chronologically.
+:::
+
+**Exercise 5.** The Small Multiples chart shows monthly revenue by store. Currently FreshMart Darwin is missing. Explain in plain English why Darwin does not appear, and describe what SQL JOIN concept this mirrors.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+FreshMart Darwin does not appear because it has **zero rows in the Transactions table**. When Power BI aggregates revenue by store, it performs what is effectively an INNER JOIN between `transactions` and `stores` — only stores that appear in `transactions` are included in the result. Darwin exists in `stores` but has nothing in `transactions` to join on.
+
+This is the same as the SQL chapter example: a RIGHT JOIN or LEFT JOIN was needed to surface Darwin as a store with no recorded sales. In Power BI, you can expose Darwin by:
+
+1. Creating a measure that explicitly handles missing values
+2. Using a visual that references the `stores` table directly (so all stores appear on the axis) rather than letting the aggregation drive which stores appear
+3. Adding the `StoreName` from `stores` directly to the axis instead of letting it auto-derive from `transactions`
+
+This is intentional — the FreshMart Darwin gap is designed to teach exactly this concept, whether you encounter it in SQL or in Power BI.
+:::
+
+---
+
+::: {.callout-note}
+## Chapter Summary
+
+In this chapter you built a complete two-page interactive dashboard:
+
+- Created and named two **Report Pages** (Sales Overview, Customer Insights)
+- Wrote three **DAX measures** (Total Revenue, Transaction Count, Avg Order Value) and two **calculated columns** (FullName, MonthLabel)
+- Added a **Slicer** for month filtering with cross-page interactivity
+- Built a **Doughnut Chart** for membership tier breakdown
+- Created a **Map** visual showing revenue by state
+- Applied **Drill-down** to a column chart for category → product navigation
+- Created **Small Multiples** to compare monthly trends across stores
+- Added **Action Buttons** for page navigation
+- Configured **Edit Interactions** to control cross-filtering behaviour
+- Applied consistent **formatting** across the dashboard
+
+You now have the skills to build production-quality Power BI dashboards. The specific charts and features covered here represent the core toolkit of any working data analyst. The next frontier — if you want to go further — is learning more DAX functions (particularly `CALCULATE`, `FILTER`, `RANKX`, and time intelligence functions like `TOTALYTD`) and connecting Power BI to live database sources rather than CSV files.
+:::

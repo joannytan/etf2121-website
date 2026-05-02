@@ -1,145 +1,251 @@
 # Database Management System
 
-## Introduction
+## A day in the life of a data analyst
 
-A database management system (DBMS) is a software application that interacts with users, applications, and the database itself to capture and analyze data. A DBMS provides a systematic way to create, retrieve, update, and manage data. It allows users to define, create, maintain, and control access to the database.
+Imagine it is your first day as a junior data analyst at a coffee chain with 200 stores across Australia. Your manager walks over with a friendly smile and asks:
 
-**Why databases are important?:**
+> *"Hey, can you tell me how many large oat-milk lattes we sold in Melbourne last month, broken down by store and by day of the week? Oh, and our regional manager needs it before lunch."*
 
-- **Data Storage**: Databases provide a structured way to store large amounts of data efficiently.
-- **Data Retrieval**: They allow for quick and easy retrieval of data using queries.
-- **Data Integrity**: Databases enforce data integrity and consistency through constraints and rules.
-- **Data Security**: They provide mechanisms for securing data and controlling access to it.
-- **Data Sharing**: Databases enable multiple users to access and share data simultaneously.
-- **Data Backup and Recovery**: They provide tools for backing up data and recovering it in case of failure.
-- **Data Relationships**: Databases allow for the establishment of relationships between different data entities, enabling complex data modeling.
-- **Data Analysis**: They support advanced data analysis and reporting capabilities.
-- **Data Scalability**: Databases can handle large volumes of data and can be scaled to accommodate growth.
-- **Data Transactions**: They support transactions, ensuring that data operations are completed successfully or rolled back in case of failure.
-- **Data Standards**: Databases adhere to industry standards, making it easier to integrate with other systems and applications.
-- **Data Performance**: They optimize data access and retrieval for better performance.
-- **Data Maintenance**: Databases provide tools for maintaining data quality and consistency over time.
-- **Data Auditing**: They support auditing and tracking of data changes for compliance and accountability.
+Where do you even begin?
 
-## Why use a DBMS and not a spreadsheet/table?
+Every store records every transaction. Every transaction has a time, a barista, a customer, a drink, a size, a price, and a payment method. Multiply that by 200 stores, by tens of thousands of customers a day, by 30 days, and you are looking at **millions of rows of data**.
 
-Spreadsheets are great for small datasets and simple calculations, but they have limitations when it comes to handling large amounts of data, complex relationships, and multi-user access. A DBMS is designed to handle these challenges and provides a more robust solution for data management.
+If somebody hands you a spreadsheet, your laptop will probably freeze before you can open it. And even if it did open, how would you find just the *Melbourne* stores, just the *large oat-milk lattes*, just the past *30 days* — without scrolling for hours?
 
-## Why not Excel?
+This is the moment a data analyst reaches for a **database**.
 
-Excel is a easy to use tool for data analysis and visualization, but it is not designed to be a full-fledged database management system. While Excel can be used for small datasets and simple calculations, a DBMS is a better choice for larger datasets and more complex data management needs. For example, in a large banking system, a DBMS would be used to manage customer accounts, transactions, and other data, while Excel might be used for simple reporting or analysis tasks. To deal with single large dataset, a DBMS is more efficient and effective than Excel. For example, a DBMS can handle millions of records and complex queries, while Excel may struggle with performance and data integrity issues. Also, when we need to joins multiple tables together, a DBMS provides powerful tools for managing relationships between tables, while Excel is limited in this regard. Imagine a bank store all the customers data in Excel, it would be very difficult to manage and retrieve the data efficiently. A DBMS would provide a more structured and efficient way to manage the data.
+## So… what is a database, really?
 
-## Difference between using DBMS and Excel
+A **database** is just an organised collection of data — but designed so that finding, updating, and protecting that data is fast, safe, and reliable, even when there are millions of records and hundreds of people using it at once.
 
-| Feature | DBMS | Excel |
-|---------|------|-------|
-| Data Storage | Structured and efficient | Flat and less efficient |
-| Data Retrieval | Fast and optimized | Slower for large datasets |
-| Data Integrity | Enforced through constraints | Limited data validation |
-| Data Security | Advanced security features | Basic password protection |
-| Data Sharing | Multi-user access | Limited multi-user support |
-| Data Relationships | Supports complex relationships | Limited to simple relationships |
-| Data Scalability | Scalable for large datasets | Limited scalability |
-| Data Maintenance | Tools for data quality | Manual maintenance |
-| Data Auditing | Supports auditing | No built-in auditing |
-| Data Performance | Optimized for performance | Slower for large datasets |
-| Data Standards | Adheres to industry standards | No standardization |
-| Data Backup | Automated backup options | Manual backup required |
-| Data Recovery | Automated recovery options | Manual recovery required |
+You already use databases every day, even if you do not realise it:
 
-## What is Relational Database (RDBMS)?
+- When you log into Instagram, a database checks your password and pulls up your feed.
+- When you tap your Myki card, a database deducts the fare and updates your balance.
+- When Spotify recommends a song, it is querying a database of your listening history.
+- When your bank app shows your latest transaction, that record came from a database — within milliseconds.
 
-A relational database is a type of database that organizes data into tables, which consist of rows and columns. Each table represents a specific entity or concept, and the columns represent the attributes or properties of that entity. The rows in the table represent individual records or instances of the entity. It allows for the establishment of relationships between different tables using keys, enabling complex data modeling and retrieval. Figure 1 illustrates a simple relational database with four tables: Drivers License, Member, Rental, Movie_Rental and Movie. Each table has its own set of columns and rows, and the relationships between the tables are established using primary and foreign keys. (we will cover keys later).
+A database is a quiet engine running in the background of almost every digital service we touch.
 
-![Figure 1: Simple Relational Database Example.](https://i.ytimg.com/vi/C3icLzBtg8I/hqdefault.jpg)
+## What is a Database Management System (DBMS)?
 
-<small><em>source: https://www.youtube.com/watch?v=C3icLzBtg8I</em></small>
+A database is the *data*. A **Database Management System (DBMS)** is the *software* that lets people and applications interact with that data — to store it, retrieve it, change it, secure it, and back it up.
 
+Think of it like this:
 
-## What is the relationship between SQL vs. RDBMS?
+- The **database** is the library — rows of shelves full of books.
+- The **DBMS** is the librarian — the one who knows where every book lives, lends them out, keeps the catalogue tidy, and stops you from walking off with the rare collection.
 
-SQL (Structured Query Language) is a programming language used to manage and manipulate relational databases. It is the standard language for interacting with a RDBMS. SQL allows users to create, read, update, and delete data in a database. A RDBMS is the software that implements the database and provides the interface for users to interact with it using SQL.
+Without a librarian, even the best library is just a pile of books.
 
-## Why SQL is important for a data analyst?
+A DBMS quietly handles a lot of jobs that you would otherwise have to do by hand:
 
-SQL is important because it provides a standardized way to interact with relational databases. It allows users to perform complex queries, retrieve data, and manipulate data in a consistent manner. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS). Learning SQL is essential for anyone working with databases, as it enables them to effectively manage and analyze data. Additionally, SQL skills are highly sought after in the job market, making it a valuable asset for data analysts.
+- **Storing data efficiently** so it does not take up unnecessary space.
+- **Finding data quickly** when you ask a question, even across millions of rows.
+- **Protecting data integrity** so that, for example, a bank balance can never be in two contradictory states at once.
+- **Controlling who can see and change what** — the intern should not be able to delete payroll records.
+- **Letting many people work at once** without overwriting each other's changes.
+- **Backing up and recovering** data if something goes wrong.
 
-# Structured Query Language (SQL)
+## "But can't I just use Excel?"
 
-## What is SQL?
+Excel is wonderful. It really is. For small datasets, quick calculations, and simple charts, it is hard to beat. Most data analysts open Excel several times a day.
 
-SQL (Structured Query Language) is a standard programming language used to manage and manipulate relational databases. It is used to perform various operations on the data stored in a database, such as querying, updating, inserting, and deleting data. SQL is widely used in the industry and is supported by most relational database management systems (RDBMS), including MySQL, PostgreSQL, Oracle, and Microsoft SQL Server. The standard language for different RDBMS may have slight variations, but the core SQL syntax and functionality remain consistent across platforms. In this course, we will focus on using Oracle as our RDBMS. Oracle is chosen as it is widely used in the industry and provides a robust platform for learning SQL and database management concepts.
+But Excel was never designed to be a database. The cracks start to show the moment you push past a few thousand rows or need more than one person editing at once.
 
-SQL is a declarative language, meaning that users specify what they want to do with the data, rather than how to do it. This allows for more efficient and optimized execution of queries by the database engine. SQL is also a powerful language that supports complex queries, joins, aggregations, and subqueries, making it suitable for a wide range of data analysis tasks.
+Picture a real-world example. A bank stores its customer records in Excel. What happens when:
 
-## Basic SQL Commands
+- Two staff members open the file at the same time and both make edits — whose changes are kept?
+- The dataset grows to 50 million rows — Excel itself caps out at around one million.
+- The file gets emailed around — which copy is the *real* one?
+- A staff member accidentally sorts only one column, leaving every row attached to the wrong customer.
+- A regulator asks: *"Who changed this customer's address last Tuesday at 3:14pm?"*
 
-There are several types of SQL commands, each serving a different purpose. The main categories of SQL commands are:
+Each of these is a nightmare in Excel. Each is a routine, solved problem in a DBMS.
 
-- **Data Manipulation Language (DML)**: Used to manipulate data in the database.  
-- **Data Definition Language (DDL)**: Used to define and manage the structure of the database.  
-- **Data Query Language (DQL)**: Used to query and retrieve data from the database.  
+Here is the key shift in thinking: **a spreadsheet is a document; a database is a system**. A document lives on someone's laptop. A system serves many people, protects the data, and can be trusted as the single source of truth.
 
-## Data Manipulation Language (DML)
+### Spreadsheet vs. database at a glance
 
-DML commands are used to manipulate data in the database. They include commands for inserting, updating, deleting, and retrieving data.
+| Feature | Database (DBMS) | Spreadsheet (Excel) |
+|---|---|---|
+| Typical size | Millions to billions of rows | Up to ~1 million rows, slow well before that |
+| Speed of search | Fast, even on huge datasets | Slows to a crawl as data grows |
+| Data integrity | Enforced by rules and constraints | Relies on the user being careful |
+| Multi-user access | Many users, simultaneously, safely | One file, easily overwritten |
+| Relationships across tables | Built-in and powerful | Limited (VLOOKUP can only do so much) |
+| Security | Fine-grained user permissions | Basic password protection |
+| Backup & recovery | Automated, often continuous | Manual — *Save As copy_FINAL_v3* |
+| Audit trail | Tracks who changed what, and when | None by default |
 
-- **INSERT**: Used to add new rows of data to a table.
-- **UPDATE**: Used to modify existing data in a table.
-- **DELETE**: Used to remove rows of data from a table.
+A good rule of thumb: **if more than one person depends on the data, or if the data is too big for your laptop to enjoy, it belongs in a database.**
 
-### Data Definition Language (DDL)
-DDL commands are used to define and manage the structure of the database. They include commands for creating, altering, and dropping database objects such as tables, indexes, and views.
+## The most common kind: a Relational Database (RDBMS)
 
-- **CREATE**: Used to create a new database object (e.g., table, index).
-- **ALTER**: Used to modify an existing database object (e.g., add or drop columns).
-- **DROP**: Used to delete an existing database object (e.g., table, index).
-- **TRUNCATE**: Used to delete all rows from a table without removing the table itself.
-- **RENAME**: Used to rename an existing database object (e.g., table, column).
-- **COMMENT**: Used to add comments to database objects (e.g., tables, columns).
-- **CREATE INDEX**: Used to create an index on a table to improve query performance.
-- **DROP INDEX**: Used to delete an existing index from a table.
-- **CREATE VIEW**: Used to create a virtual table based on the result of a query.
-- **DROP VIEW**: Used to delete an existing view from the database.
-- **CREATE TABLE**: Used to create a new table in the database.
-- **ALTER TABLE**: Used to modify the structure of an existing table (e.g., add or drop columns).
-- **DROP TABLE**: Used to delete an existing table from the database.
+There are several styles of database, but the one a data analyst encounters most often — by a wide margin — is the **relational database**, managed by a **Relational Database Management System (RDBMS)**.
 
-## Data Query Language (DQL)
+A relational database organises information into **tables** — and that one word is the key to everything.
 
-DQL commands are used to query and retrieve data from the database. The main DQL command is:
-- **SELECT**: Used to retrieve data from one or more tables in the database.
-- **WHERE**: Used to filter the results of a query based on specified conditions.
-- **ORDER BY**: Used to sort the results of a query in ascending or descending order
-- **GROUP BY**: Used to group the results of a query based on specified columns.
-- **HAVING**: Used to filter the results of a grouped query based on specified conditions
-- **JOIN**: Used to combine rows from two or more tables based on a related column between them.
-- **UNION**: Used to combine the results of two or more SELECT queries into a
-single result set.
-- **DISTINCT**: Used to retrieve unique values from a column, eliminating duplicate values.
-- **LIMIT**: Used to limit the number of rows returned by a query.
+A table is exactly what it sounds like:
 
-All these keywords will be explained in the next sections. 🔮
+- Each **column** describes a property (e.g. `customer_id`, `first_name`, `email`).
+- Each **row** is one record — one customer, one order, one transaction.
 
-## Connecting to Oracle Database
+Here is a tiny `customers` table:
 
-For easy access and start, [freesql](https://www.freesql.com/) is a free online SQL editor by Oracle that allows you to practice SQL queries without the need to install any software. You can sign up for a free account and start writing SQL queries right away. 
+| customer_id | first_name | last_name | email | city |
+|---|---|---|---|---|
+| 1001 | Aisha | Khan | aisha@example.com | Melbourne |
+| 1002 | Ben | Tran | ben@example.com | Sydney |
+| 1003 | Chloe | Wong | chloe@example.com | Melbourne |
 
-### How to sign up
+So far this could be a spreadsheet. The magic of a *relational* database is that tables can be **linked** to each other.
+
+Imagine our coffee chain has three tables:
+
+- `customers` — who the customer is.
+- `orders` — what they ordered, when, and at which store.
+- `stores` — where each store is located.
+
+Each table on its own only tells part of the story. But because the `orders` table contains a `customer_id` (which links back to `customers`) and a `store_id` (which links back to `stores`), we can answer rich questions like *"How many lattes did Melbourne customers buy on Saturdays?"* by combining the tables.
+
+```{mermaid}
+erDiagram
+    CUSTOMERS ||--o{ ORDERS : places
+    STORES ||--o{ ORDERS : "is sold at"
+    CUSTOMERS {
+        int customer_id PK
+        string first_name
+        string last_name
+        string email
+        string city
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        int store_id FK
+        datetime order_time
+        string drink
+        decimal price
+    }
+    STORES {
+        int store_id PK
+        string store_name
+        string city
+        string state
+    }
+```
+
+The links between tables are made by special columns called **keys**:
+
+- A **primary key** is a column that uniquely identifies each row in a table — like `customer_id` in `customers`. No two customers can share one.
+- A **foreign key** is a column in one table that points to the primary key of another. In `orders`, `customer_id` is a foreign key — it tells us *which* customer placed the order.
+
+This simple idea — *unique IDs that connect tables* — is the backbone of almost every business system you will ever work with. Once it clicks, a huge amount of the messy real world becomes tidy.
+
+## Where does SQL come into all this?
+
+You now understand the *what* (a database) and the *who* (the DBMS). The missing piece is the *how*: how do you actually ask a database a question?
+
+The answer is **SQL** — short for **Structured Query Language**, and usually pronounced "sequel."
+
+SQL is the language we use to talk to a relational database. You write a sentence in SQL, the DBMS understands what you want, and it returns the answer. For example, to answer your manager's coffee question, you might write:
+
+```sql
+SELECT store_name, COUNT(*) AS num_lattes
+FROM orders
+JOIN stores ON orders.store_id = stores.store_id
+WHERE drink = 'Large Oat Latte'
+  AND stores.city = 'Melbourne'
+  AND order_time >= '2026-03-01'
+GROUP BY store_name;
+```
+
+Do not worry if that looks like wizardry right now — by the end of this section, it will read almost like English. The point for now is: that one short query can sift through millions of rows in seconds. Try doing that in Excel.
+
+### Why every data analyst learns SQL
+
+If there is one technical skill that appears in nearly every data-analyst job ad on the planet, it is SQL. Here is why it matters so much:
+
+- **It is the universal language of data.** Whether the data lives in PostgreSQL, MySQL, SQL Server, Oracle, Snowflake, or BigQuery, the core syntax is almost identical. Learn it once, use it anywhere.
+- **It is where the data lives.** Most companies store their important data in relational databases. If you cannot query the database, you cannot do the analysis.
+- **It is fast.** A well-written SQL query can summarise hundreds of millions of rows in seconds — work that would crash any spreadsheet.
+- **It is the entry point to everything else.** Power BI dashboards, R analyses, Python models — they all begin with pulling data, and pulling data usually means SQL.
+
+The good news? SQL is also one of the *easiest* programming languages to start with. It is **declarative**, which means you describe *what* you want, not *how* to get it. You say "give me all customers in Melbourne" and the database figures out the most efficient way to find them.
+
+## A first look at SQL commands
+
+SQL has a small vocabulary, but its words fall into three useful families. You do not need to memorise these now — just notice the shape of the language.
+
+**Data Definition Language (DDL)** — for *defining the structure* of the database itself.
+
+- `CREATE` — make a new table, view, or index.
+- `ALTER` — change an existing table's structure.
+- `DROP` — delete a table or other object permanently.
+- `TRUNCATE` — empty a table without deleting the table itself.
+
+**Data Manipulation Language (DML)** — for *changing the data* inside the tables.
+
+- `INSERT` — add new rows.
+- `UPDATE` — change existing rows.
+- `DELETE` — remove rows.
+
+**Data Query Language (DQL)** — for *asking questions* of the data. As an analyst, this is where you will spend almost all of your time.
+
+- `SELECT` — pick the columns you want to see.
+- `WHERE` — filter to just the rows you care about.
+- `ORDER BY` — sort the result.
+- `GROUP BY` and `HAVING` — summarise the data into groups.
+- `JOIN` — combine information across multiple tables.
+- `DISTINCT` — get rid of duplicates.
+- `LIMIT` — return only the first few rows.
+
+Most data analysts write `SELECT` queries every single day, and rarely touch `CREATE` or `DROP`. Building tables is more often the job of a database administrator or data engineer. Still, it is useful to recognise these commands when you see them — and we will cover the essentials in the next chapter.
+
+## Getting your hands dirty: practising SQL for free
+
+Theory only takes you so far. The fastest way to get comfortable with SQL is to start writing it. Best of all, you do not need to install anything heavy on your laptop.
+
+In this course, we will use [**FreeSQL**](https://www.freesql.com/) — a free, browser-based SQL editor. You sign up once, log in, and can start writing real queries against a real database immediately.
+
+::: {.callout-tip}
+## Try it later: open-source alternatives
+
+If you want to keep learning beyond this course, two excellent free, open-source databases to install on your own machine are:
+
+- **SQLite** — the lightest, simplest database in the world. A whole database lives in a single file. Perfect for personal projects.
+- **PostgreSQL** — the same industrial-strength database used by companies like Apple, Instagram, and Reddit. Free forever.
+
+The SQL skills you build here will work, almost unchanged, on either.
+:::
+
+### Setting up FreeSQL (5 minutes)
 
 1. Go to [freesql.com](https://www.freesql.com/).
-2. Click on the "Sign Up" button in the top right corner of the page.
-3. Fill in the required information, including your name, email address, and password.
-4. Click on the "Create Account" button to complete the sign-up process.
-5. Once you have created your account, you can log in to the platform and start using the SQL editor.
+2. Click **Sign Up** in the top-right corner.
+3. Enter your name, email, and a password, then click **Create Account**.
+4. Log in. You will land in an editor with a sample database ready to query.
+5. Type a query, click **Run** (or press `Ctrl + Enter`), and watch the results appear.
 
-### How to use FreeSQL
+That is it. You now have a real SQL playground.
 
-1. After logging in, you will be taken to the SQL editor page.
-2. You can start writing SQL queries in the editor window.
-3. To execute a query, click on the "Run" button or press "Ctrl + Enter" on your keyboard.
-4. The results of the query will be displayed in the results window
-5. You can save your queries for future use by clicking on the "Save" button.
+## Quick check: are you ready for the next chapter?
 
+Before we move on, take a moment to make sure these ideas feel solid. If any of them are still fuzzy, give the chapter another quick skim — that is completely normal.
 
+1. In your own words, why might a coffee chain prefer a database over a giant Excel file?
+2. What is the difference between a *database* and a *DBMS*?
+3. What makes a database "relational"? What does a primary key do, and what does a foreign key do?
+4. Why is SQL a useful skill for a data analyst, even one who works mostly in Power BI or R?
+5. Name one DDL command, one DML command, and one DQL command.
 
+::: {.callout-note}
+## In a nutshell
+
+A **database** is a structured store of information. A **DBMS** is the software that manages it. The most common kind, the **relational database**, organises data into **tables** linked by **keys**. To talk to it, we use **SQL** — the language at the heart of nearly every data analyst's job.
+:::
+
+## What's next
+
+In the next chapter, we will roll up our sleeves and write our first real SQL queries — pulling data, filtering it, sorting it, and starting to answer questions like the one your manager threw at you on day one. By the end of the section, that coffee question will not feel scary at all.

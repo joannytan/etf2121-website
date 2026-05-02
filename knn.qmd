@@ -1,0 +1,657 @@
+---
+title: "K-Nearest Neighbours"
+webr:
+  packages: ['tidyverse', 'tidymodels', 'kknn']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 10</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">K-Nearest Neighbours</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    Logistic regression (Week 8) found a mathematical boundary to separate high-value from regular customers. KNN takes a completely different approach: no equations, no boundaries — just <em style="-webkit-text-fill-color:#cbd5e1;">"find the most similar customers and vote."</em> Simple idea, surprisingly powerful results.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 kknn</span>
+  </div>
+</div>
+```
+
+:::{.callout-note}
+## 🔁 Recap — Our model scorecard so far
+
+| Chapter | Target | Model | Best for |
+|---------|--------|-------|---------|
+| Week 7 | TotalSpend ($) | Linear Regression | Numeric prediction, interpretable equation |
+| Week 8 | IsHighValue (T/F) | Logistic Regression | Binary classification, probability output |
+| Week 9 | TotalSpend ($) | Decision Tree | Numeric prediction, explainable rules |
+| **Week 10** | **IsHighValue (T/F)** | **K-Nearest Neighbours** | **Classification, no assumptions about shape** |
+
+We return to the **same classification problem as Chapter 8** so we can directly compare KNN and logistic regression at the end.
+:::
+
+---
+
+## 10.1 The Nearest Neighbours Idea
+
+KNN is one of the most intuitive algorithms in machine learning. When asked to classify a new customer, it does this:
+
+1. **Measure the distance** from the new customer to every customer in the training data
+2. **Find the K nearest** customers (the most similar ones)
+3. **Take a majority vote** — if most of those K neighbours are High Value, predict High Value; otherwise predict Not High Value
+
+That's it. No equations to fit, no parameters to estimate. KNN doesn't learn a model from training data in the traditional sense — it memorises the training data and uses it directly at prediction time.
+
+**A concrete example:**
+
+Imagine plotting every customer on a chart with `TotalTransactions` on the x-axis and `AvgTransactionValue` on the y-axis. A new customer (Chloe) appears at the point (10, $65). We look at her 5 nearest neighbours (K=5):
+
+- 3 of them are High Value (TRUE)
+- 2 of them are Not High Value (FALSE)
+
+**KNN with K=5 predicts: TRUE (High Value)** — majority vote.
+
+```{webr-r}
+library(tidyverse)
+
+# Illustrate KNN with a 2D scatter plot
+set.seed(42)
+
+# Simulate a small customer set for illustration
+demo_data <- tibble(
+  TotalTransactions   = c(3, 4, 6, 5, 12, 14, 11, 13, 8, 9, 10),
+  AvgTxnValue         = c(30, 45, 35, 50, 90, 110, 85, 95, 60, 70, 65),
+  IsHighValue         = c("No","No","No","No","Yes","Yes","Yes","Yes","No","No","New Customer")
+)
+
+ggplot(demo_data, aes(x = TotalTransactions, y = AvgTxnValue,
+                       colour = IsHighValue, shape = IsHighValue)) +
+  geom_point(size = 4, alpha = 0.9) +
+  geom_point(data = filter(demo_data, IsHighValue == "New Customer"),
+             size = 6, colour = "#f59e0b", shape = 18) +
+  annotate("text", x = 10.5, y = 57, label = "New customer (Chloe)",
+           colour = "#92400e", size = 3.5, hjust = 0) +
+  annotate("segment", x = 10, y = 65, xend = 10.3, yend = 62,
+           colour = "#92400e", linewidth = 0.7) +
+  scale_colour_manual(values = c("No" = "#8FBFCA", "Yes" = "#9B8EC7", "New Customer" = "#f59e0b")) +
+  scale_shape_manual(values = c("No" = 16, "Yes" = 17, "New Customer" = 18)) +
+  labs(
+    title    = "KNN Illustration: Who are Chloe's nearest neighbours?",
+    subtitle = "The 5 nearest neighbours vote on whether Chloe is high value",
+    x = "Total Transactions", y = "Avg Transaction Value ($)",
+    colour = "High Value?", shape = "High Value?"
+  ) +
+  theme_minimal()
+```
+
+The animation below makes the voting process concrete. Watch K expand from 1 to 15 — the red circle shows the search radius, highlighted points are the current neighbours, and the title shows the live majority vote.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(plotly)
+
+set.seed(7)
+n_per <- 25
+df <- rbind(
+  data.frame(x = rnorm(n_per, 3.5, 1.2), y = rnorm(n_per, 3.5, 1.2),
+             cls = "Not High Value"),
+  data.frame(x = rnorm(n_per, 7.5, 1.2), y = rnorm(n_per, 7.5, 1.2),
+             cls = "High Value")
+)
+
+qx <- 5.5; qy <- 5.5
+df$dist <- sqrt((df$x - qx)^2 + (df$y - qy)^2)
+df      <- df[order(df$dist), ]
+
+K_max    <- 15
+cls_col  <- c("High Value" = "#9B8EC7", "Not High Value" = "#8FBFCA")
+
+circle_pts <- function(cx, cy, r, n = 120) {
+  theta <- seq(0, 2 * pi, length.out = n + 1)
+  list(x = cx + r * cos(theta), y = cy + r * sin(theta))
+}
+
+frames <- lapply(seq_len(K_max), function(k) {
+  nn        <- df[seq_len(k), ]
+  nn_colors <- unname(cls_col[nn$cls])
+  vote_hv   <- sum(nn$cls == "High Value")
+  predicted <- if (vote_hv > k / 2) "High Value" else "Not High Value"
+  circ      <- circle_pts(qx, qy, df$dist[k])
+  list(
+    name = as.character(k),
+    group = "sweep",
+    data = list(
+      list(x = nn$x, y = nn$y,
+           marker = list(color = nn_colors, size = 14, opacity = 1,
+                         line = list(color = "#0f172a", width = 2))),
+      list(x = circ$x, y = circ$y)
+    ),
+    traces = c(3L, 4L),
+    layout = list(title = list(
+      text = paste0("K = ", k,
+        "  |  Votes: ", vote_hv, " High Value, ", k - vote_hv, " Not High Value",
+        "  →  Prediction: ", predicted),
+      font = list(size = 12, color = "#0f172a")
+    ))
+  )
+})
+
+slider_steps <- lapply(seq_len(K_max), function(k) {
+  list(method = "animate",
+       args = list(list(as.character(k)),
+                   list(mode = "immediate",
+                        frame = list(duration = 0, redraw = FALSE),
+                        transition = list(duration = 0))),
+       label = paste0("K=", k))
+})
+
+nn0   <- df[1, ]
+circ0 <- circle_pts(qx, qy, df$dist[1])
+vote0 <- sum(nn0$cls == "High Value")
+pred0 <- if (vote0 > 0) "High Value" else "Not High Value"
+
+fig <- plot_ly() |>
+  add_trace(data = df[df$cls == "Not High Value", ],
+            x = ~x, y = ~y, type = "scatter", mode = "markers",
+            marker = list(color = "#8FBFCA", size = 9, opacity = 0.65),
+            name = "Not High Value") |>
+  add_trace(data = df[df$cls == "High Value", ],
+            x = ~x, y = ~y, type = "scatter", mode = "markers",
+            marker = list(color = "#9B8EC7", size = 9, opacity = 0.65),
+            name = "High Value") |>
+  add_trace(x = qx, y = qy, type = "scatter", mode = "markers",
+            marker = list(color = "#f59e0b", size = 18, symbol = "star",
+                          line = list(color = "#92400e", width = 2)),
+            name = "New customer (Chloe)") |>
+  add_trace(x = nn0$x, y = nn0$y, type = "scatter", mode = "markers",
+            marker = list(color = unname(cls_col[nn0$cls]), size = 14, opacity = 1,
+                          line = list(color = "#0f172a", width = 2)),
+            name = "K nearest neighbours") |>
+  add_trace(x = circ0$x, y = circ0$y, type = "scatter", mode = "lines",
+            line = list(color = "#ef4444", width = 1.5, dash = "dot"),
+            name = "Search radius")
+
+fig$x$frames <- frames
+
+fig |>
+  layout(
+    title = list(
+      text = paste0("K = 1  |  Votes: ", vote0, " High Value, ",
+                    1 - vote0, " Not High Value  →  Prediction: ", pred0),
+      font = list(size = 12, color = "#0f172a"), x = 0.5, xanchor = "center"
+    ),
+    xaxis = list(title = "Total Transactions (normalised)", zeroline = FALSE,
+                 gridcolor = "#f1f5f9"),
+    yaxis = list(title = "Avg Transaction Value (normalised)", zeroline = FALSE,
+                 gridcolor = "#f1f5f9"),
+    plot_bgcolor = "white", paper_bgcolor = "white",
+    legend = list(orientation = "h", x = 0.5, xanchor = "center", y = -0.18, yanchor = "top"),
+    margin = list(t = 55, b = 130, l = 55, r = 20),
+    font = list(family = "system-ui, sans-serif"),
+    updatemenus = list(list(
+      type = "buttons", showactive = FALSE,
+      x = 0.05, xanchor = "left", y = -0.12, yanchor = "top",
+      buttons = list(
+        list(label = "▶  Play", method = "animate",
+             args = list("sweep", list(fromcurrent = TRUE, mode = "immediate",
+               frame = list(duration = 600, redraw = FALSE),
+               transition = list(duration = 250, easing = "linear")))),
+        list(label = "⏸  Pause", method = "animate",
+             args = list(list(), list(mode = "immediate",
+               frame = list(duration = 0, redraw = FALSE),
+               transition = list(duration = 0))))
+      )
+    )),
+    sliders = list(list(
+      active = 0,
+      currentvalue = list(prefix = "K: ", font = list(size = 11, color = "#64748b")),
+      pad = list(t = 55, b = 10),
+      steps = slider_steps
+    ))
+  )
+```
+
+### Choosing K — the bias-variance tradeoff
+
+The number of neighbours K is a **hyperparameter** — a setting we choose before training. K controls a fundamental tension that appears in every machine learning model:
+
+```{=html}
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0 18px;">
+  <div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#0369a1;margin:0 0 6px;">Small K (e.g. K = 1 or 2)</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0 0 6px;"><strong>Low bias</strong> — decisions are very localised, capturing fine-grained patterns</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0;"><strong>High variance</strong> — one noisy or mislabelled neighbour can flip the prediction entirely</p>
+    <p style="color:#dc2626;font-weight:600;font-size:0.85rem;margin:8px 0 0;">→ Overfits: training accuracy ≈ 100%, test accuracy drops</p>
+  </div>
+  <div style="background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;padding:16px;">
+    <p style="font-weight:700;color:#92400e;margin:0 0 6px;">Large K (e.g. K = 40 or 50)</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0 0 6px;"><strong>High bias</strong> — averaging over many distant neighbours smooths away real patterns</p>
+    <p style="color:#374151;font-size:0.88rem;margin:0;"><strong>Low variance</strong> — stable predictions, but may miss sharp boundaries between classes</p>
+    <p style="color:#92400e;font-weight:600;font-size:0.85rem;margin:8px 0 0;">→ Underfits: misses real signal in both training and test</p>
+  </div>
+</div>
+```
+
+The **optimal K** sits in the middle: small enough to capture local structure, large enough to ignore individual noise. There is no formula that gives the right K directly — cross-validation (Section 10.3) finds it empirically by testing many values on held-out folds.
+
+**KNN for regression (bonus):** KNN can also predict a *continuous number* rather than a class. Instead of a majority vote, the prediction is the average outcome of the K nearest neighbours:
+
+$$\hat{y} = \frac{1}{K} \sum_{i \in \mathcal{N}_K} y_i$$
+
+where $\mathcal{N}_K$ is the set of K nearest neighbours in the training data. The same distance calculation and scaling requirement apply.
+
+:::{.callout-important}
+## ✏️ Concept Check — 10.1
+
+**Q1.** A new customer has 5 nearest neighbours: TRUE, FALSE, TRUE, TRUE, FALSE. With K=5, what does KNN predict?
+
+**Q2.** With K=1, training accuracy is always 100%. Why is this not a useful result?
+
+**Q3.** KNN is sometimes called a "lazy learner." What do you think this means?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** TRUE — 3 out of 5 neighbours are TRUE, so the majority vote predicts High Value.
+
+**A2.** With K=1, every training point's nearest neighbour *is itself* — so it always predicts correctly on training data. But this tells us nothing about how it will perform on new, unseen customers. K=1 massively overfits.
+
+**A3.** KNN doesn't build a model during training — it just stores the data. All the "work" happens at prediction time (finding neighbours). Compare this to linear regression which does all its work up front (fitting coefficients) and then predicts instantly. KNN is "lazy" because it defers the computation until you actually need a prediction.
+:::
+
+---
+
+## 10.2 Distance and the Critical Role of Scaling
+
+KNN uses distance to measure similarity. The most common choice is **Euclidean distance** — the straight-line distance between two points in multi-dimensional space.
+
+For two customers with predictors $(x_1, x_2)$ and $(y_1, y_2)$:
+
+$$d = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$$
+
+**The scaling problem:** Imagine we use `TotalTransactions` (range: 1–65) and `DaysSinceFirstPurchase` (range: 14–1,460). Without scaling, a difference of 1 transaction contributes the same as a difference of 1 day — but $1,460 days$ worth of range dwarfs $64 transactions$ worth, dominating the distance calculation entirely. A predictor with a large range will overwhelm one with a small range.
+
+**The fix:** `step_normalize()` rescales every predictor to have **mean = 0 and SD = 1** before computing distances. After normalisation, a 1-unit difference is always 1 standard deviation — every variable is on the same footing.
+
+```{webr-r}
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = as.factor(IsHighValue))
+
+set.seed(42)
+fm_split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+fm_train <- training(fm_split)
+fm_test  <- testing(fm_split)
+
+# Show the effect of normalisation on one variable
+cat("BEFORE normalisation:\n")
+freshmart |> summarise(
+  mean_transactions = mean(TotalTransactions),
+  sd_transactions   = sd(TotalTransactions),
+  mean_days         = mean(DaysSinceFirstPurchase),
+  sd_days           = sd(DaysSinceFirstPurchase)
+)
+```
+
+```{webr-r}
+# Show AFTER normalisation
+recipe(IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+       data = fm_train) |>
+  step_normalize(all_numeric_predictors()) |>
+  prep() |>
+  bake(new_data = fm_train) |>
+  summarise(
+    mean_transactions = round(mean(TotalTransactions), 4),
+    sd_transactions   = round(sd(TotalTransactions), 4),
+    mean_days         = round(mean(DaysSinceFirstPurchase), 4),
+    sd_days           = round(sd(DaysSinceFirstPurchase), 4)
+  )
+```
+
+After normalisation: every variable has mean ≈ 0 and SD ≈ 1. Now a 1-unit change in each variable represents the same relative shift.
+
+:::{.callout-important}
+## ✏️ Concept Check — 10.2
+
+**Q1.** Without scaling, `DaysSinceFirstPurchase` has a much larger range than `TotalTransactions`. Which variable will dominate the distance calculation — and is this desirable?
+
+**Q2.** After `step_normalize()`, what are the mean and standard deviation of each numeric predictor?
+
+**Q3.** Does `step_normalize()` change the *shape* of each variable's distribution? Explain.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** `DaysSinceFirstPurchase` will dominate — a 100-day difference will produce a large distance even if the customers have identical transaction behaviour. This is not desirable if we think transactions and days should have roughly equal importance.
+
+**A2.** Mean ≈ **0** and SD ≈ **1** for every numeric predictor.
+
+**A3.** No — normalisation shifts and stretches each variable, but the shape of the distribution (skewness, modality) remains exactly the same. It only changes the scale, not the distribution's form.
+:::
+
+---
+
+## 10.3 Fitting KNN and Choosing K with Cross-Validation
+
+We can't use the test set to choose K — that would be "peeking" at the test data, making our final evaluation dishonest. Instead we use **k-fold cross-validation** on the training data.
+
+### What is cross-validation?
+
+The training data is split into V equal-sized "folds." The model is trained V times — each time using V−1 folds for training and 1 fold for validation. The final metric is the average across all V folds.
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:18px 22px;margin:16px 0;">
+  <p style="font-weight:600;margin:0 0 6px;color:#1e293b;">5-Fold Cross-Validation (V = 5)</p>
+  <p style="margin:0;color:#475569;font-size:0.91rem;font-family:monospace;line-height:2;">
+  Round 1: [<strong>VAL</strong>] [train] [train] [train] [train] → accuracy₁<br>
+  Round 2: [train] [<strong>VAL</strong>] [train] [train] [train] → accuracy₂<br>
+  Round 3: [train] [train] [<strong>VAL</strong>] [train] [train] → accuracy₃<br>
+  Round 4: [train] [train] [train] [<strong>VAL</strong>] [train] → accuracy₄<br>
+  Round 5: [train] [train] [train] [train] [<strong>VAL</strong>] → accuracy₅<br>
+  <strong>CV accuracy = mean(accuracy₁ … accuracy₅)</strong>
+  </p>
+</div>
+```
+
+### Tuning K from 1 to 20
+
+```{webr-r}
+library(kknn)
+
+# KNN spec with K as a tunable parameter
+knn_spec <- nearest_neighbor(neighbors = tune()) |>
+  set_engine("kknn") |>
+  set_mode("classification")
+
+# Recipe: normalise inputs (critical for KNN)
+knn_recipe <- recipe(
+  IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase,
+  data = fm_train
+) |>
+  step_normalize(all_numeric_predictors())
+
+knn_workflow <- workflow() |>
+  add_recipe(knn_recipe) |>
+  add_model(knn_spec)
+
+# 5-fold cross-validation
+set.seed(42)
+cv_folds <- vfold_cv(fm_train, v = 5, strata = IsHighValue)
+
+# Grid of K values to try
+k_grid <- tibble(neighbors = 1:20)
+
+knn_tune <- tune_grid(
+  knn_workflow,
+  resamples = cv_folds,
+  grid      = k_grid,
+  metrics   = metric_set(accuracy, sensitivity)
+)
+
+# Plot CV accuracy vs K
+collect_metrics(knn_tune) |>
+  filter(.metric == "accuracy") |>
+  ggplot(aes(x = neighbors, y = mean)) +
+  geom_line(colour = "#9B8EC7", linewidth = 1.1) +
+  geom_point(colour = "#9B8EC7", size = 3) +
+  geom_errorbar(aes(ymin = mean - std_err, ymax = mean + std_err),
+                width = 0.3, colour = "#9B8EC7", alpha = 0.5) +
+  labs(
+    title    = "Cross-Validated Accuracy vs K",
+    subtitle = "Error bars show uncertainty across folds; pick K at the peak",
+    x        = "K (Number of Neighbours)",
+    y        = "CV Accuracy"
+  ) +
+  theme_minimal()
+```
+
+```{webr-r}
+# Find and report the best K
+best_k <- select_best(knn_tune, metric = "accuracy")
+cat("Best K:", best_k$neighbors, "\n")
+```
+
+### Fit the final model with the best K
+
+```{webr-r}
+# Finalise workflow with best K
+final_knn <- finalize_workflow(knn_workflow, best_k) |>
+  fit(data = fm_train)
+
+# Evaluate on the test set
+knn_preds <- augment(final_knn, new_data = fm_test)
+metric_set(accuracy, sensitivity, specificity)(knn_preds,
+                                                truth    = IsHighValue,
+                                                estimate = .pred_class)
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — 10.3
+
+**Q1.** Why do we use cross-validation to choose K rather than using the test set?
+
+**Q2.** In 5-fold CV, each data point appears in the validation set exactly once. How many times does each point appear in a training set?
+
+**Q3.** The CV accuracy plot peaks at K=7, then slowly decreases. What does this tell us about K=7 vs K=15?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Using the test set to choose K is a form of "data leakage" — we'd be optimising based on the test data, making our final test-set evaluation dishonest. Cross-validation uses only the training data, keeping the test set truly unseen.
+
+**A2.** Each data point appears in a training set **4 times** (in V-1 = 4 of the 5 rounds).
+
+**A3.** K=7 achieves the best balance between bias and variance on the training folds. K=15 averages over too many neighbours, blurring the decision boundary and reducing accuracy. K=7 is the "sweet spot" for this dataset.
+:::
+
+---
+
+## 10.4 KNN vs Logistic Regression — A Direct Comparison
+
+We've now solved the same problem (classify `IsHighValue`) with two different methods. Let's compare them directly on the test set.
+
+```{webr-r}
+# Refit logistic regression (same as Chapter 8)
+lr_spec <- logistic_reg() |> set_engine("glm") |> set_mode("classification")
+
+lr_recipe <- recipe(
+  IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City) |>
+  step_normalize(all_numeric_predictors())
+
+lr_fit <- workflow() |>
+  add_recipe(lr_recipe) |>
+  add_model(lr_spec) |>
+  fit(data = fm_train)
+
+lr_preds  <- augment(lr_fit, new_data = fm_test)
+knn_preds <- augment(final_knn, new_data = fm_test)
+
+bind_rows(
+  metric_set(accuracy, sensitivity, specificity)(
+    lr_preds, truth = IsHighValue, estimate = .pred_class) |>
+    mutate(model = "Logistic Regression"),
+  metric_set(accuracy, sensitivity, specificity)(
+    knn_preds, truth = IsHighValue, estimate = .pred_class) |>
+    mutate(model = "KNN")
+) |>
+  select(model, .metric, .estimate) |>
+  pivot_wider(names_from = .metric, values_from = .estimate)
+```
+
+```{webr-r}
+# ROC curves for both models on the same plot
+lr_roc  <- lr_preds  |> roc_curve(truth = IsHighValue, .pred_TRUE)  |> mutate(model = "Logistic Regression")
+knn_roc <- knn_preds |> roc_curve(truth = IsHighValue, .pred_TRUE)  |> mutate(model = "KNN")
+
+bind_rows(lr_roc, knn_roc) |>
+  ggplot(aes(x = 1 - specificity, y = sensitivity, colour = model)) +
+  geom_line(linewidth = 1.1) +
+  geom_abline(linetype = "dashed", colour = "#94a3b8") +
+  scale_colour_manual(values = c("Logistic Regression" = "#8FBFCA", "KNN" = "#9B8EC7")) +
+  labs(
+    title    = "ROC Curves — KNN vs Logistic Regression",
+    subtitle = "Higher and further left = better",
+    x = "1 − Specificity (False Positive Rate)",
+    y = "Sensitivity (True Positive Rate)",
+    colour = NULL
+  ) +
+  theme_minimal()
+```
+
+**Discussion:** The two models may perform similarly — this is common with well-tuned KNN vs logistic regression on clean data. The key question is not just performance, but also:
+
+| | Logistic Regression | KNN |
+|---|---|---|
+| **Interpretability** | High — coefficients explain the model | Low — no equation, just "look at neighbours" |
+| **Prediction speed** | Fast — just apply the equation | Slower — scan all training data |
+| **Handles non-linearity** | Poor (assumes linear boundary) | Well (flexible boundary) |
+| **Needs scaling** | Helpful but not critical | Essential |
+
+:::{.callout-important}
+## ✏️ Concept Check — 10.4
+
+**Q1.** KNN achieves higher accuracy than logistic regression on this dataset. A colleague says "then we should always use KNN." What's wrong with this reasoning?
+
+**Q2.** A FreshMart manager asks: "Why did the model predict that this customer would be high-value?" How would you answer this question for KNN vs logistic regression?
+
+**Q3.** We didn't include `City` as a predictor in the KNN recipe. Why might including categorical variables be more complicated for KNN?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Accuracy on one dataset doesn't mean "always best." KNN may be slower on large datasets, harder to explain to stakeholders, and may not generalise as well if the data changes. Model choice depends on accuracy, speed, interpretability, and business context.
+
+**A2.** For **logistic regression**: "The model assigned higher probability because the customer has made 18 transactions and their coefficient for TotalTransactions is positive — frequent visitors are more likely to be high-value." For **KNN**: "The 7 most similar customers in our training data were mostly high-value. Similarity is measured by visit frequency and average spend per trip." The logistic regression answer is more satisfying for audit purposes.
+
+**A3.** KNN relies on distance — and distance isn't naturally defined for categorical variables (e.g., what is the "distance" between Sydney and Melbourne?). We need to either encode categories as dummy variables and be careful about their scale, or use a different distance metric. For this reason, simpler KNN implementations often work best with numeric predictors only.
+:::
+
+---
+
+## 10.5 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 10.1 — Manual KNN
+
+The table below shows five training customers. Using only `TotalTransactions` and `AvgTransactionValue` (already normalised), calculate the Euclidean distance from a new customer with TotalTransactions = 0.5 and AvgTransactionValue = 0.8 to each training customer. Predict the class using K=3.
+
+| Customer | TotalTransactions | AvgTxnValue | IsHighValue |
+|----------|------------------|------------|------------|
+| A | −1.2 | −0.9 | FALSE |
+| B | 0.4 | 0.7 | TRUE |
+| C | 1.8 | 1.5 | TRUE |
+| D | −0.5 | 0.2 | FALSE |
+| E | 0.6 | 0.9 | TRUE |
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+Euclidean distance from new customer (0.5, 0.8):
+
+- To A: √((0.5−(−1.2))² + (0.8−(−0.9))²) = √(1.7² + 1.7²) = √(2.89 + 2.89) = **√5.78 ≈ 2.40**
+- To B: √((0.5−0.4)² + (0.8−0.7)²) = √(0.01 + 0.01) = **√0.02 ≈ 0.14**
+- To C: √((0.5−1.8)² + (0.8−1.5)²) = √(1.69 + 0.49) = **√2.18 ≈ 1.48**
+- To D: √((0.5−(−0.5))² + (0.8−0.2)²) = √(1.00 + 0.36) = **√1.36 ≈ 1.17**
+- To E: √((0.5−0.6)² + (0.8−0.9)²) = √(0.01 + 0.01) = **√0.02 ≈ 0.14**
+
+3 nearest: B (0.14), E (0.14), D (1.17) → Labels: TRUE, TRUE, FALSE → **Predict: TRUE**
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 10.2 — The Effect of K
+
+Using the `knn_tune` results object from Section 10.3, extract and display the cross-validated sensitivity (not just accuracy) for K = 1, 5, 10, 15, and 20. Which K maximises sensitivity? Is it the same K that maximises accuracy?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+collect_metrics(knn_tune) |>
+  filter(.metric == "sensitivity", neighbors %in% c(1, 5, 10, 15, 20)) |>
+  select(neighbors, mean, std_err) |>
+  arrange(neighbors)
+```
+
+The K that maximises accuracy and the K that maximises sensitivity may differ. For FreshMart's loyalty campaign, sensitivity matters most — flag as many genuine high-value customers as possible, even at the cost of some false positives.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 10.3 — Predict the Characters
+
+Use the final KNN model to classify Marcus Lee, Gary McSnarl, and Amara Diallo. Compare to the logistic regression predictions from Chapter 8. Do the models agree?
+
+```r
+characters <- tibble(
+  TotalTransactions      = c(48,    1,     14),
+  AvgTransactionValue    = c(256.25, 34.90, 62.86),
+  DaysSinceFirstPurchase = c(1868,  1026,  146)
+)
+```
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+knn_char <- augment(final_knn, new_data = characters)
+lr_char  <- augment(lr_fit,   new_data =
+  characters |> mutate(City = c("Sydney","Melbourne","Perth")))
+
+tibble(
+  Name  = c("Marcus Lee", "Gary McSnarl", "Amara Diallo"),
+  KNN   = knn_char$.pred_class,
+  LR    = lr_char$.pred_class,
+  Actual = c("TRUE", "FALSE", "TRUE")
+)
+```
+
+Both models should agree on Marcus Lee (clear TRUE) and Gary McSnarl (clear FALSE). Amara Diallo is more interesting — her short tenure but high activity makes her harder to classify.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 10.4 — Model Selection Memo
+
+You are presenting to FreshMart's Head of Analytics. Write a short recommendation (3–4 sentences) on whether to deploy logistic regression or KNN for the high-value customer identification task. Justify your choice using at least two criteria (e.g., accuracy, interpretability, speed, ease of retraining).
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+"Both models achieve similar accuracy on the test set. We recommend **logistic regression** for production deployment for two reasons: first, when a customer or manager asks why a particular customer was flagged, we can explain it clearly using the coefficients (e.g., high visit frequency is the strongest signal). Second, logistic regression predicts almost instantly because it's just a formula — KNN requires scanning all training customers at prediction time, which becomes slow as the customer base grows. If interpretability is ever challenged by customers or regulators, logistic regression is easier to defend."
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 10 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">Weeks 7–10 all shared one thing: a labelled target variable to predict. In <strong>Week 11</strong> we remove that requirement entirely. <strong>Clustering</strong> finds natural groups in the data with no labels — purely from the patterns of similarity between customers. It's how FreshMart discovers customer segments it didn't even know existed.</p>
+</div>
+```

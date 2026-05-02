@@ -1,0 +1,716 @@
+---
+title: "Introduction to R & Exploratory Data Analysis"
+webr:
+  packages: ['tidyverse', 'GGally', 'corrr']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 6</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">Introduction to R &amp; Exploratory Data Analysis</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    You've just joined FreshMart's analytics team as a junior analyst. The Head of Marketing has a stack of questions about customer behaviour — but before building any model, your job is to <em style="-webkit-text-fill-color:#cbd5e1;">understand the data first</em>. This chapter is about that: loading, inspecting, summarising, and visualising the FreshMart customer dataset in R.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 GGally</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 corrr</span>
+  </div>
+</div>
+```
+
+## 6.1 Why R for Business Analytics?
+
+R is a free, open-source programming language designed for statistical computing and data analysis. It is widely used by data analysts, statisticians, and data scientists across industries — from banking and retail to healthcare and government.
+
+You might be wondering: *I can already do calculations in Excel — why learn R?*
+
+That's a fair question. Excel is a powerful tool, and you'll keep using it. But R can do things that are either impossible or very tedious in Excel:
+
+- **Repeatable analysis.** An R script is a complete record of every step you took. Run it again tomorrow on fresh data and you get updated results in seconds. No clicking, no re-doing.
+- **Handles large datasets easily.** FreshMart processes thousands of transactions per day. R handles millions of rows without breaking a sweat.
+- **Publication-quality graphics.** The `ggplot2` package produces graphics that belong in annual reports, not just in a spreadsheet.
+- **Statistical modelling.** Regression, classification, clustering — all built-in or one package away.
+
+### The tidyverse
+
+The **tidyverse** is a collection of R packages designed to work together, all sharing a common philosophy: data in, insight out. The key packages we'll use are:
+
+| Package | What it does |
+|---------|-------------|
+| `readr` | Reads CSV and other data files into R |
+| `dplyr` | Filters, groups, summarises, and transforms data |
+| `ggplot2` | Creates graphics using a "grammar of graphics" |
+| `tidyr` | Reshapes data between wide and long formats |
+
+All tidyverse packages are free, maintained by the Posit team (the company behind RStudio), and run in the interactive code blocks on this page via **webR** — no installation required.
+
+:::{.callout-note}
+## What is webR?
+Every code block on this page is **live and interactive**. Click the ▶ Run button to execute it — R is running directly in your browser. You can edit any code block and re-run it to experiment. Your changes don't affect anyone else.
+:::
+
+---
+
+## 6.2 The FreshMart Customer Dataset
+
+Throughout the statistical modelling chapters we'll work with a single dataset: **FreshMart customers**. This table was built by combining the Customers and Transactions database tables you worked with in the SQL chapters — each row now represents one customer, summarising their entire history with FreshMart.
+
+| Variable | Type | Description |
+|----------|------|-------------|
+| `CustomerID` | Integer | Unique customer identifier |
+| `FirstName` / `LastName` | Character | Customer name |
+| `City` | Character | Customer's city |
+| `JoinDate` | Date | Date they registered |
+| `LoyaltyPoints` | Integer | Accumulated loyalty points |
+| `TotalSpend` | Numeric | Total $ spent at FreshMart (lifetime) |
+| `TotalTransactions` | Integer | Number of purchase visits |
+| `AvgTransactionValue` | Numeric | Average $ per visit |
+| `DaysSinceFirstPurchase` | Integer | How long they've been active |
+| `IsHighValue` | Logical | TRUE if TotalSpend > $500 |
+| `SpendCategory` | Character | "Low" (<$200), "Medium" ($200–$500), "High" (>$500) |
+
+You'll notice some familiar faces in this dataset — Marcus Lee, Gary McSnarl, Jake Nguyen, and the others from the SQL chapters are all here.
+
+### Loading the data
+
+Run this block first. It loads the tidyverse and reads in the FreshMart dataset. Every code block in this chapter depends on having this run first.
+
+```{webr-r}
+library(tidyverse)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+)
+
+# Confirm it loaded
+cat("Rows:", nrow(freshmart), "\n")
+cat("Columns:", ncol(freshmart), "\n")
+```
+
+### Inspecting the structure
+
+`glimpse()` gives you a compact summary of every column — its name, data type, and the first few values. Think of it as the first thing you run whenever you load a new dataset.
+
+```{webr-r}
+glimpse(freshmart)
+```
+
+`head()` shows the first few rows as a table.
+
+```{webr-r}
+head(freshmart, 8)
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 6.2
+
+**Q1.** How many customers are in the dataset?
+
+**Q2.** What does `<dbl>` mean next to a column name in `glimpse()` output?
+
+**Q3.** Look at row 1. Is this customer high-value? How can you tell from the `IsHighValue` column?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** 500 customers (500 rows).
+
+**A2.** `<dbl>` stands for "double" — a numeric variable that can have decimal places. You'll also see `<int>` (whole numbers), `<chr>` (text/character), `<lgl>` (TRUE/FALSE logical), and `<date>` (dates).
+
+**A3.** Check the `IsHighValue` column. If it reads `TRUE`, the customer has spent more than $500 lifetime. If `FALSE`, they haven't reached that threshold yet.
+:::
+
+---
+
+## 6.3 Descriptive Statistics with dplyr
+
+Before drawing any graphs or fitting any models, we always start with numbers. The `dplyr` package makes it easy to calculate summary statistics — even broken down by groups.
+
+### The pipe operator `|>`
+
+In R, the **pipe** (`|>`) passes the result of one step into the next. Read it as *"and then"*:
+
+```r
+freshmart |>         # start with freshmart, AND THEN
+  filter(...) |>    # filter rows, AND THEN
+  summarise(...)    # summarise
+```
+
+This style keeps code readable and matches how we think: "take the data, then do this, then do that."
+
+### Summarising the whole dataset
+
+`summarise()` computes a summary of the entire dataset. `mean()`, `median()`, `sd()`, `min()`, `max()`, and `n()` are the most useful functions inside it.
+
+```{webr-r}
+freshmart |>
+  summarise(
+    n_customers   = n(),
+    avg_spend     = mean(TotalSpend),
+    median_spend  = median(TotalSpend),
+    sd_spend      = sd(TotalSpend),
+    min_spend     = min(TotalSpend),
+    max_spend     = max(TotalSpend)
+  )
+```
+
+Notice that the mean ($414) is much higher than the median ($215). This happens when a small number of high-spending customers (like Marcus Lee with $12,300) pull the average upward. The median — the middle value — is not affected by extreme values and often better represents the "typical" customer.
+
+:::{.callout-note}
+## 📚 Recall: Mean vs Median
+From first-year statistics: the **mean** is sensitive to outliers; the **median** is not. When a distribution is right-skewed (a long tail to the right), the mean > median. This is exactly what we see with customer spend data.
+:::
+
+### Summarising by group
+
+`group_by()` splits the dataset into groups before summarising. This is one of the most powerful ideas in data analysis.
+
+```{webr-r}
+freshmart |>
+  group_by(City) |>
+  summarise(
+    n_customers  = n(),
+    avg_spend    = round(mean(TotalSpend), 2),
+    median_spend = round(median(TotalSpend), 2),
+    sd_spend     = round(sd(TotalSpend), 2)
+  ) |>
+  arrange(desc(avg_spend))
+```
+
+```{webr-r}
+# How many customers fall into each spend category?
+freshmart |>
+  group_by(SpendCategory) |>
+  summarise(
+    count      = n(),
+    pct        = round(n() / nrow(freshmart) * 100, 1),
+    avg_spend  = round(mean(TotalSpend), 2)
+  )
+```
+
+### Filtering rows
+
+`filter()` keeps only the rows that match a condition.
+
+```{webr-r}
+# High-value customers only
+freshmart |>
+  filter(IsHighValue == TRUE) |>
+  summarise(
+    count       = n(),
+    pct_total   = round(n() / nrow(freshmart) * 100, 1),
+    avg_spend   = round(mean(TotalSpend), 2),
+    avg_loyalty = round(mean(LoyaltyPoints), 0)
+  )
+```
+
+```{webr-r}
+# Find the top 5 customers by TotalSpend
+freshmart |>
+  select(FirstName, LastName, City, TotalSpend, SpendCategory) |>
+  arrange(desc(TotalSpend)) |>
+  slice_head(n = 5)
+```
+
+Recognise Marcus Lee in the top spot? And Bev O'Brien in the top 5?
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 6.3
+
+**Q1.** The mean spend for Sydney is higher than for Melbourne. Does this mean every Sydney customer spends more than every Melbourne customer? Explain.
+
+**Q2.** Why might the marketing team prefer to look at *median* spend by city rather than *mean* spend?
+
+**Q3.** Write the dplyr code to find the 3 cities with the **lowest** median spend. *(Hint: change `arrange(desc(...))` to `arrange(...)`)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** No. The mean is an average across all customers in that city. Individual customers in Melbourne may spend far more than some Sydney customers. The city average doesn't tell us about any individual.
+
+**A2.** A single very high-spending customer (like Marcus Lee in Sydney) can inflate the mean for that city, making it look like Sydney customers typically spend more when most of them might not.
+
+**A3.**
+```r
+freshmart |>
+  group_by(City) |>
+  summarise(median_spend = median(TotalSpend)) |>
+  arrange(median_spend) |>
+  slice_head(n = 3)
+```
+:::
+
+---
+
+## 6.4 Visualising Distributions with ggplot2
+
+Numbers tell us the centre and spread, but a graph tells us the *shape*. The `ggplot2` package builds graphics using the **grammar of graphics** — a consistent layering system.
+
+Every ggplot has three essential parts:
+
+```r
+ggplot(data, aes(x = variable)) +   # 1. What data and which variable?
+  geom_histogram() +                 # 2. What kind of geometry (shape)?
+  labs(title = "My Plot")            # 3. Labels and styling
+```
+
+### Histograms — seeing the shape of a distribution
+
+```{webr-r}
+ggplot(freshmart, aes(x = TotalSpend)) +
+  geom_histogram(bins = 35, fill = "#8FBFCA", colour = "white") +
+  labs(
+    title   = "Distribution of Customer Total Spend — FreshMart",
+    subtitle = "500 customers · all cities combined",
+    x       = "Total Spend ($AUD, lifetime)",
+    y       = "Number of Customers"
+  ) +
+  theme_minimal()
+```
+
+**What does this tell us?**
+
+The distribution is strongly **right-skewed**: most customers cluster in the $0–$500 range, but a long tail extends to the right where a small group of high-spending customers live (including Marcus Lee at $12,300). This is typical for retail spending data.
+
+:::{.callout-note}
+## 📚 Recall: Distribution Shape
+- **Symmetric**: mean ≈ median; bell-shaped
+- **Right-skewed** (positive skew): long tail to the right; mean > median
+- **Left-skewed** (negative skew): long tail to the left; mean < median
+:::
+
+### Log scale for skewed data
+
+When data is this skewed, a **log scale** can make patterns clearer:
+
+```{webr-r}
+freshmart |>
+  filter(TotalSpend > 0) |>   # remove Nina Patel (0 spend)
+  ggplot(aes(x = TotalSpend)) +
+  geom_histogram(bins = 35, fill = "#9B8EC7", colour = "white") +
+  scale_x_log10(labels = scales::dollar) +
+  labs(
+    title   = "Customer Spend on a Log Scale",
+    subtitle = "Each step on the x-axis is a 10× increase",
+    x       = "Total Spend ($AUD) — log scale",
+    y       = "Number of Customers"
+  ) +
+  theme_minimal()
+```
+
+On a log scale, the distribution looks much more symmetric — a useful reminder that the underlying purchasing patterns aren't as extreme as the raw numbers suggest.
+
+### Boxplots — comparing groups
+
+A boxplot summarises a distribution in five numbers: minimum, Q1, median, Q3, maximum. It's ideal for comparing groups side by side.
+
+```{webr-r}
+ggplot(freshmart, aes(x = SpendCategory, y = TotalSpend, fill = SpendCategory)) +
+  geom_boxplot(alpha = 0.75, outlier.colour = "#475569", outlier.size = 1.5) +
+  scale_fill_manual(values = c("Low" = "#F0EBE3", "Medium" = "#8FBFCA", "High" = "#9B8EC7")) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title = "Spend Distribution by Category — FreshMart",
+    x     = NULL,
+    y     = "Total Spend ($AUD)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+Notice how the "High" category has much more spread (tall box, long whiskers) than "Low" — this tells us that high-value customers vary a lot in how much they spend, while low-value customers cluster tightly in a small range.
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 6.4.1
+
+Modify the histogram code above to show the distribution of `TotalTransactions` instead of `TotalSpend`. Change the title and axis labels appropriately. Does it have the same skewed shape?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+ggplot(freshmart, aes(x = TotalTransactions)) +
+  geom_histogram(bins = 30, fill = "#8FBFCA", colour = "white") +
+  labs(
+    title = "Distribution of Number of Transactions — FreshMart",
+    x     = "Total Number of Transactions",
+    y     = "Number of Customers"
+  ) +
+  theme_minimal()
+```
+
+Yes — it has a similar right-skewed shape. Most customers visit FreshMart only a few times, but a small group are very frequent shoppers.
+:::
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 6.4.2
+
+Create a boxplot comparing `AvgTransactionValue` across cities. Which city has the highest typical transaction value? Are there any outliers?
+
+*(Hint: use `City` on the x-axis and add `+ coord_flip()` at the end to make it easier to read the city names.)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+ggplot(freshmart, aes(x = City, y = AvgTransactionValue, fill = City)) +
+  geom_boxplot(alpha = 0.7) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title = "Average Transaction Value by City",
+    x     = NULL,
+    y     = "Average Transaction Value ($)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_flip()
+```
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 6.4
+
+**Q1.** The box in a boxplot spans from Q1 to Q3. What is this range called, and what fraction of the data does it contain?
+
+**Q2.** In ggplot2, what does `aes()` stand for, and what kind of information goes inside it?
+
+**Q3.** A histogram for customer ages looks like a bell curve (symmetric). Would the mean or median be a better description of the "typical" customer age? Why?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The interquartile range (IQR). It contains the **middle 50%** of the data.
+
+**A2.** `aes()` stands for **aesthetics** — the visual properties mapped to variables in the data: which variable goes on the x-axis, which on the y-axis, which controls colour, fill, size, etc.
+
+**A3.** For a symmetric distribution, mean and median are approximately equal, so either works. In practice, analysts often report the mean for symmetric data and the median for skewed data.
+:::
+
+---
+
+## 6.5 Relationships Between Variables
+
+So far we've looked at one variable at a time. But the interesting questions are usually about *relationships*: does spending more money earn more loyalty points? Do customers who visit more often also spend more per visit?
+
+### Scatter plots
+
+A scatter plot shows the relationship between two numeric variables. Each dot is one customer.
+
+```{webr-r}
+ggplot(freshmart, aes(x = TotalTransactions, y = TotalSpend, colour = SpendCategory)) +
+  geom_point(alpha = 0.5, size = 1.8) +
+  geom_smooth(method = "lm", se = TRUE, colour = "#1e293b", linewidth = 0.8) +
+  scale_colour_manual(values = c("Low" = "#F0EBE3", "Medium" = "#8FBFCA", "High" = "#9B8EC7")) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "Total Transactions vs Total Spend — FreshMart Customers",
+    subtitle = "The line shows the linear trend; shaded band shows uncertainty",
+    x        = "Number of Transactions",
+    y        = "Total Spend ($AUD)",
+    colour   = "Spend Category"
+  ) +
+  theme_minimal()
+```
+
+There's a clear **positive relationship**: customers who visit more often tend to spend more overall. The trend isn't perfect (there's scatter around the line), but the direction is unmistakable. This is exactly the kind of relationship a regression model can quantify — something we'll do in Chapter 7.
+
+:::{.callout-note}
+## 📚 Recall: Correlation
+From first-year statistics: the **correlation coefficient** (*r*) measures the strength and direction of a linear relationship between two variables.
+
+- *r* ranges from **−1** (perfect negative) to **+1** (perfect positive)
+- *r* = 0 means no linear relationship
+- *r* = 0.7 is a strong positive relationship
+- *r* = −0.3 is a weak negative relationship
+
+Correlation measures linear relationships only. A curved relationship may have r ≈ 0 even if the relationship is strong.
+:::
+
+### Correlation matrix with `corrr`
+
+The `corrr` package (part of the tidymodels ecosystem) makes tidy correlation tables easy to read and visualise.
+
+```{webr-r}
+library(corrr)
+
+freshmart |>
+  select(TotalSpend, LoyaltyPoints, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>
+  correlate() |>
+  shave() |>     # remove upper triangle (it's a mirror)
+  fashion()      # round and format nicely
+```
+
+```{webr-r}
+# Visual correlation plot
+freshmart |>
+  select(TotalSpend, LoyaltyPoints, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>
+  correlate() |>
+  rplot(print_cor = TRUE) +
+  theme_minimal() +
+  labs(title = "Correlation Matrix — FreshMart Numeric Variables")
+```
+
+**What do we see?**
+
+- `TotalSpend` and `LoyaltyPoints` have near-perfect correlation — they were both earned from the same purchasing behaviour.
+- `TotalSpend` and `TotalTransactions` are strongly correlated (r ≈ 0.7) — customers who visit more spend more.
+- `DaysSinceFirstPurchase` has a moderate positive correlation with spend — longer-tenured customers have had more time to accumulate spend.
+- `AvgTransactionValue` is less strongly related — some customers make fewer but bigger purchases.
+
+### Pairwise scatter plots with `GGally`
+
+For a quick visual overview of all pairwise relationships at once, `GGally::ggpairs()` is invaluable:
+
+```{webr-r}
+library(GGally)
+
+freshmart |>
+  select(TotalSpend, TotalTransactions, AvgTransactionValue, DaysSinceFirstPurchase) |>
+  ggpairs(
+    lower  = list(continuous = wrap("points", alpha = 0.3, size = 0.8, colour = "#8FBFCA")),
+    diag   = list(continuous = wrap("densityDiag", fill = "#9B8EC7", alpha = 0.5)),
+    upper  = list(continuous = wrap("cor", size = 3.5))
+  ) +
+  theme_minimal() +
+  labs(title = "Pairwise Relationships — FreshMart Customer Variables")
+```
+
+The diagonal shows each variable's distribution; the lower panels show scatter plots; the upper panels show correlation coefficients. This is the analyst's "first look" chart — run it before every modelling project.
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 6.5.1
+
+The scatter plot above coloured points by `SpendCategory`. Try colouring by `City` instead. Which cities seem to have the most high-spending customers?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+ggplot(freshmart, aes(x = TotalTransactions, y = TotalSpend, colour = City)) +
+  geom_point(alpha = 0.5, size = 1.8) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title  = "Total Transactions vs Total Spend, coloured by City",
+    x      = "Number of Transactions",
+    y      = "Total Spend ($AUD)",
+    colour = "City"
+  ) +
+  theme_minimal()
+```
+
+Sydney and Melbourne customers appear across the full range of spend levels because they make up the largest share of customers.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 6.5
+
+**Q1.** The correlation between `TotalSpend` and `LoyaltyPoints` is very close to 1.0. Does this mean LoyaltyPoints *caused* the high spend? Explain.
+
+**Q2.** A scatter plot shows that customers with higher `DaysSinceFirstPurchase` tend to have higher `TotalSpend`, but there's a lot of scatter. What does "a lot of scatter" tell you about the strength of the relationship?
+
+**Q3.** FreshMart's CEO says: "Customers who have more loyalty points spend more, so if we give everyone 1000 free points, they'll spend more." What's the flaw in this reasoning?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** No. Correlation tells us two variables *move together* — but it says nothing about cause and effect. In this case, both variables are driven by the same underlying behaviour (purchasing). Loyalty points are *earned* by spending, so they naturally correlate — but points didn't cause the spending.
+
+**A2.** A lot of scatter means the relationship is not very tight — knowing someone's tenure doesn't precisely predict their spend. There's a general tendency, but many individual exceptions exist.
+
+**A3.** This is a classic **correlation ≠ causation** error. High points and high spend are correlated because they both come from the same purchasing behaviour. Giving away free points doesn't change underlying purchasing habits.
+:::
+
+---
+
+## 6.6 Chapter Exercises
+
+Work through these exercises independently. Each builds on the code from this chapter — you can copy, modify, and run it in the webR blocks above.
+
+---
+
+:::{.callout-note}
+## Exercise 6.1 — Exploring a Different Variable
+
+Using `summarise()` and `group_by()`, calculate the mean, median, and standard deviation of `TotalTransactions` broken down by `City`. Which city has the most variable number of transactions per customer?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart |>
+  group_by(City) |>
+  summarise(
+    mean_txns   = round(mean(TotalTransactions), 1),
+    median_txns = median(TotalTransactions),
+    sd_txns     = round(sd(TotalTransactions), 1)
+  ) |>
+  arrange(desc(sd_txns))
+```
+
+The city with the highest `sd_txns` has the most variable number of transactions — a large standard deviation means customers there range widely from very infrequent to very frequent shoppers.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.2 — Finding Our Characters
+
+Use `filter()` to find the rows for Marcus Lee, Jake Nguyen, and Nina Patel. Display their `FirstName`, `City`, `TotalSpend`, `TotalTransactions`, and `IsHighValue`.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart |>
+  filter(FirstName %in% c("Marcus", "Jake", "Nina")) |>
+  select(FirstName, LastName, City, TotalSpend, TotalTransactions, IsHighValue)
+```
+
+You should see Marcus Lee at $12,300 (high value), Jake Nguyen at $340 (not high value), and Nina Patel at $0 (never purchased).
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.3 — Histogram Choice
+
+Create a histogram of `DaysSinceFirstPurchase`. Describe its shape. Is this what you'd expect — why or why not?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+ggplot(freshmart, aes(x = DaysSinceFirstPurchase)) +
+  geom_histogram(bins = 30, fill = "#8FBFCA", colour = "white") +
+  labs(
+    title = "How Long Have Customers Been with FreshMart?",
+    x     = "Days Since First Purchase",
+    y     = "Number of Customers"
+  ) +
+  theme_minimal()
+```
+
+The distribution is roughly uniform (flat) — customers joined FreshMart at all different times, so there's no particular "peak." This makes sense for a dataset representing active customers across several years.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.4 — Counting Categories
+
+Using `count()`, find how many customers are in each combination of `City` and `SpendCategory`. Which city-category combination has the most customers?
+
+*(Hint: `count(City, SpendCategory)` then `arrange(desc(n))`)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart |>
+  count(City, SpendCategory) |>
+  arrange(desc(n))
+```
+
+Sydney and Melbourne dominate the top rows, as expected given their larger population weights in the dataset.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.5 — Outlier Identification
+
+Use `filter()` to find all customers with `TotalSpend` greater than $3,000. How many are there? List their names and cities.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart |>
+  filter(TotalSpend > 3000) |>
+  select(FirstName, LastName, City, TotalSpend) |>
+  arrange(desc(TotalSpend))
+```
+
+There are very few customers above $3,000 — this is the extreme right tail of the distribution. Marcus Lee ($12,300) and Bev O'Brien ($3,240) will appear here.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.6 — A Better Scatter Plot
+
+Recreate the `TotalTransactions` vs `TotalSpend` scatter plot, but this time **exclude Nina Patel** (who has 0 transactions and 0 spend) and add **axis labels** that include dollar signs on the y-axis. Does removing Nina change the trend line noticeably?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+freshmart |>
+  filter(TotalSpend > 0) |>
+  ggplot(aes(x = TotalTransactions, y = TotalSpend)) +
+  geom_point(alpha = 0.4, colour = "#8FBFCA", size = 1.8) +
+  geom_smooth(method = "lm", colour = "#9B8EC7") +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title = "Transactions vs Spend (Nina Patel excluded)",
+    x     = "Total Transactions",
+    y     = "Total Spend ($AUD)"
+  ) +
+  theme_minimal()
+```
+
+The trend line should be very similar — one data point at (0, 0) has minimal effect on a 500-row dataset.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.7 — Correlation Interpretation
+
+The correlation matrix shows `r = 0.705` between `TotalSpend` and `TotalTransactions`. Write 2–3 sentences interpreting this value for a non-technical FreshMart manager. Avoid the word "correlation" — explain it in plain business language.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+*Sample answer:*
+"Customers who visit FreshMart more often tend to spend more money overall — but this relationship isn't perfectly predictable. A customer who visits twice as often doesn't necessarily spend exactly twice as much; some infrequent visitors spend a lot per trip, while some frequent visitors only pop in for small purchases. Overall though, visit frequency is a reliable indicator of total customer value."
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 6.8 — Putting It Together
+
+Write a short paragraph (4–6 sentences) summarising the key findings from your exploratory analysis of the FreshMart customer dataset. Imagine you are presenting to the Head of Marketing before the modelling team begins building predictive models. What do they need to know about the data?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+"The FreshMart customer dataset contains 500 customers from seven Australian cities, with Sydney and Melbourne making up the majority. Customer spending is highly right-skewed: most customers spend less than $500 lifetime, but a small group of high-value customers (about 25% of the base) drive a disproportionate share of revenue — Marcus Lee alone accounts for over $12,000 in lifetime spend. The number of transactions a customer makes is the strongest predictor of their total spend (r ≈ 0.70), suggesting that visit frequency is a key driver of customer value. Loyalty points are almost perfectly correlated with total spend, meaning they contain very similar information. One customer (Nina Patel) has registered but never purchased — she may represent a segment worth targeting with a first-purchase incentive."
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 6 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">You've loaded, explored, and visualised the FreshMart dataset. In <strong>Week 7</strong> we'll take the next step: building a regression model to <em>predict</em> how much a customer is likely to spend — moving from description to prediction.</p>
+</div>
+```

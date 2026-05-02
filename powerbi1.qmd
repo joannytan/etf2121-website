@@ -1,0 +1,510 @@
+# Power BI: Getting Started
+
+Power BI is Microsoft's free business intelligence tool, and it is one of the most in-demand skills on any data analyst job listing in Australia. By the end of this chapter, you will have Power BI installed, data loaded, tables properly connected, and your first three visuals on the canvas — all built from the FreshMart dataset you already know from the SQL chapters.
+
+This chapter deliberately goes slowly. Every click is described. If you have never opened Power BI before, that is completely fine — that is exactly who this chapter is written for.
+
+---
+
+## What is Power BI?
+
+Power BI Desktop is a free application from Microsoft that lets you:
+
+- **Connect** to data sources (CSV files, Excel, databases, cloud services)
+- **Transform** messy data into analysis-ready shapes
+- **Model** relationships between multiple tables
+- **Visualise** your data with interactive charts, maps, and tables
+- **Build dashboards** that update automatically as your data changes
+
+The end product is a `.pbix` file — a Power BI report file — that can be published online and shared with colleagues, embedded in a website, or presented to stakeholders.
+
+### Is it really free?
+
+Power BI **Desktop** — the application you install on your computer — is completely free. You can download it, build reports, and save `.pbix` files without spending a cent. A paid subscription (Power BI Pro or Premium) is only required if you want to publish reports to the cloud and share them with a team. For this course, the free Desktop version is everything you need.
+
+---
+
+## Step 1: Installing Power BI Desktop
+
+Power BI Desktop runs on **Windows** only. If you are on a Mac, see the note below.
+
+::: {.callout-note}
+## Mac Users
+Power BI Desktop does not have a native macOS version. Mac users have two options:
+
+1. **Microsoft Remote Desktop** — Access a Windows virtual machine through your university. Check with the IT department for access details.
+2. **Windows via Parallels or VMWare** — If you have a virtualisation tool installed, you can run Windows inside macOS and install Power BI Desktop there.
+
+The university computer labs all have Power BI Desktop installed. If you are stuck, head to a lab for this chapter.
+:::
+
+### Download and Install (Windows)
+
+**Step 1.** Open your web browser and go to:
+
+> [https://powerbi.microsoft.com/desktop](https://powerbi.microsoft.com/desktop)
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Microsoft Power BI website, with a large blue "Download free" button in the centre of the page.
+:::
+
+**Step 2.** Click **Download free**. You will be taken to the Microsoft Store.
+
+**Step 3.** In the Microsoft Store, click **Get** (or **Install**). Windows will download and install Power BI Desktop automatically. This takes about 2–5 minutes depending on your connection.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Microsoft Store page showing "Power BI Desktop" with a blue "Get" button.
+:::
+
+**Step 4.** Once installed, search for **Power BI Desktop** in your Start menu and open it.
+
+::: {.callout-tip}
+## Alternative: Download the installer directly
+If the Microsoft Store is not available on your machine, you can download the `.exe` installer directly from:
+> [https://www.microsoft.com/en-us/download/details.aspx?id=58494](https://www.microsoft.com/en-us/download/details.aspx?id=58494)
+:::
+
+---
+
+## Step 2: The Power BI Interface
+
+When you first open Power BI Desktop, you will see a splash screen and then the main interface. Close the welcome dialog that appears.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Power BI Desktop main window. It has a dark ribbon toolbar at the top, a blank white canvas in the centre, and three icons on the left sidebar.
+:::
+
+The interface has five main areas. Take a moment to find each one:
+
+**① The Ribbon (top)** — Like the ribbon in Microsoft Word. The tabs are: Home, Insert, Modeling, View, Optimize, Help. You will use **Home** most often.
+
+**② The Left Sidebar** — Three icons that switch between:
+
+- 📊 **Report view** (the default) — where you build visuals
+- 🗃 **Data view** — where you inspect your raw table data
+- 🔀 **Model view** — where you define relationships between tables
+
+**③ The Canvas (centre)** — The blank page where you place your charts and visuals. Think of it as a slide in PowerPoint.
+
+**④ Visualizations Pane (right side)** — A gallery of chart types to choose from.
+
+**⑤ Data/Fields Pane (right side, below Visualizations)** — Once data is loaded, your table columns appear here. You drag columns from here onto the canvas to create visuals.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The five areas labelled above visible on screen. The canvas is blank. The Visualizations pane shows small icons for chart types (bar chart, line chart, map, etc.). The Data pane shows "No data loaded yet."
+:::
+
+---
+
+## Step 3: Get the FreshMart Data
+
+You will be working with the same FreshMart dataset from the SQL chapters, now packaged as four CSV files. Download each file and save them to a folder you can find easily — a folder called `FreshMart` on your Desktop is perfect.
+
+| File | What it contains |
+|---|---|
+| `customers.csv` | 7 FreshMart loyalty members |
+| `products.csv` | 10 products sold at FreshMart |
+| `stores.csv` | 6 FreshMart store locations |
+| `transactions.csv` | 60 purchase transactions |
+
+::: {.callout-note}
+## Download the files
+The CSV files are available in the `data/` folder of the course website. Right-click each link → Save As → save to your `FreshMart` folder on the Desktop.
+
+- [customers.csv](data/customers.csv)
+- [products.csv](data/products.csv)
+- [stores.csv](data/stores.csv)
+- [transactions.csv](data/transactions.csv)
+:::
+
+A quick preview of the data so you know what you are working with:
+
+**Customers** — 7 loyalty members across VIC, NSW, and QLD:
+
+| CustomerID | FirstName | LastName | State | MembershipTier | TotalSpend | Churned |
+|---|---|---|---|---|---|---|
+| 1 | Priya | Sharma | VIC | Gold | $8,420.50 | No |
+| 4 | Marcus | Lee | VIC | Gold | $12,300.00 | No |
+| 7 | Nina | Patel | VIC | Bronze | $0.00 | No |
+| … | … | … | … | … | … | … |
+
+**Transactions** — 60 rows recording individual product purchases across the year 2024:
+
+| TransactionID | CustomerID | ProductID | StoreID | TransactionDate | Quantity | TotalAmount |
+|---|---|---|---|---|---|---|
+| 1001 | 1 | 1 | 1 | 2024-01-05 | 3 | $10.47 |
+| 1002 | 1 | 3 | 1 | 2024-01-05 | 1 | $6.50 |
+| … | … | … | … | … | … | … |
+
+The `Transactions` table is the fact table — it records what happened. The `Customers`, `Products`, and `Stores` tables are dimension tables — they add context (names, categories, locations) to the numbers. This star-schema structure is exactly the pattern Power BI is built for.
+
+---
+
+## Step 4: Load the Data into Power BI
+
+**Step 1.** In Power BI, click **Home** in the ribbon. Find the **Get data** button (it has a small cylinder icon).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Home tab is selected. "Get data" appears in the top-left area of the ribbon, with a small dropdown arrow beside it.
+:::
+
+**Step 2.** Click the dropdown arrow next to **Get data** and choose **Text/CSV**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A dropdown menu with options including "Excel workbook", "Text/CSV", "Web", "More…". "Text/CSV" is highlighted.
+:::
+
+**Step 3.** A file browser opens. Navigate to your `FreshMart` folder on the Desktop. Select **`customers.csv`** and click **Open**.
+
+**Step 4.** Power BI reads the file and shows you a preview. Check that the columns look correct — you should see `CustomerID`, `FirstName`, `LastName`, and the rest. Then click **Load**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A preview dialog showing the first few rows of the customers data. Column headers are correctly detected. A "Load" button and a "Transform Data" button appear at the bottom.
+:::
+
+::: {.callout-tip}
+## Load vs Transform Data
+**Load** imports the data as-is. **Transform Data** opens Power Query Editor, where you can clean and reshape the data before importing. For now, click Load — we will visit Power Query in the next step.
+:::
+
+**Step 5.** Repeat for the remaining three files. Each time: **Get data → Text/CSV → select file → Load**.
+
+- Load `products.csv`
+- Load `stores.csv`
+- Load `transactions.csv`
+
+After loading all four files, check the **Data pane** on the right side of the screen. You should now see four tables listed: `customers`, `products`, `stores`, and `transactions`.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Data pane on the right shows four table names. Each table has an expand arrow (▶) next to it. Clicking the arrow reveals the column names inside.
+:::
+
+::: {.callout-tip}
+## Loaded all four?
+Click the **Data view** icon on the left sidebar (the table icon). Select each table and scroll through the rows to confirm the data loaded correctly. The `transactions` table should have 60 rows.
+:::
+
+---
+
+## Step 5: Clean the Data with Power Query
+
+Power Query is Power BI's built-in data transformation tool. It lets you rename columns, change data types, remove blank rows, split text, and much more — all without touching the original CSV files.
+
+We need to fix one thing in the `transactions` table: the `TransactionDate` column was loaded as text. We need to convert it to a proper date type.
+
+**Step 1.** In the Home ribbon, click **Transform data**. Power Query Editor opens in a new window.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A new window opens — Power Query Editor. On the left is a list of your four queries (one per table). In the centre is a data grid. On the right is the "Query Settings" panel showing "Applied Steps."
+:::
+
+**Step 2.** In the left pane, click **transactions** to select it.
+
+**Step 3.** Find the `TransactionDate` column in the grid. Look at the icon to the left of the column header — it probably shows **ABC** (text) instead of a calendar icon. Right-click the column header → **Change Type** → **Date**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+After changing the type, the icon next to "TransactionDate" becomes a small calendar icon. The dates in the column change from text like "2024-01-05" to a date format like "05/01/2024".
+:::
+
+**Step 4.** Power Query may ask whether to replace the existing step. Click **Replace current**.
+
+**Step 5.** Now do the same for the `customers` table. Select **customers** in the left pane. Look for any columns that have wrong types. The `TotalSpend` column should be **Decimal Number** (a currency icon). If it shows as text, right-click → Change Type → Decimal Number.
+
+**Step 6.** When you are satisfied, click **Close & Apply** (top-left of the Power Query window).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+Power Query closes and you return to Power BI Desktop. A loading bar briefly appears while your changes are applied. Your data is now clean and typed correctly.
+:::
+
+::: {.callout-tip}
+## Applied Steps — your undo history
+Notice the "Applied Steps" panel on the right in Power Query. Every transformation you make is recorded as a step. You can click any step to undo back to that point — it is a non-destructive workflow. Your original CSV files are never modified.
+:::
+
+---
+
+## Step 6: Create Relationships Between Tables
+
+Right now Power BI has four separate tables. It does not yet know that `CustomerID` in `transactions` links to `CustomerID` in `customers`. We need to define these relationships explicitly — this is the same concept as foreign keys in SQL.
+
+**Step 1.** Click the **Model view** icon on the left sidebar (the diamond/relationship icon).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The four tables appear as boxes in the Model view. They may be scattered around — drag them to arrange them neatly. No lines connect them yet.
+:::
+
+Power BI may have auto-detected some relationships already. If you see lines between the tables, great — but verify them. If not, you will create them now.
+
+**Step 2.** Arrange the tables in a star pattern: **transactions** in the centre, with **customers**, **products**, and **stores** around it. This makes the diagram easy to read.
+
+**Step 3.** To create the first relationship: click and drag from **`CustomerID`** in the `transactions` table and drop it onto **`CustomerID`** in the `customers` table. A line appears connecting the two tables.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A line appears between the transactions box and the customers box. The line has a "1" on the customers end and a "*" (asterisk) on the transactions end — this means one customer can have many transactions (a one-to-many relationship).
+:::
+
+**Step 4.** Repeat for `ProductID`: drag from `transactions.ProductID` → `products.ProductID`.
+
+**Step 5.** Repeat for `StoreID`: drag from `transactions.StoreID` → `stores.StoreID`.
+
+After creating all three relationships, your model should look like this:
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Model view shows four table boxes. The `transactions` box in the centre has three lines connecting it to `customers` (via CustomerID), `products` (via ProductID), and `stores` (via StoreID). Each line shows "1" on the dimension table side and "*" on the transactions side.
+:::
+
+::: {.callout-tip}
+## Why relationships matter
+Once the relationships are set, Power BI can automatically combine information from all four tables when you build visuals. When you drag `CustomerName` from `customers` and `TotalAmount` from `transactions` onto the canvas, Power BI knows to join them via `CustomerID` — just like an INNER JOIN in SQL, happening invisibly in the background.
+:::
+
+::: {.callout-warning}
+## Check the direction of your lines
+Double-click any relationship line to inspect it. The "Cardinality" should be **Many to one (*:1)** — many transaction rows per one customer/product/store. The "Cross filter direction" should be **Single**. If something looks wrong, delete the line and redraw it.
+:::
+
+---
+
+## Step 7: Your First Visual — A Table
+
+Now the fun begins. Switch back to **Report view** (click the bar chart icon on the left sidebar). The canvas is blank and ready.
+
+### Creating a Table Visual
+
+A Table visual in Power BI is like a formatted spreadsheet. It is the quickest way to verify your data is connected correctly.
+
+**Step 1.** In the **Visualizations** pane on the right, click the **Table** icon (it looks like a grid of rows and columns).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+An empty table visual appears in the centre of the canvas — it shows "Add data fields here."
+:::
+
+**Step 2.** In the **Data pane** (bottom-right), expand the `customers` table by clicking the ▶ arrow.
+
+**Step 3.** Drag **`FirstName`** from the Data pane and drop it into the **Columns** section of the Visualizations pane (the area that says "Add data fields here"). A column of customer names appears in the table.
+
+**Step 4.** Now expand the `transactions` table in the Data pane. Drag **`TotalAmount`** into the Columns section. Power BI automatically sums the TotalAmount for each customer.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The table visual now shows two columns: FirstName and a Sum of TotalAmount. Each customer's name appears with their total spending summed across all transactions. Marcus Lee should show the highest value.
+:::
+
+**Step 5.** Add **`LastName`** from the `customers` table to the Columns section as well. The table now shows full names.
+
+**Step 6.** To sort the table by total spending, click the **TotalAmount column header** in the visual. An arrow appears — click it again to sort descending (highest first).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The table is now sorted by spending: Marcus Lee at the top, followed by Priya Sharma, and Nina Patel at the bottom with $0.00.
+:::
+
+::: {.callout-tip}
+## Resize and reposition
+Click and drag the corners of the table visual to resize it. Click and drag the centre to move it. Think of each visual as an object on a PowerPoint slide.
+:::
+
+---
+
+## Step 8: Your Second Visual — KPI Cards
+
+A **Card** visual displays a single number prominently — perfect for headline metrics like "Total Revenue", "Number of Transactions", or "Average Order Value". These are the big bold numbers you see at the top of every executive dashboard.
+
+**Step 1.** Click on a **blank area of the canvas** to deselect the table. Then click the **Card** icon in the Visualizations pane (it looks like a single rectangle with a number inside).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A blank Card visual appears on the canvas, showing "Add data fields here."
+:::
+
+**Step 2.** From the `transactions` table in the Data pane, drag **`TotalAmount`** into the **Fields** section of the Card visual. The card now shows the sum of all transactions — the total revenue for FreshMart in 2024.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Card visual displays a large number — the sum of TotalAmount across all 60 transactions. It should be around $974. This is FreshMart's total revenue in the dataset.
+:::
+
+**Step 3.** Let us add a second Card showing the total number of transactions. Click a blank area to deselect. Add another **Card** visual.
+
+**Step 4.** Drag **`TransactionID`** from the `transactions` table. But instead of summing, we want to **count** the rows. In the Visualizations pane, click the dropdown arrow next to `TransactionID` in the Fields well → change **Sum** to **Count**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The second Card now shows "60" — the number of transactions in the dataset.
+:::
+
+**Step 5.** Add a third Card: drag `CustomerID` from `customers` into a new Card visual, and change the aggregation to **Count (Distinct)**. This shows the number of unique customers.
+
+Arrange the three cards in a row at the top of the canvas. You now have a simple KPI row that immediately tells the reader three things: total revenue, transaction count, and customer count.
+
+---
+
+## Step 9: Your Third Visual — A Column Chart
+
+A **Column Chart** is one of the most used visuals in business reporting. Let us build one showing **total revenue by product category**.
+
+**Step 1.** Click a blank area of the canvas. Click the **Clustered column chart** icon in the Visualizations pane (it is the bar chart icon — vertical bars side by side).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A blank column chart visual appears on the canvas with placeholder axis labels.
+:::
+
+**Step 2.** In the Data pane, expand the `products` table. Drag **`Category`** into the **X-axis** field well in the Visualizations pane.
+
+**Step 3.** Expand the `transactions` table. Drag **`TotalAmount`** into the **Y-axis** field well.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+A column chart appears with product categories on the horizontal axis (Bakery, Beverages, Dairy, etc.) and the sum of revenue on the vertical axis. Each bar represents one category's total sales.
+:::
+
+**Step 4.** To sort the bars from highest to lowest revenue: click the three dots (…) in the top-right corner of the visual → **Sort axis** → **Sum of TotalAmount** → **Sort descending**.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The bars re-order so the highest-revenue category appears on the left. Dairy or Meat & Seafood should be near the top — Marcus Lee's chicken purchases are doing a lot of heavy lifting.
+:::
+
+---
+
+## Step 10: Basic Formatting
+
+A chart with the default blue colour and no title is functional but not professional. Let us apply some basic formatting.
+
+**Step 1.** Click on the column chart to select it. In the Visualizations pane, click the **Format visual** icon (the paint roller icon, second icon from the left in the Visualizations pane header).
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The Visualizations pane switches to formatting options. You see sections like "Visual" and "General", each with expandable sub-sections: Title, Colors, Data labels, etc.
+:::
+
+**Step 2.** Expand **Title**. Change the title text to: `Revenue by Product Category`. Change the font size to 14. Turn on **Bold**.
+
+**Step 3.** Expand **Columns** → change the colour to a dark blue or your preferred brand colour using the colour picker.
+
+**Step 4.** Expand **Data labels** and toggle them **On**. Each bar now shows its exact value — useful for stakeholders who do not want to read the axis.
+
+::: {.callout-note icon=false}
+## 📸 What you should see
+The chart now has a bold title, coloured bars, and small data labels above each bar showing the exact revenue value.
+:::
+
+**Step 5.** To format the Y-axis values as currency: click the **Y-axis** section → expand **Display units** → change to **None** (so numbers show in full, not abbreviated as "1K"). To add a dollar sign, you would typically set this up in the Data Model as a currency column — we will cover that in the next chapter.
+
+---
+
+## Step 11: Saving Your Work
+
+**Step 1.** Press **Ctrl + S** (or File → Save).
+
+**Step 2.** Choose a location — save it as `FreshMart_Dashboard.pbix` in your FreshMart folder on the Desktop.
+
+::: {.callout-tip}
+## Save often
+Power BI does not auto-save. Press Ctrl+S regularly. A `.pbix` file saves everything: the data, the model, the relationships, and all your visuals.
+:::
+
+---
+
+## What We Have Built
+
+At the end of this chapter, your canvas should have:
+
+- **3 KPI Cards** across the top (Total Revenue, Transaction Count, Customer Count)
+- **1 Table** showing each customer's name and total spend
+- **1 Column Chart** showing revenue by product category
+
+This is a simple but functional analytical view. A stakeholder looking at this page immediately knows: how much money FreshMart made, how many transactions occurred, how many customers are in the program, and which product categories generate the most revenue.
+
+In the next chapter, we will add slicers, maps, more chart types, DAX calculations, and wire everything together into a polished, interactive multi-page dashboard.
+
+---
+
+## Exercises
+
+**Exercise 1.** Add a fourth KPI Card showing the **average transaction value** (`TotalAmount`, aggregation: Average). Format it to show two decimal places.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. Add a new Card visual to the canvas.
+2. Drag `TotalAmount` from the `transactions` table into the Fields well.
+3. In the Visualizations pane, click the dropdown next to `TotalAmount` and change the aggregation from **Sum** to **Average**.
+4. To control decimal places: go to Format Visual → Callout value → Value decimal places → set to 2.
+
+The card should display approximately $16.23 — the average amount spent per transaction.
+:::
+
+**Exercise 2.** Create a new column chart showing **total revenue by store** (use `StoreName` from `stores` on the X-axis and `TotalAmount` from `transactions` on the Y-axis). Sort it descending. Which store has the highest revenue?
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. Add a Clustered column chart.
+2. Drag `StoreName` from `stores` to the X-axis field well.
+3. Drag `TotalAmount` from `transactions` to the Y-axis field well.
+4. Click the three dots → Sort axis → Sum of TotalAmount → Sort descending.
+
+FreshMart Parramatta (StoreID 2) should come out on top — it serves the largest customer base in the dataset, including Amara Diallo and Jake Nguyen.
+
+Note: FreshMart Darwin appears in the `stores` table but has no transactions (it opened in 2024 with no sales recorded). It may not appear in the chart at all — this is the same LEFT JOIN / RIGHT JOIN gap from the SQL chapters, now visible in Power BI.
+:::
+
+**Exercise 3.** In the Table visual you built in Step 7, add the `MembershipTier` column from the `customers` table. Then sort by `TotalAmount` descending. What is the membership tier of the top two spenders?
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. Click on the existing Table visual to select it.
+2. From the `customers` table in the Data pane, drag `MembershipTier` into the Columns field well in the Visualizations pane.
+3. Click the TotalAmount column header to sort descending.
+
+Both Marcus Lee and Priya Sharma are **Gold** tier members — the highest tier. This makes sense: they are the two highest spenders. Gold tier members appear to be the most engaged with the FreshMart loyalty program.
+:::
+
+**Exercise 4.** Go to **Data view** and inspect the `transactions` table. Verify that `TransactionDate` is stored as a Date type (not text). What is the earliest transaction date in the dataset?
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+1. Click the Data view icon (table icon) on the left sidebar.
+2. Select the `transactions` table from the panel.
+3. Click the `TransactionDate` column header. Check that the column type icon shows a calendar (📅) not text (ABC).
+4. Scroll to the top or sort ascending to find the earliest date.
+
+The earliest transaction is **2024-01-05** — Priya Sharma's first purchase of the year: 3 litres of Full Cream Milk.
+:::
+
+**Exercise 5.** In Model view, double-click the relationship line between `transactions` and `customers`. What is the cardinality? What does it mean in plain English?
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+The cardinality is **Many to one (*:1)**.
+
+In plain English: one customer can appear in many transaction rows (because a customer makes multiple purchases), but each transaction row belongs to exactly one customer. This is the standard parent-child relationship in a relational database — the same concept as a foreign key in SQL.
+:::
+
+---
+
+::: {.callout-note}
+## Chapter Summary
+
+In this chapter you:
+
+- Installed Power BI Desktop (free, Windows)
+- Navigated the five main areas of the Power BI interface
+- Loaded four CSV files (Customers, Products, Stores, Transactions)
+- Cleaned data types in Power Query Editor
+- Created a star-schema data model with three relationships
+- Built your first three visuals: Table, Card, and Column Chart
+- Applied basic formatting (titles, colours, data labels)
+
+These are the foundations. Everything in the next chapter builds on what you have set up here.
+:::

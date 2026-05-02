@@ -8,7 +8,7 @@
 
 <meta name="description" content="A beginner guide to SQL, Power BI, data analysis, and data visualization.">
 
-<title>Power BI – Data Analysis in Business (First edition)</title>
+<title>5&nbsp; Power BI – Data Analysis in Business (First edition)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./introR.html" rel="prev">
+<link href="./powerbi1.html" rel="next">
+<link href="./sql_bonus.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -70,6 +71,7 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
+<link rel="stylesheet" href="custom.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -81,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Communication and Story Telling</a></li><li class="breadcrumb-item"><a href="./powerbi.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -163,12 +165,30 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Database Management System</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">SQL Basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_advanced.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Advanced SQL</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sql_bonus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
- <span class="menu-text">Data Analysis</span></a>
+ <span class="menu-text">Communication and Story Telling</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -176,8 +196,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./introR.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  <a href="./powerbi.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./powerbi2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Power BI: Building Your Dashboard</span></span></a>
   </div>
 </li>
       </ul>
@@ -185,7 +217,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
- <span class="menu-text">Power BI</span></a>
+ <span class="menu-text">Statistical Modelling with R</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -193,15 +225,47 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./powerbi.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Power BI</span></a>
+  <a href="./mod_eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Introduction to R &amp; Exploratory Data Analysis</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./linear_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logistic_reg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg_trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Regression Trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">K-Nearest Neighbours</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Clustering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ai_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">AI in Business Analytics</span></span></a>
   </div>
 </li>
       </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Data Visualization</span></span>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <span class="sidebar-item-text sidebar-link text-start">
@@ -217,18 +281,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#why-power-bi" id="toc-why-power-bi" class="nav-link active" data-scroll-target="#why-power-bi">Why Power BI?</a></li>
-  <li><a href="#power-bi-vs.-excel" id="toc-power-bi-vs.-excel" class="nav-link" data-scroll-target="#power-bi-vs.-excel">Power BI vs.&nbsp;Excel</a></li>
-  <li><a href="#power-bi-vs.-tableau" id="toc-power-bi-vs.-tableau" class="nav-link" data-scroll-target="#power-bi-vs.-tableau">Power BI vs.&nbsp;Tableau</a></li>
+  <li><a href="#why-power-bi" id="toc-why-power-bi" class="nav-link active" data-scroll-target="#why-power-bi"><span class="header-section-number">5.1</span> Why Power BI?</a></li>
+  <li><a href="#power-bi-vs.-excel" id="toc-power-bi-vs.-excel" class="nav-link" data-scroll-target="#power-bi-vs.-excel"><span class="header-section-number">5.2</span> Power BI vs.&nbsp;Excel</a></li>
+  <li><a href="#power-bi-vs.-tableau" id="toc-power-bi-vs.-tableau" class="nav-link" data-scroll-target="#power-bi-vs.-tableau"><span class="header-section-number">5.3</span> Power BI vs.&nbsp;Tableau</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li><li class="breadcrumb-item"><a href="./powerbi.html">Power BI</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./powerbi.html">Communication and Story Telling</a></li><li class="breadcrumb-item"><a href="./powerbi.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Power BI</h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Power BI</span></h1>
 </div>
 
 
@@ -245,12 +309,12 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="why-power-bi" class="level2">
-<h2 class="anchored" data-anchor-id="why-power-bi">Why Power BI?</h2>
+<section id="why-power-bi" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="why-power-bi"><span class="header-section-number">5.1</span> Why Power BI?</h2>
 <p>Power BI is a powerful business intelligence tool that can handle large datasets and perform complex calculations quickly. It can connect to a wide variety of data sources, including databases, cloud services, and Excel files. The user-friendly interface allows users to create interactive reports and dashboards with ease. Additionally, Power BI enables the creation of custom visualizations and reports using DAX (Data Analysis Expressions) and M (Power Query Formula Language). With built-in collaboration features, users can easily share reports and dashboards with others, making it an ideal choice for organizations looking to enhance their data analysis capabilities.</p>
 </section>
-<section id="power-bi-vs.-excel" class="level2">
-<h2 class="anchored" data-anchor-id="power-bi-vs.-excel">Power BI vs.&nbsp;Excel</h2>
+<section id="power-bi-vs.-excel" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="power-bi-vs.-excel"><span class="header-section-number">5.2</span> Power BI vs.&nbsp;Excel</h2>
 <p>Power BI and Excel are both powerful tools for data analysis, but they serve different purposes and have different strengths. Here are some key differences:</p>
 <ol type="1">
 <li><strong>Data Handling</strong>: Power BI is designed to handle large datasets and can connect to a wide variety of data sources, while Excel is more suited for smaller datasets and manual data entry.</li>
@@ -267,8 +331,8 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 </section>
-<section id="power-bi-vs.-tableau" class="level2">
-<h2 class="anchored" data-anchor-id="power-bi-vs.-tableau">Power BI vs.&nbsp;Tableau</h2>
+<section id="power-bi-vs.-tableau" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="power-bi-vs.-tableau"><span class="header-section-number">5.3</span> Power BI vs.&nbsp;Tableau</h2>
 <p>Power BI and Tableau are both powerful data visualization tools, but they have some key differences:</p>
 <ol type="1">
 <li><p><strong>Ease of Use</strong>: Power BI is generally considered more user-friendly, especially for those already familiar with Microsoft products. Tableau has a steeper learning curve but offers more advanced features for experienced users.</p></li>
@@ -706,11 +770,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./introR.html" class="pagination-link" aria-label="Introduction to R">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span>
+      <a href="./sql_bonus.html" class="pagination-link" aria-label="Advanced SQL II">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Advanced SQL II</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./powerbi1.html" class="pagination-link" aria-label="Power BI: Getting Started">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Power BI: Getting Started</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

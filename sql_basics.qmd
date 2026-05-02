@@ -1,315 +1,243 @@
 # SQL Basics
 
-SQL follows a standard syntax for managing and manipulating relational databases. SQL statement is composed of various clauses, each serving a specific purpose.
+Welcome to SQL Basics — the chapter where you learn to talk to databases, and databases (mostly) talk back.
 
-To make a comment in SQL, you can use two dashes (`--`) followed by the comment text as below:
+SQL (Structured Query Language) is the universal language of data. It doesn't matter if you're working at a tiny startup or inside a corporation with more data than common sense — SQL is the tool that gets you to the numbers. Every data analyst uses it. Every data scientist knows it. Even Excel users secretly wish they had it.
+
+To add a comment in SQL, use two dashes (`--`). SQL will politely ignore everything that follows — which is more than can be said for most group project feedback:
 
 ```sql
--- This is a comment in SQL
+-- This is a comment. SQL ignores it. Unlike your assignment marker.
 ```
 
-A SQL query is made up of different clauses.
-The general structure of an SQL statement is as follows:
+The basic building block of SQL is the **query**:
+
 ```sql
 SELECT column1, column2, ...
 FROM table_name
 WHERE condition;
 ```
 
-The `select` statement is used to retrieve data from a database, while the `from` clause specifies the table from which to retrieve the data. The `where` clause is optional and is used to filter the results based on a specified condition. These are SQL keywords and are not case-sensitive, but it is common practice to write them in uppercase for better readability. Also, they should end with a semicolon (`;`) to indicate the end of the statement.
+- `SELECT` — *what* columns you want
+- `FROM` — *which* table to look in
+- `WHERE` — an optional filter (only return rows that match a condition)
 
-It is not common for a data analyst to create or modify database structures, but it is important to understand the basics of SQL in table creation. So for example, here are some basic SQL operations:
+SQL keywords are case-insensitive — `select` and `SELECT` both work — but writing them in uppercase is convention because we're professionals (or at least pretending to be). Always end your statement with a semicolon (`;`). Think of it as the full stop at the end of your sentence. SQL insists.
+
+---
+
+## The FreshMart Dataset
+
+Throughout this chapter, we'll work with data from **FreshMart** — a fictional Australian supermarket chain with a loyalty program, a suspiciously wide product range, and at least one customer who has never returned after signing up for the membership card.
+
+We'll be working with two tables. First, the `Customers` table, which tracks FreshMart loyalty members:
+
+| CustomerID | FirstName | LastName | Age | Gender | Suburb | State | MembershipTier | YearJoined | TotalSpend | Churned |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Priya | Sharma | 34 | F | Fitzroy | VIC | Gold | 2018 | 8420.50 | 0 |
+| 2 | Jake | Nguyen | 22 | M | Parramatta | NSW | Bronze | 2023 | 340.00 | 0 |
+| 3 | Bev | O'Brien | 58 | F | Toowoomba | QLD | Silver | 2020 | 3150.75 | 1 |
+| 4 | Marcus | Lee | 41 | M | Carlton | VIC | Gold | 2017 | 12300.00 | 0 |
+| 5 | Amara | Diallo | 29 | F | Newtown | NSW | Silver | 2021 | 1890.25 | 0 |
+| 6 | Gary | McSnarl | 47 | M | Chadstone | VIC | Bronze | 2022 | 520.00 | 1 |
+| 7 | Nina | Patel | 19 | F | Brunswick | VIC | Bronze | 2024 | 0.00 | 0 |
+
+`Churned = 1` means the customer has left FreshMart for a competitor. Gary McSnarl, for instance, found a 10-cent discount on milk elsewhere and was gone by Tuesday. Marcus Lee, on the other hand, has spent $12,300 — he is clearly doing the shopping for an entire extended family. Nina Patel signed up for the loyalty card at the checkout in 2024 and has not been back since. Jake Nguyen's $340 annual spend is deeply relatable if you are a 22-year-old student.
+
+Second, the `Products` table, which catalogues items sold at FreshMart:
+
+| ProductID | ProductName | Category | Brand | UnitPrice | IsOrganic |
+|---|---|---|---|---|---|
+| 1 | Full Cream Milk 2L | Dairy | FarmFresh | 3.49 | 0 |
+| 2 | Organic Oats 500g | Breakfast | NatureBest | 5.99 | 1 |
+| 3 | Sourdough Bread | Bakery | BreadHaus | 6.50 | 0 |
+| 4 | Free Range Eggs 12pk | Dairy | HappyHen | 7.99 | 1 |
+| 5 | Cola 1.25L | Beverages | FizzPop | 2.80 | 0 |
+| 6 | Chicken Breast 500g | Meat & Seafood | FarmFresh | 8.50 | 0 |
+| 7 | Mixed Salad Leaves 120g | Produce | GreenLeaf | 3.20 | 1 |
+| 8 | Dark Chocolate 100g | Snacks | ChocoLux | 4.50 | 0 |
+| 9 | Sparkling Water 6pk | Beverages | AquaFizz | 6.99 | 0 |
+| 10 | Almond Butter 250g | Pantry | NatureBest | 9.99 | 1 |
+
+`IsOrganic = 1` means the product is certified organic. `IsOrganic = 0` means it is not — but nobody is judging you for buying the Cola.
+
+---
 
 ## Table Creation
 
+It is not common for a data analyst to build database structures from scratch, but understanding the basics helps you read and work with existing databases confidently.
+
 ### Creating a Table
 
-To create a table in SQL, you can use the `CREATE TABLE` statement. Here is an example of how to create a simple table called `Employees` with columns for `EmployeeID`, `FirstName`, `LastName`, and `HireDate`:
+Use `CREATE TABLE` to define a new table. You specify the table name, each column's name, and its data type.
+
 ```sql
-CREATE TABLE Employees (
-    EmployeeID INT PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    HireDate DATE
+CREATE TABLE Customers (
+    CustomerID     INT PRIMARY KEY,
+    FirstName      VARCHAR(50),
+    LastName       VARCHAR(50),
+    Age            INT,
+    Gender         CHAR(1),
+    Suburb         VARCHAR(100),
+    State          CHAR(3),
+    MembershipTier VARCHAR(10),
+    YearJoined     INT,
+    TotalSpend     DECIMAL(10, 2),
+    Churned        INT
 );
 ```
+
+`INT` stores whole numbers. `VARCHAR(50)` stores text up to 50 characters long. `DECIMAL(10, 2)` stores numbers with two decimal places — useful for money, because nobody wants to round Gary's $520.00 to the nearest integer. `PRIMARY KEY` means this column uniquely identifies each row — no two customers can share a `CustomerID`.
+
 ### Inserting Data
 
-To insert data into a table, you can use the `INSERT INTO` statement. Here is an example of how to insert a new employee into the `Employees` table:
+Use `INSERT INTO` to add a new row. Here is how FreshMart registered their most recent loyalty member:
+
 ```sql
-INSERT INTO Employees (EmployeeID, FirstName, LastName, HireDate)
-VALUES (1, 'John', 'Doe', '2022-01-15');
+INSERT INTO Customers (CustomerID, FirstName, LastName, Age, Gender, Suburb, State, MembershipTier, YearJoined, TotalSpend, Churned)
+VALUES (7, 'Nina', 'Patel', 19, 'F', 'Brunswick', 'VIC', 'Bronze', 2024, 0.00, 0);
 ```
+
+Nina has spent $0.00 so far. In her defence, she only signed up for the loyalty card because the checkout operator asked nicely.
 
 ### Querying Data
 
-To retrieve data from a table, you can use the `SELECT` statement. Here is an example of how to select all columns from the `Employees` table:
+Use `SELECT` to retrieve rows from a table. The asterisk `*` means "all columns":
+
 ```sql
-SELECT * FROM Employees;
+SELECT * FROM Customers;
 ```
+
+This returns every column and every row in the table. Useful for a quick look, but in real analysis you will usually name the specific columns you need.
 
 ### Updating Data
 
-To update existing data in a table, you can use the `UPDATE` statement. Here is an example of how to update the last name of an employee in the `Employees` table:
+Use `UPDATE` to modify existing rows. Priya Sharma has just crossed into a new spending bracket:
+
 ```sql
-UPDATE Employees
-SET LastName = 'Smith'
-WHERE EmployeeID = 1;
+UPDATE Customers
+SET TotalSpend = 9000.00
+WHERE CustomerID = 1;
 ```
+
+::: {.callout-warning}
+## Never forget the `WHERE` clause in `UPDATE`!
+Without it, you will update **every single row** in the table. Every customer's `TotalSpend` becomes $9,000.00. FreshMart's finance team will not be pleased, and neither will your exam marker.
+:::
 
 ### Deleting Data
 
-To delete data from a table, you can use the `DELETE` statement. Here is an example of how to delete an employee from the `Employees` table:
+Use `DELETE` to remove rows. Gary McSnarl has officially churned and asked to be removed from the loyalty database:
+
 ```sql
-DELETE FROM Employees
-WHERE EmployeeID = 1;
+DELETE FROM Customers
+WHERE CustomerID = 6;
 ```
+
+::: {.callout-warning}
+## Never forget the `WHERE` clause in `DELETE` either!
+Without it, you delete **every customer**. Every single one. Marcus, Priya, even Nina who hasn't bought anything yet — all gone. Always double-check your `WHERE` clause before running a delete.
+:::
 
 #### Exercises
 
-1. Create a table called `Departments` with columns for `DepartmentID`, `DepartmentName`, and `Location`.
+1. Create a table called `Transactions` with columns for `TransactionID`, `CustomerID`, `ProductID`, `Quantity`, and `TransactionDate`.
 
+::: {.callout-note collapse="true" title="Solution" icon="false"}
 ```sql
-CREATE TABLE Departments (
-    DepartmentID INT PRIMARY KEY,
-    DepartmentName VARCHAR(100),
-    Location VARCHAR(100)
+CREATE TABLE Transactions (
+    TransactionID   INT PRIMARY KEY,
+    CustomerID      INT,
+    ProductID       INT,
+    Quantity        INT,
+    TransactionDate DATE
 );
 ```
+:::
 
-2. Insert three departments into the `Departments` table with appropriate values.
+2. Insert two rows into the `Transactions` table — one for Marcus buying Chicken Breast, and one for Jake buying Cola.
 
+::: {.callout-note collapse="true" title="Solution" icon="false"}
 ```sql
-INSERT INTO Departments (DepartmentID, DepartmentName, Location)
+INSERT INTO Transactions (TransactionID, CustomerID, ProductID, Quantity, TransactionDate)
 VALUES
-(1, 'Human Resources', 'Sydney'),
-(2, 'Finance', 'Melbourne'),
-(3, 'IT', 'Brisbane');
+(1, 4, 6, 3, '2024-06-15'),
+(2, 2, 5, 2, '2024-07-01');
 ```
+:::
 
-3. Write a query to select all departments located in 'Melbourne'.
+3. Update Bev O'Brien's `Churned` status from 1 to 0 — she came back, apparently the competitor was out of Sourdough.
 
+::: {.callout-note collapse="true" title="Solution" icon="false"}
 ```sql
-SELECT * FROM Departments
-WHERE Location = 'Melbourne';
+UPDATE Customers
+SET Churned = 0
+WHERE CustomerID = 3;
 ```
+:::
 
-4. Update the location of department to 'Queensland'.
+4. Delete the product with `ProductID` equal to 5.
 
+::: {.callout-note collapse="true" title="Solution" icon="false"}
 ```sql
-UPDATE Departments
-SET Location = 'Queensland'
-WHERE DepartmentID = 3;
+DELETE FROM Products
+WHERE ProductID = 5;
+-- Goodbye, Cola. You will be missed by Jake Nguyen.
 ```
+:::
 
-5. Delete a department with a specific `DepartmentID`.
+5. Write a query to select all data from the `Products` table.
 
+::: {.callout-note collapse="true" title="Solution" icon="false"}
 ```sql
-DELETE FROM Departments
-WHERE DepartmentID = 2;
+SELECT * FROM Products;
 ```
+:::
 
-Now, you know how to create table in SQL and perform basic operations like inserting, querying, updating, and deleting data! But, you will hardly use these commands as a data analyst. The most important command for you is the data querying and data manipulation commands which we will cover in the next sections.
+---
+
+You now know how to create and manage tables. But as a data analyst, you will spend almost all your time *querying* data that already exists. That is where the real action is.
+
+---
 
 ## SQL for Data Querying and Manipulation
 
-SQL is a powerful language for querying and manipulating data in relational databases. As a data analyst, you will frequently use SQL to extract insights from data stored in databases. In this section, we will cover some of the most commonly used SQL commands for data querying and manipulation.
-
 ### Selecting Data
 
-The `SELECT` statement is used to retrieve data from a database. You can specify the columns you want to retrieve and the table from which to retrieve the data. The syntax for the `SELECT` statement is as follows:
+The `SELECT` statement retrieves data from a table. You list the columns you want, separated by commas:
 
 ```sql
 SELECT column1, column2, ...
 FROM table_name;
 ```
 
-Here is an example of how to select specific columns from a table called `Employees`:
+To see just the names and membership tiers of FreshMart's customers — the useful columns, not the internal IDs:
 
 ```sql
-SELECT FirstName, LastName, HireDate
-FROM Employees;
+SELECT FirstName, LastName, MembershipTier
+FROM Customers;
+```
+
+| FirstName | LastName | MembershipTier |
+|-----------|----------|----------------|
+| Priya | Sharma | Gold |
+| Jake | Nguyen | Bronze |
+| Bev | O'Brien | Silver |
+| Marcus | Lee | Gold |
+| Amara | Diallo | Silver |
+| Gary | McSnarl | Bronze |
+| Nina | Patel | Bronze |
+
+To see just the product names and prices from the `Products` table:
+
+```sql
+SELECT ProductName, UnitPrice
+FROM Products;
 ```
 
 ### Filtering Data
 
-The `WHERE` clause is used to filter the results based on a specified condition. Here is an example of how to select employees who were hired after January 1, 2020:
-
-```sql
-SELECT FirstName, LastName, HireDate
-FROM Employees
-WHERE HireDate > '2020-01-01';
-```
-
-### Sorting Data
-
-The `ORDER BY` clause is used to sort the results in ascending or descending order. Here is an example of how to select employees and sort them by their last name in ascending order:
-
-```sql
-SELECT FirstName, LastName, HireDate
-FROM Employees
-ORDER BY LastName ASC;
-```
-
-```sql
--- or in descending order
-SELECT FirstName, LastName, HireDate
-FROM Employees
-ORDER BY LastName DESC;
-```
-
-### Distinct Values
-
-The `DISTINCT` keyword is used to retrieve unique values from a column. Here is an example of how to select distinct job titles from a table called `Jobs`:
-
-```sql
-SELECT DISTINCT JobTitle
-FROM Jobs;
-```
-
-### Multiple Conditions
-
-You can use logical operators such as `AND`, `OR`, and `NOT` to combine multiple conditions in the `WHERE` clause. The general syntax for using multiple conditions is as follows:
-
-```sql
-SELECT column1, column2, ...
-FROM table_name
-WHERE condition1 AND|OR condition2;
-```
-
-Here is an example of how to select employees who were hired after January 1, 2020, and have a salary greater than 50000:
-
-```sql
-SELECT FirstName, LastName, HireDate, Salary
-FROM Employees
-WHERE HireDate > '2020-01-01' AND Salary > 50000;
-```
-
-Or you can use `OR` operator as below:
-
-```sql
-SELECT FirstName, LastName, HireDate, Salary
-FROM Employees
-WHERE HireDate > '2020-01-01' OR Salary > 50000;
-```
-
-This SQL selects the FirstName, LastName, HireDate, and Salary of employees from the Employees table where the HireDate is after January 1, 2020, or the Salary is greater than 50000.
-
-The `NOT` operator can be used to exclude certain records. Here is an example of how to select employees who do not work in the department with ID 3:
-
-```sql
-SELECT FirstName, LastName, DepartmentID
-FROM Employees
-WHERE NOT DepartmentID = 3;
-```
-
-#### Exercises
-
-1. Write a query to select all employees who work in the 'IT' department.
-2. Write a query to select distinct job titles from the `Jobs` table.
-3. Write a query to select employees with a salary between 40000 and 80000.
-
-::: {.callout-note collapse="true" title="Solutions" icon="false"}
-```sql
--- 1. Employees in 'IT' department
-SELECT FirstName, LastName, DepartmentID
-FROM Employees
-WHERE DepartmentID = (SELECT DepartmentID FROM Departments WHERE DepartmentName = 'IT');
-
--- 2. Distinct job titles from Jobs table
-SELECT DISTINCT JobTitle
-FROM Jobs;
-
--- 3. Employees with salary between 40000 and 80000
-SELECT FirstName, LastName, Salary
-FROM Employees
-WHERE Salary BETWEEN 40000 AND 80000;
-```
-:::
-
-
-### Aggregating Data
-
-SQL provides several aggregate functions that allow you to perform calculations on a set of values. Some commonly used aggregate functions include `COUNT()`, `SUM()`, `AVG()`, `MIN()`, and `MAX()`. Here is an example of how to count the number of employees in the `Employees` table:
-
-```sql
-SELECT COUNT(*) AS NumberOfEmployees
-FROM Employees;
-```
-
-This SQL selects the total number of employees from the Employees table and labels the result as NumberOfEmployees. * means all rows.
-
-```sql
--- Example of SUM function
-SELECT SUM(Salary) AS TotalSalary
-FROM Employees;
-```
-
-This SQL selects the total sum of the Salary column from the Employees table and labels the result as TotalSalary.
-
-```sql
--- Example of AVG function
-SELECT AVG(Salary) AS AverageSalary
-FROM Employees;
-```
-
-This SQL selects the average value of the Salary column from the Employees table and labels the result as AverageSalary.
-
-```sql
--- Example of MIN and MAX functions
-SELECT MIN(Salary) AS MinimumSalary, MAX(Salary) AS MaximumSalary
-FROM Employees;
-```
-
-This SQL selects the minimum and maximum values of the Salary column from the Employees table and labels the results as MinimumSalary and MaximumSalary, respectively.
-
-#### Exercises
-
-1. Write a query to select all employees who were hired in the year 2021.
-2. Write a query to select distinct locations from the `Departments` table.
-3. Write a query to count the total number of employees.
-4. Write a query to find the average salary of employees in the `Employees` table.
-5. Write a query to select employees and sort them by their hire date in descending order.
-6. Write a query to find the maximum and minimum hire dates from the `Employees` table.
-7. Write a query to count the number of distinct job titles in the `Jobs` table.
-
-::: {.callout-note collapse="true" title="Solutions" icon="false"}
-```sql
--- 1. Employees hired in 2021
-SELECT *
-FROM Employees
-WHERE YEAR(HireDate) = 2021;
-
--- 2. Distinct locations from Departments table
-SELECT DISTINCT Location
-FROM Departments;
-
--- 3. Count number of employees in each department
-SELECT COUNT(*) AS TotalEmployees
-FROM Employees;
-
--- 4. Average salary of employees
-SELECT AVG(Salary) AS AverageSalary
-FROM Employees;
-
--- 5. Employees sorted by hire date in descending order
-SELECT *
-FROM Employees
-ORDER BY HireDate DESC;
-
--- 6. Maximum and minimum hire dates
-SELECT MIN(HireDate) AS MinimumHireDate, MAX(HireDate) AS MaximumHire
-FROM Employees;
-
--- 7. Count of distinct job titles in Jobs table
-SELECT COUNT(DISTINCT JobTitle) AS NumberOfJobTitles
-FROM Jobs;
-```
-:::
-
-### `WHERE` Clause
-
-The `WHERE` clause is used to filter records that meet a certain condition. It can be used with various comparison operators such as `=`, `!=`, `<`, `>`, `<=`, `>=`, and logical operators like `AND`, `OR`, and `NOT`. The general syntax for the `WHERE` clause is as follows:
+The `WHERE` clause filters rows based on a condition. Only rows that satisfy the condition are returned — everything else is quietly discarded.
 
 ```sql
 SELECT column1, column2, ...
@@ -317,44 +245,272 @@ FROM table_name
 WHERE condition;
 ```
 
-Here is an example of how to use the `WHERE` clause to select employees with a salary greater than 50000:
+Show only customers who have spent more than $1,000 at FreshMart:
 
 ```sql
-SELECT FirstName, LastName, Salary
-FROM Employees
-WHERE Salary > 50000;
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+WHERE TotalSpend > 1000;
 ```
 
-This SQL selects the FirstName, LastName, and Salary of employees from the Employees table where the Salary is greater than 50000.
+| FirstName | LastName | TotalSpend |
+|-----------|----------|------------|
+| Priya | Sharma | 8420.50 |
+| Bev | O'Brien | 3150.75 |
+| Marcus | Lee | 12300.00 |
+| Amara | Diallo | 1890.25 |
+
+Jake and Nina did not make the cut. Jake is not surprised — he is 22. Nina is technically surprised because she forgot she had a loyalty card.
+
+### Sorting Data
+
+Use `ORDER BY` to sort your results. `ASC` is ascending (A–Z, smallest–largest) and `DESC` is descending (Z–A, largest–smallest). The default is ascending.
+
+Let's rank customers from highest to lowest total spend:
+
+```sql
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+ORDER BY TotalSpend DESC;
+```
+
+| FirstName | LastName | TotalSpend |
+|-----------|----------|------------|
+| Marcus | Lee | 12300.00 |
+| Priya | Sharma | 8420.50 |
+| Bev | O'Brien | 3150.75 |
+| Amara | Diallo | 1890.25 |
+| Gary | McSnarl | 520.00 |
+| Jake | Nguyen | 340.00 |
+| Nina | Patel | 0.00 |
+
+Marcus is comfortably in first place. Nina is in last place. Nina is unbothered.
+
+### Distinct Values
+
+The `DISTINCT` keyword returns only unique values — duplicates are removed. Useful when you want a list of categories, not a full row-by-row count.
+
+Which product categories does FreshMart stock?
+
+```sql
+SELECT DISTINCT Category
+FROM Products;
+```
+
+This returns each category name exactly once, even if multiple products share the same category (as is the case with Dairy and Beverages).
+
+Which states are FreshMart customers from?
+
+```sql
+SELECT DISTINCT State
+FROM Customers;
+```
+
+### Multiple Conditions
+
+You can combine conditions with logical operators: `AND`, `OR`, and `NOT`.
+
+Customers who joined **after** 2020 **and** have spent more than $500 — your recent-but-engaged members:
+
+```sql
+SELECT FirstName, LastName, YearJoined, TotalSpend
+FROM Customers
+WHERE YearJoined > 2020 AND TotalSpend > 500;
+```
+
+Customers who are **either** churned **or** have spent nothing — potential re-engagement targets:
+
+```sql
+SELECT FirstName, LastName, TotalSpend, Churned
+FROM Customers
+WHERE Churned = 1 OR TotalSpend = 0;
+```
+
+Products that are **not** organic:
+
+```sql
+SELECT ProductName, IsOrganic
+FROM Products
+WHERE NOT IsOrganic = 1;
+```
 
 #### Exercises
 
-1. Write a query to select employees who were hired before January 1, 2020.
-2. Write a query to select employees with the job title 'Manager' and a salary greater than 60000.
-3. Write a query to select employees who work in the 'IT' department or have a salary less than 40000.
- 
+1. Write a query to select all customers who joined after 2020.
+2. Write a query to select distinct states from the `Customers` table.
+3. Write a query to select customers with a `TotalSpend` between $300 and $2,000.
+4. Write a query to find products that are organic and cost less than $7.00.
+
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Employees hired before January 1, 2020
-SELECT FirstName, LastName, HireDate
-FROM Employees
-WHERE HireDate < '2020-01-01';
+-- 1. Customers who joined after 2020
+SELECT FirstName, LastName, YearJoined
+FROM Customers
+WHERE YearJoined > 2020;
 
--- 2. Employees with job title 'Manager' and salary greater than 60000
-SELECT FirstName, LastName, Salary
-FROM Employees
-WHERE JobTitle = 'Manager' AND Salary > 60000;
+-- 2. Distinct states
+SELECT DISTINCT State
+FROM Customers;
 
--- 3. Employees in 'IT' department or salary less than 40000
-SELECT FirstName, LastName, DepartmentID, Salary
-FROM Employees
-WHERE DepartmentID = (SELECT DepartmentID FROM Departments WHERE DepartmentName = 'IT') OR Salary < 40000;
+-- 3. Customers with TotalSpend between $300 and $2,000
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+WHERE TotalSpend BETWEEN 300 AND 2000;
+
+-- 4. Organic products under $7.00
+SELECT ProductName, UnitPrice, IsOrganic
+FROM Products
+WHERE IsOrganic = 1 AND UnitPrice < 7.00;
+```
+:::
+
+### Aggregating Data
+
+Aggregate functions summarise many rows into a single number. These are the workhorses of data analysis — you will use them constantly.
+
+| Function | What it does |
+|----------|-------------|
+| `COUNT()` | Counts the number of rows |
+| `SUM()` | Adds up all values |
+| `AVG()` | Calculates the average |
+| `MIN()` | Finds the smallest value |
+| `MAX()` | Finds the largest value |
+
+How many customers does FreshMart have on its loyalty database?
+
+```sql
+SELECT COUNT(*) AS TotalCustomers
+FROM Customers;
+```
+
+The result is 7. Seven customers, one of whom has spent nothing and one of whom has spent enough to feed a village.
+
+What is the total lifetime spend across all customers?
+
+```sql
+SELECT SUM(TotalSpend) AS TotalRevenue
+FROM Customers;
+```
+
+What is the average unit price of products in the store?
+
+```sql
+SELECT AVG(UnitPrice) AS AvgUnitPrice
+FROM Products;
+```
+
+What is the price range — cheapest to most expensive?
+
+```sql
+SELECT MIN(UnitPrice) AS CheapestProduct, MAX(UnitPrice) AS MostExpensiveProduct
+FROM Products;
+```
+
+The Cola at $2.80 is the cheapest. The Almond Butter at $9.99 is the most expensive. Whether that is fair is a matter of personal philosophy.
+
+#### Exercises
+
+1. Write a query to count the total number of products in the `Products` table.
+2. Write a query to find the average `TotalSpend` across all customers.
+3. Write a query to find the product with the highest `UnitPrice`.
+4. Write a query to find the total `TotalSpend` across all customers who have **not** churned.
+5. Write a query to find the earliest year a customer joined FreshMart.
+6. Write a query to find the minimum and maximum `UnitPrice` among organic products only.
+7. Write a query to count the number of customers who have spent more than $0.
+
+::: {.callout-note collapse="true" title="Solutions" icon="false"}
+```sql
+-- 1. Total number of products
+SELECT COUNT(*) AS TotalProducts
+FROM Products;
+
+-- 2. Average customer spend
+SELECT AVG(TotalSpend) AS AvgTotalSpend
+FROM Customers;
+
+-- 3. Most expensive product
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice = (SELECT MAX(UnitPrice) FROM Products);
+
+-- 4. Total spend among non-churned customers
+SELECT SUM(TotalSpend) AS ActiveCustomerRevenue
+FROM Customers
+WHERE Churned = 0;
+
+-- 5. Earliest year joined
+SELECT MIN(YearJoined) AS EarliestJoinYear
+FROM Customers;
+
+-- 6. Price range for organic products
+SELECT MIN(UnitPrice) AS CheapestOrganic, MAX(UnitPrice) AS MostExpensiveOrganic
+FROM Products
+WHERE IsOrganic = 1;
+
+-- 7. Customers who have actually spent something
+SELECT COUNT(*) AS SpendingCustomers
+FROM Customers
+WHERE TotalSpend > 0;
+```
+:::
+
+### `WHERE` Clause (More Detail)
+
+The `WHERE` clause supports a full range of comparison operators:
+
+| Operator | Meaning |
+|----------|---------|
+| `=` | Equal to |
+| `!=` or `<>` | Not equal to |
+| `>` | Greater than |
+| `<` | Less than |
+| `>=` | Greater than or equal to |
+| `<=` | Less than or equal to |
+
+Customers with a `TotalSpend` strictly greater than $1,000:
+
+```sql
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+WHERE TotalSpend > 1000;
+```
+
+Products whose price is not equal to $3.49 (i.e., not the Full Cream Milk):
+
+```sql
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice != 3.49;
+```
+
+#### Exercises
+
+1. Write a query to find all products with a `UnitPrice` less than $5.00.
+2. Write a query to find customers who joined before 2022 and have spent more than $1,000.
+3. Write a query to find customers who are from QLD or have a `TotalSpend` of exactly $0.00.
+
+::: {.callout-note collapse="true" title="Solutions" icon="false"}
+```sql
+-- 1. Budget-friendly products
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice < 5.00;
+
+-- 2. Long-term, high-value customers
+SELECT FirstName, LastName, YearJoined, TotalSpend
+FROM Customers
+WHERE YearJoined < 2022 AND TotalSpend > 1000;
+
+-- 3. QLD customers or zero-spend members
+SELECT FirstName, LastName, State, TotalSpend
+FROM Customers
+WHERE State = 'QLD' OR TotalSpend = 0.00;
 ```
 :::
 
 ### `GROUP BY` Clause
 
-The `GROUP BY` clause is used to group rows that have the same values in specified columns into summary rows. It is often used with aggregate functions to perform calculations on each group of data. The general syntax for the `GROUP BY` clause is as follows:
+`GROUP BY` groups rows that share the same value in a column, then lets you apply aggregate functions to each group separately. Think of it as sorting your data into buckets and doing maths on each bucket.
 
 ```sql
 SELECT column1, aggregate_function(column2)
@@ -362,44 +518,84 @@ FROM table_name
 GROUP BY column1;
 ```
 
-Here is an example of how to use the `GROUP BY` clause to count the number of employees in each department:
+How many customers does FreshMart have in each state?
 
 ```sql
-SELECT DepartmentID, COUNT(*) AS NumberOfEmployees
-FROM Employees
-GROUP BY DepartmentID;
+SELECT State, COUNT(*) AS NumberOfCustomers
+FROM Customers
+GROUP BY State;
 ```
 
-This SQL selects the DepartmentID and counts the number of employees in each department from the Employees table, grouping the results by DepartmentID and labeling the count as NumberOfEmployees.
+This groups the `Customers` rows by state and counts how many are in each. VIC has a strong showing.
+
+| State | NumberOfCustomers |
+|-------|-----------------|
+| NSW | 2 |
+| QLD | 1 |
+| VIC | 4 |
+
+What is the average `TotalSpend` by membership tier?
+
+```sql
+SELECT MembershipTier, AVG(TotalSpend) AS AvgSpend
+FROM Customers
+GROUP BY MembershipTier;
+```
+
+This tells you, at a glance, how much each tier tends to spend — useful for understanding whether the loyalty tiers are doing their job.
 
 #### Exercises
 
-1. Write a query to find the total salary for each department.
-2. Write a query to count the number of employees in each job title.
-3. Write a query to find the average hire date for each department.
+1. Write a query to find the total `TotalSpend` grouped by `State` in the `Customers` table.
+2. Write a query to count the number of customers in each `MembershipTier`.
+3. Write a query to find the maximum `TotalSpend` by `MembershipTier`.
+4. Write a query to find the average `UnitPrice` by `Category` in the `Products` table.
+5. Write a query to count the number of products in each `Category`.
+6. Write a query to find the total `TotalSpend` for churned vs non-churned customers (group by `Churned`).
+7. Write a query to find the number of customers who joined in each year, grouped by `YearJoined`.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Total salary for each department
-SELECT DepartmentID, SUM(Salary) AS TotalSalary
-FROM Employees
-GROUP BY DepartmentID;
+-- 1. Total spend by state
+SELECT State, SUM(TotalSpend) AS TotalStateSpend
+FROM Customers
+GROUP BY State;
 
--- 2. Count of employees in each job title
-SELECT JobTitle, COUNT(*) AS NumberOfEmployees
-FROM Employees
-GROUP BY JobTitle;
+-- 2. Customer count by membership tier
+SELECT MembershipTier, COUNT(*) AS CustomerCount
+FROM Customers
+GROUP BY MembershipTier;
 
--- 3. Average hire date for each department
-SELECT DepartmentID, AVG(HireDate) AS AverageHireDate
-FROM Employees
-GROUP BY DepartmentID;
+-- 3. Highest spender by membership tier
+SELECT MembershipTier, MAX(TotalSpend) AS MaxSpend
+FROM Customers
+GROUP BY MembershipTier;
+
+-- 4. Average unit price by product category
+SELECT Category, AVG(UnitPrice) AS AvgPrice
+FROM Products
+GROUP BY Category;
+
+-- 5. Number of products per category
+SELECT Category, COUNT(*) AS ProductCount
+FROM Products
+GROUP BY Category;
+
+-- 6. Total spend by churn status
+SELECT Churned, SUM(TotalSpend) AS TotalSpend
+FROM Customers
+GROUP BY Churned;
+
+-- 7. Customers joining each year
+SELECT YearJoined, COUNT(*) AS NewMembers
+FROM Customers
+GROUP BY YearJoined;
 ```
 :::
 
 ### `HAVING` Clause
 
-The `HAVING` clause is used to filter records that meet a certain condition after the `GROUP BY` clause has been applied. It is similar to the `WHERE` clause, but it is used for aggregated data. The general syntax for the `HAVING` clause is as follows:
+`HAVING` is like `WHERE` for groups — it filters the results *after* `GROUP BY` has been applied. Use it when your condition involves an aggregate function like `COUNT()` or `AVG()`.
 
 ```sql
 SELECT column1, aggregate_function(column2)
@@ -408,281 +604,378 @@ GROUP BY column1
 HAVING condition;
 ```
 
-Here is an example of how to use the `HAVING` clause to filter departments with more than 5 employees:
+Find membership tiers where the average `TotalSpend` exceeds $3,000:
 
 ```sql
-SELECT DepartmentID, COUNT(*) AS NumberOfEmployees
-FROM Employees
-GROUP BY DepartmentID
-HAVING COUNT(*) > 5;
+SELECT MembershipTier, AVG(TotalSpend) AS AvgSpend
+FROM Customers
+GROUP BY MembershipTier
+HAVING AVG(TotalSpend) > 3000;
 ```
 
-This SQL selects the DepartmentID and counts the number of employees in each department from the Employees table, grouping the results by DepartmentID and filtering to include only those departments with more than 5 employees.
+Only the Gold tier qualifies — which is exactly what you'd hope for from your Gold members.
 
-#### Exercises
+Find product categories where the average unit price is above $6.00:
 
-1. Write a query to find departments with a total salary greater than 200000.
-2. Write a query to find job titles with more than 10 employees.
-3. Write a query to find departments with an average hire date before 2021.
-
-::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Departments with total salary greater than 200000
-SELECT DepartmentID, SUM(Salary) AS TotalSalary
-FROM Employees
-GROUP BY DepartmentID
-HAVING SUM(Salary) > 200000;
+SELECT Category, AVG(UnitPrice) AS AvgPrice
+FROM Products
+GROUP BY Category
+HAVING AVG(UnitPrice) > 6.00;
+```
 
--- 2. Job titles with more than 10 employees
-SELECT JobTitle, COUNT(*) AS NumberOfEmployees
-FROM Employees
-GROUP BY JobTitle
-HAVING COUNT(*) > 10;
+::: {.callout-tip}
+## `WHERE` vs `HAVING` — Know the Difference
 
--- 3. Departments with average hire date before 2021
-SELECT DepartmentID, AVG(HireDate) AS AverageHireDate
-FROM Employees
-GROUP BY DepartmentID
-HAVING AVG(HireDate) < '2021-01-01';
+- **`WHERE`** filters individual rows *before* grouping. Use it on regular column values.
+- **`HAVING`** filters groups *after* grouping. Use it on the result of aggregate functions.
+
+This query will throw an error because you cannot use an aggregate function inside `WHERE`:
+
+```sql
+-- ❌ This does NOT work
+SELECT MembershipTier, AVG(TotalSpend)
+FROM Customers
+WHERE AVG(TotalSpend) > 3000
+GROUP BY MembershipTier;
+```
+
+This is the correct version:
+
+```sql
+-- ✅ This works
+SELECT MembershipTier, AVG(TotalSpend)
+FROM Customers
+GROUP BY MembershipTier
+HAVING AVG(TotalSpend) > 3000;
 ```
 :::
 
-:::{ .callout-tip}
-## Confusion between `WHERE` and `HAVING` Clause"
-The `WHERE` clause is used to filter rows before any grouping is done, while the `HAVING` clause is used to filter groups after the `GROUP BY` clause has been applied. Use `WHERE` for individual row conditions and `HAVING` for aggregated data conditions.
+#### Exercises
+
+1. Write a query to find states where the total `TotalSpend` of all customers exceeds $5,000.
+2. Write a query to find product categories that contain more than 1 product.
+
+::: {.callout-note collapse="true" title="Solutions" icon="false"}
+```sql
+-- 1. States with combined customer spend above $5,000
+SELECT State, SUM(TotalSpend) AS TotalStateSpend
+FROM Customers
+GROUP BY State
+HAVING SUM(TotalSpend) > 5000;
+
+-- 2. Categories with more than one product
+SELECT Category, COUNT(*) AS ProductCount
+FROM Products
+GROUP BY Category
+HAVING COUNT(*) > 1;
+```
 :::
 
 ### NULL Values
 
-In SQL, `NULL` represents a missing or unknown value. It is important to handle `NULL` values properly when querying data. You can use the `IS NULL` and `IS NOT NULL` operators to check for `NULL` values in a column. The general syntax for checking `NULL` values is as follows:
+`NULL` in SQL means *unknown* or *missing*. It is not zero, it is not an empty string, and it is not false. It is the database equivalent of a friend saying "I'll let you know" and then never letting you know.
+
+Note that Nina Patel's `TotalSpend` is `0.00`, not `NULL` — she has a recorded value of zero. A `NULL` would mean the data is entirely absent, which is a different situation. In a larger database, you might encounter `NULL` in columns like `LastName` (for a customer who only provided a first name) or `State` (if the address was not captured).
+
+You cannot compare `NULL` with `=`. This will silently return nothing:
 
 ```sql
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name IS NULL|IS NOT NULL;
+-- ❌ Does NOT work as expected
+SELECT FirstName FROM Customers WHERE State = NULL;
 ```
 
-Here is an example of how to select employees with a `NULL` value in the `ManagerID` column:
+Instead, use `IS NULL` or `IS NOT NULL`:
 
 ```sql
-SELECT FirstName, LastName, ManagerID
-FROM Employees
-WHERE ManagerID IS NULL;
+-- Customers with no state on record
+SELECT FirstName, LastName, State
+FROM Customers
+WHERE State IS NULL;
+
+-- Customers who definitely have a state recorded
+SELECT FirstName, LastName, State
+FROM Customers
+WHERE State IS NOT NULL;
 ```
 
 #### Exercises
 
-1. Write a query to select employees with a `NULL` value in the `HireDate` column.
-2. Write a query to select employees with a non-`NULL` value in the `Salary` column.
+1. Write a query to find all products whose `Brand` is `NULL`.
+2. Write a query to find all customers whose `Suburb` is **not** `NULL`.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Employees with NULL HireDate
-SELECT FirstName, LastName, HireDate
-FROM Employees
-WHERE HireDate IS NULL;
+-- 1. Products with no brand on file
+SELECT ProductName
+FROM Products
+WHERE Brand IS NULL;
 
--- 2. Employees with non-NULL Salary
-SELECT FirstName, LastName, Salary
-FROM Employees
-WHERE Salary IS NOT NULL;
+-- 2. Customers with a recorded suburb
+SELECT FirstName, LastName, Suburb
+FROM Customers
+WHERE Suburb IS NOT NULL;
 ```
 :::
 
 ### `LIMIT` Clause
 
-The `LIMIT` clause is used to specify the maximum number of records to return in the result set. It is useful when you want to retrieve a subset of data from a larger dataset. The general syntax for the `LIMIT` clause is as follows:
-
-```sql
-SELECT column1, column2, ...
-FROM table_name
-LIMIT number_of_records;
-```
-
-Here is an example of how to use the `LIMIT` clause to select the first 10 employees from the `Employees` table:
+The `LIMIT` clause caps the number of rows returned. Useful when you want a quick peek at a large table, or when you are hunting for the top or bottom performers.
 
 ```sql
 SELECT *
-FROM Employees
-LIMIT 10;
+FROM Products
+LIMIT 3;
 ```
 
+This returns only the first 3 rows. To find the 3 most expensive products:
+
+```sql
+SELECT ProductName, UnitPrice
+FROM Products
+ORDER BY UnitPrice DESC
+LIMIT 3;
+```
+
+That would be Almond Butter ($9.99), Chicken Breast ($8.50), and Free Range Eggs ($7.99). Healthy eating is not cheap.
+
 ::: {.callout-tip}
-## Note on SQL Dialects
-Not all SQL databases support the `LIMIT` clause. For example, in Microsoft SQL Server, you would use the `SELECT TOP` keyword instead. Use AI to check the syntax for your specific database system.
+## SQL Dialect Note
+`LIMIT` works in MySQL, PostgreSQL, and SQLite. In **Microsoft SQL Server**, use `SELECT TOP n` instead:
+
+```sql
+SELECT TOP 3 ProductName, UnitPrice
+FROM Products
+ORDER BY UnitPrice DESC;
+```
+
+When in doubt, ask your AI assistant which variant your database system uses.
 :::
 
 #### Exercises
 
-1. Write a query to select the first 5 departments from the `Departments` table.
-2. Write a query to select the first 3 employees with the highest salaries.
+1. Write a query to find the 3 customers with the highest `TotalSpend`.
+2. Write a query to find the cheapest product in the store — return just 1 row.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. First 5 departments
-SELECT *  
-FROM Departments
-LIMIT 5;
-
--- 2. First 3 employees with highest salaries
-SELECT *
-FROM Employees
-ORDER BY Salary DESC
+-- 1. Top 3 spenders
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+ORDER BY TotalSpend DESC
 LIMIT 3;
+
+-- 2. The cheapest product
+SELECT ProductName, UnitPrice
+FROM Products
+ORDER BY UnitPrice ASC
+LIMIT 1;
+-- That's the Cola at $2.80. Jake approves.
 ```
 :::
-
 
 ### `LIKE` Operator
 
-The `LIKE` operator is used in the `WHERE` clause to search for a specified pattern in a column. It is often used with wildcard characters such as `%` (which represents zero or more characters) and `_` (which represents a single character). The general syntax for the `LIKE` operator is as follows:
+`LIKE` lets you search for text patterns inside a column. It is used inside the `WHERE` clause and works with two wildcards:
+
+- `%` — matches **any sequence of characters** (including no characters at all)
+- `_` — matches **exactly one character**
+
+Products whose name starts with "Organic":
 
 ```sql
-SELECT column1, column2, ...
-FROM table_name
-WHERE column_name LIKE pattern;
+SELECT ProductName
+FROM Products
+WHERE ProductName LIKE 'Organic%';
 ```
 
-Here is an example of how to use the `LIKE` operator to select employees whose last name starts with 'S':
+This returns Organic Oats 500g. Clean eating, found efficiently.
+
+Products whose name contains the word "Butter":
+
+```sql
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE ProductName LIKE '%Butter%';
+```
+
+Customers whose last name starts with "P":
 
 ```sql
 SELECT FirstName, LastName
-FROM Employees
-WHERE LastName LIKE 'S%';
+FROM Customers
+WHERE LastName LIKE 'P%';
 ```
 
 #### Exercises
 
-1. Write a query to select employees whose first name ends with 'n'.
-2. Write a query to select employees whose last name contains 'ar'.
-3. Write a query to select employees whose first name has 'a' as the last letter.
+1. Write a query to find all products whose `ProductName` contains the word "Chocolate".
+2. Write a query to find products whose `ProductName` ends with "6pk".
+3. Write a query to find customers whose `FirstName` starts with "A".
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Employees whose first name ends with 'n'
-SELECT FirstName, LastName
-FROM Employees
-WHERE FirstName LIKE '%n';
+-- 1. Chocolate products (there is one, and it is important)
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE ProductName LIKE '%Chocolate%';
 
--- 2. Employees whose last name contains 'ar'
-SELECT FirstName, LastName
-FROM Employees
-WHERE LastName LIKE '%ar%';
+-- 2. Products sold in six-packs
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE ProductName LIKE '%6pk';
 
--- 3. Employees whose first name has 'a' as the last letter
+-- 3. Customers whose first name starts with A
 SELECT FirstName, LastName
-FROM Employees
-WHERE FirstName LIKE '%a';
+FROM Customers
+WHERE FirstName LIKE 'A%';
+-- That's Amara Diallo.
 ```
-::: 
+:::
 
 ### `IN` Operator
 
-The `IN` operator is used in the `WHERE` clause to filter records based on a list of specified values. It allows you to specify multiple values in a `WHERE` clause, making it easier to filter data. The general syntax for the `IN` operator is as follows:
+The `IN` operator checks if a value matches **any** value in a list. It is a clean alternative to chaining multiple `OR` conditions.
 
 ```sql
-SELECT column1, column2, ...
+SELECT column1, column2
 FROM table_name
-WHERE column_name IN (value1, value2, ...);
+WHERE column_name IN (value1, value2, value3);
 ```
 
-Here is an example of how to use the `IN` operator to select employees who work in departments with IDs 1, 2, or 3:
+Find customers who are Gold or Silver members:
 
 ```sql
-SELECT FirstName, LastName, DepartmentID
-FROM Employees
-WHERE DepartmentID IN (1, 2, 3);
+SELECT FirstName, LastName, MembershipTier
+FROM Customers
+WHERE MembershipTier IN ('Gold', 'Silver');
+```
+
+Much neater than writing:
+```sql
+WHERE MembershipTier = 'Gold' OR MembershipTier = 'Silver'
+```
+
+You can also use `NOT IN` to exclude specific values:
+
+```sql
+-- Products NOT in the Dairy or Beverages categories
+SELECT ProductName, Category
+FROM Products
+WHERE Category NOT IN ('Dairy', 'Beverages');
 ```
 
 #### Exercises
 
-1. Write a query to select employees who have the job titles 'Manager', 'Analyst', or 'Developer'.
-2. Write a query to select departments located in 'Sydney', 'Melbourne', or 'Brisbane'.
+1. Write a query to find customers from VIC, NSW, or QLD.
+2. Write a query to find products that are **not** in the Bakery or Snacks categories.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Employees with job titles 'Manager', 'Analyst', or 'Developer'
-SELECT FirstName, LastName, JobTitle
-FROM Employees
-WHERE JobTitle IN ('Manager', 'Analyst', 'Developer');
+-- 1. Customers from major eastern states
+SELECT FirstName, LastName, State
+FROM Customers
+WHERE State IN ('VIC', 'NSW', 'QLD');
 
--- 2. Departments located in 'Sydney', 'Melbourne', or 'Brisbane'
-SELECT *
-FROM Departments
-WHERE Location IN ('Sydney', 'Melbourne', 'Brisbane');
+-- 2. Products outside Bakery and Snacks
+SELECT ProductName, Category
+FROM Products
+WHERE Category NOT IN ('Bakery', 'Snacks');
 ```
 :::
 
 ### `BETWEEN` Operator
 
-The `BETWEEN` operator is used in the `WHERE` clause to filter records within a specified range. It is inclusive, meaning it includes the boundary values. The general syntax for the `BETWEEN` operator is as follows:
+`BETWEEN` filters for values within a range. It is **inclusive** — both the lower and upper bounds are included in the results. It works with numbers, dates, and text.
 
 ```sql
-SELECT column1, column2, ...
+SELECT column1, column2
 FROM table_name
 WHERE column_name BETWEEN value1 AND value2;
 ```
 
-Here is an example of how to use the `BETWEEN` operator to select employees with salaries between 40000 and 80000:
+Products priced between $3.00 and $7.00:
 
 ```sql
-SELECT FirstName, LastName, Salary
-FROM Employees
-WHERE Salary BETWEEN 40000 AND 80000;
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice BETWEEN 3.00 AND 7.00;
+```
+
+Customers who joined between 2019 and 2022 (inclusive):
+
+```sql
+SELECT FirstName, LastName, YearJoined
+FROM Customers
+WHERE YearJoined BETWEEN 2019 AND 2022;
 ```
 
 #### Exercises
 
-1. Write a query to select employees hired between January 1, 2020, and December 31, 2021.
-2. Write a query to select departments with IDs between 2 and 5.
+1. Write a query to find products with a `UnitPrice` between $5.00 and $9.00.
+2. Write a query to find customers with a `TotalSpend` between $1,000 and $10,000.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Employees hired between January 1, 2020, and December 31
-SELECT FirstName, LastName, HireDate
-FROM Employees
-WHERE HireDate BETWEEN '2020-01-01' AND '2021-12-
-31';
+-- 1. Mid-range products
+SELECT ProductName, UnitPrice
+FROM Products
+WHERE UnitPrice BETWEEN 5.00 AND 9.00;
 
--- 2. Departments with IDs between 2 and 5
-SELECT *
-FROM Departments
-WHERE DepartmentID BETWEEN 2 AND 5;
+-- 2. Mid-range spenders
+SELECT FirstName, LastName, TotalSpend
+FROM Customers
+WHERE TotalSpend BETWEEN 1000 AND 10000;
 ```
 :::
 
-### Aliases
+### Aliases with `AS`
 
-Aliases are used to give a table or a column a temporary name. This can make your SQL queries easier to read and understand. You can create an alias using the `AS` keyword. The general syntax for creating an alias is as follows:
+Aliases give a column or table a temporary name in your query results. They do not change the actual database — they just make the output easier to read and share.
 
 ```sql
 SELECT column_name AS alias_name
-FROM table_name AS alias_name;
-```
-Here is an example of how to use aliases to rename columns in the result set:
-```sql
-SELECT FirstName AS First_Name, LastName AS Last_Name
-FROM Employees AS E;
+FROM table_name AS table_alias;
 ```
 
-This SQL selects the FirstName and LastName columns from the Employees table, renaming them as First_Name and Last_Name in the result set. The Employees table is also given an alias of E for easier reference.
+Let's produce a readable customer report instead of raw column names:
+
+```sql
+SELECT FirstName AS First, LastName AS Last, TotalSpend AS LifetimeValue, MembershipTier AS Tier
+FROM Customers AS C;
+```
+
+Aliases are especially useful with aggregate functions, which otherwise produce awkward output names like `COUNT(*)` or `AVG(TotalSpend)`:
+
+```sql
+SELECT
+    COUNT(*) AS TotalCustomers,
+    AVG(TotalSpend) AS AvgLifetimeValue,
+    SUM(TotalSpend) AS TotalRevenue
+FROM Customers;
+```
+
+Without aliases, your column header would literally say `COUNT(*)`. Not a great look in a client dashboard.
 
 #### Exercises
 
-1. Write a query to select the `DepartmentName` column from the `Departments` table and rename it as `Dept_Name`.
-2. Write a query to select the `FirstName` and `LastName` columns from
-the `Employees` table and rename them as `FName` and `LName`, respectively.
+1. Write a query to select `ProductName` and `UnitPrice` from `Products`, renaming them as `Product` and `Price`.
+2. Write a query that counts all products and calculates the average `UnitPrice`, with clear aliases on both output columns.
 
 ::: {.callout-note collapse="true" title="Solutions" icon="false"}
 ```sql
--- 1. Select DepartmentName and rename as Dept_Name
-SELECT DepartmentName AS Dept_Name
-FROM Departments;
+-- 1. Rename product columns
+SELECT ProductName AS Product, UnitPrice AS Price
+FROM Products;
 
--- 2. Select FirstName and LastName and rename as FName and LName
-SELECT FirstName AS FName, LastName AS LName
-FROM Employees;
+-- 2. Product summary with clean aliases
+SELECT
+    COUNT(*) AS TotalProducts,
+    AVG(UnitPrice) AS AvgPrice
+FROM Products;
 ```
 :::
 
+---
 
+You have now covered the essential SQL toolkit for data analysis: selecting, filtering, sorting, aggregating, grouping, and pattern matching. In the next chapter, we'll level up with SQL joins — combining multiple tables to answer bigger questions, like which customers bought which products, and whether Marcus Lee is single-handedly keeping the Meat & Seafood category profitable. Stay tuned.

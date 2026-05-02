@@ -1,0 +1,851 @@
+---
+title: "Linear Regression"
+webr:
+  packages: ['tidyverse', 'tidymodels']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 7</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">Linear Regression</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    The Head of Marketing has a question: <em style="-webkit-text-fill-color:#cbd5e1;">"Can we predict how much a new customer will spend over their lifetime — based on how they behave in their first weeks?"</em> If we can, we can prioritise which new sign-ups deserve a special welcome offer. This chapter builds your first predictive model.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+  </div>
+</div>
+```
+
+## 7.1 From Description to Prediction
+
+In Chapter 6 we *described* the FreshMart customers: we found that customers who visit more often tend to spend more. But description only tells us about the past. **Prediction** asks: given what we know about a *new* customer today, what will they likely do in the future?
+
+A **regression model** is a mathematical equation that uses one or more input variables (called **predictors** or **features**) to produce a predicted numeric output (called the **outcome** or **target**).
+
+For FreshMart, we want to predict:
+
+$$\text{TotalSpend} = f(\text{TotalTransactions}, \text{DaysSinceFirstPurchase}, \text{City}, \ldots)$$
+
+The simplest version of this is **linear regression** — which assumes the relationship between predictors and outcome is a straight line.
+
+---
+
+## 7.2 Simple Linear Regression
+
+### The model equation
+
+Simple linear regression uses **one predictor** to predict the outcome. The model is:
+
+$$\hat{y} = \beta_0 + \beta_1 x$$
+
+Where:
+
+- $\hat{y}$ is the **predicted** value of the outcome (TotalSpend)
+- $x$ is the predictor (e.g., TotalTransactions)
+- $\beta_0$ is the **intercept** — the predicted $\hat{y}$ when $x = 0$
+- $\beta_1$ is the **slope** — how much $\hat{y}$ changes for each 1-unit increase in $x$
+
+The model finds the values of $\beta_0$ and $\beta_1$ that make the line fit the data as closely as possible. "As closely as possible" means minimising the **sum of squared residuals** — the squared differences between actual and predicted values.
+
+:::{.callout-note}
+## 📚 Recall: The Line of Best Fit
+In first-year statistics you encountered lines of best fit in the context of scatter plots. Linear regression is exactly that — but now we use it to make numerical predictions and we measure how good the line is formally.
+
+The **residual** for observation $i$ is: $e_i = y_i - \hat{y}_i$ (actual minus predicted). A good model has small residuals.
+:::
+
+### Why minimise squared errors — not absolute errors?
+
+A natural question: why minimise $\sum e_i^2$ rather than $\sum |e_i|$? Three reasons:
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:18px 24px;margin:12px 0 16px;">
+  <ol style="color:#475569;margin:0;padding-left:20px;line-height:2.2;">
+    <li><strong>Large errors are penalised more.</strong> A residual of 10 contributes 100 to SSE; a residual of 1 contributes only 1. The model strongly avoids big mistakes.</li>
+    <li><strong>Positive and negative errors cannot cancel.</strong> Squaring makes every term non-negative — a model cannot hide a +$200 error on one customer by making a −$200 error on another.</li>
+    <li><strong>A closed-form solution exists.</strong> Setting ∂SSE/∂β = 0 yields the <strong>Ordinary Least Squares (OLS)</strong> estimators directly — no iterative search needed.</li>
+  </ol>
+</div>
+```
+
+For simple linear regression, solving the OLS conditions gives:
+
+$$\hat{\beta}_1 = \frac{\displaystyle\sum_{i=1}^n (x_i - \bar{x})(y_i - \bar{y})}{\displaystyle\sum_{i=1}^n (x_i - \bar{x})^2} \qquad \hat{\beta}_0 = \bar{y} - \hat{\beta}_1\,\bar{x}$$
+
+The slope is the ratio of how much $x$ and $y$ move *together* (numerator — a covariance) to how much $x$ varies on its own (denominator — a variance). If customers who visit more frequently also spend more, both terms are positive, giving a positive slope. R's `lm()` computes this in milliseconds.
+
+The animation below sweeps through many candidate lines. Each orange segment is a residual. Watch how the SSE (sum of squared residuals) in the title changes — the green line at the minimum SSE is exactly what linear regression finds automatically.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(plotly)
+
+set.seed(7)
+n  <- 38
+x  <- sort(round(runif(n, 2, 18), 1))
+y  <- 2.1 * x + 8 + rnorm(n, 0, 6)
+
+mx <- mean(x); my <- mean(y)
+
+slopes  <- round(seq(-1.5, 6, by = 0.2), 2)
+b0s     <- my - slopes * mx
+sse_all <- sapply(seq_along(slopes), \(i) round(sum((y - b0s[i] - slopes[i]*x)^2)))
+best_i  <- which.min(sse_all)
+xr      <- c(min(x) - 0.3, max(x) + 0.3)
+
+resid_coords <- function(i) {
+  yp <- b0s[i] + slopes[i] * x
+  list(
+    x = as.vector(rbind(x, x,  rep(NA, n))),
+    y = as.vector(rbind(y, yp, rep(NA, n)))
+  )
+}
+
+r0 <- resid_coords(1)
+
+fig <- plot_ly() |>
+  add_trace(
+    x = x, y = y, type = "scatter", mode = "markers",
+    marker = list(color = "#8FBFCA", size = 9, opacity = 0.9,
+                  line = list(color = "#2c6e8a", width = 0.8)),
+    name = "Data", hovertemplate = "(%{x}, %{y:.1f})<extra></extra>"
+  ) |>
+  add_trace(
+    x = r0$x, y = r0$y, type = "scatter", mode = "lines",
+    line = list(color = "rgba(245,158,11,0.5)", width = 1.3),
+    name = "Residuals", hoverinfo = "none"
+  ) |>
+  add_trace(
+    x = xr, y = b0s[1] + slopes[1] * xr, type = "scatter", mode = "lines",
+    line = list(color = "#9B8EC7", width = 2.8),
+    name = "Candidate line", hoverinfo = "none"
+  )
+
+frames <- lapply(seq_along(slopes), function(i) {
+  r      <- resid_coords(i)
+  is_ols <- i == best_i
+  lc     <- if (is_ols) "#22c55e" else "#9B8EC7"
+  lw     <- if (is_ols) 3.5 else 2.8
+  ttl    <- paste0(
+    "Slope = ", slopes[i],
+    "  |  SSE = ", format(sse_all[i], big.mark = ","),
+    if (is_ols) "  ← Minimum SSE — best fit line!" else ""
+  )
+  list(
+    name   = as.character(i),
+    group  = "sweep",
+    data   = list(
+      list(x = r$x, y = r$y),
+      list(x = xr, y = b0s[i] + slopes[i] * xr,
+           line = list(color = lc, width = lw))
+    ),
+    traces = c(1L, 2L),
+    layout = list(title = list(
+      text = ttl,
+      font = list(size = 13, color = if (is_ols) "#166534" else "#0f172a")
+    ))
+  )
+})
+
+fig$x$frames <- frames
+
+slider_steps <- lapply(seq_along(slopes), function(i) {
+  list(
+    method = "animate",
+    args   = list(
+      list(as.character(i)),
+      list(mode = "immediate", frame = list(duration = 0, redraw = FALSE),
+           transition = list(duration = 0))
+    ),
+    label = as.character(slopes[i])
+  )
+})
+
+fig |>
+  layout(
+    title = list(
+      text = paste0("Slope = ", slopes[1], "  |  SSE = ",
+                    format(sse_all[1], big.mark = ",")),
+      font = list(size = 13, color = "#0f172a"),
+      x = 0.5, xanchor = "center"
+    ),
+    xaxis = list(title = "Predictor (x)", zeroline = FALSE, gridcolor = "#f1f5f9"),
+    yaxis = list(title = "Outcome (y)",   zeroline = FALSE, gridcolor = "#f1f5f9"),
+    plot_bgcolor  = "white",
+    paper_bgcolor = "white",
+    legend = list(orientation = "h", x = 0.5, xanchor = "center",
+                  y = -0.18, yanchor = "top"),
+    margin = list(t = 55, b = 130, l = 55, r = 20),
+    font   = list(family = "system-ui, sans-serif"),
+    updatemenus = list(list(
+      type       = "buttons",
+      showactive = FALSE,
+      x = 0.05, xanchor = "left",
+      y = -0.12, yanchor = "top",
+      buttons = list(
+        list(
+          label  = "▶  Play",
+          method = "animate",
+          args   = list(
+            "sweep",
+            list(fromcurrent = TRUE, mode = "immediate",
+                 frame      = list(duration = 90,  redraw = FALSE),
+                 transition = list(duration = 40, easing = "linear"))
+          )
+        ),
+        list(
+          label  = "⏸  Pause",
+          method = "animate",
+          args   = list(
+            list(),
+            list(mode = "immediate",
+                 frame = list(duration = 0, redraw = FALSE),
+                 transition = list(duration = 0))
+          )
+        )
+      )
+    )),
+    sliders = list(list(
+      active       = 0,
+      currentvalue = list(prefix = "Slope: ", font = list(size = 11, color = "#64748b")),
+      pad          = list(t = 55, b = 10),
+      steps        = slider_steps
+    ))
+  )
+```
+
+### Setting up — load packages and data
+
+Run this block first. It loads tidymodels and the FreshMart dataset, and creates the training/test split we'll need throughout the chapter.
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+)
+
+# Reproducible train/test split (75% train, 25% test)
+set.seed(42)
+fm_split <- initial_split(freshmart, prop = 0.75)
+fm_train <- training(fm_split)
+fm_test  <- testing(fm_split)
+
+cat("Training rows:", nrow(fm_train), "\n")
+cat("Test rows:    ", nrow(fm_test), "\n")
+```
+
+:::{.callout-note}
+## Why split the data?
+We split the dataset into a **training set** and a **test set**. The model is fitted on the training set only. The test set is held out until the very end — it represents "new customers the model has never seen" and gives us an honest estimate of how well the model will perform in the real world.
+
+`set.seed(42)` makes the random split reproducible — you'll get the same split every time you run this code.
+:::
+
+### The tidymodels workflow
+
+tidymodels uses a consistent three-step recipe for building any model:
+
+```
+1. Specify   →  What type of model? What engine?
+2. Fit       →  Train the model on the training data
+3. Evaluate  →  Check performance on the test data
+```
+
+This might seem like extra work compared to base R's `lm()`, but the big advantage is that **every model in this course — logistic regression, trees, KNN — follows exactly the same three steps**. Change one line and you change the model type.
+
+### Fitting a simple linear regression
+
+```{webr-r}
+# Step 1: Specify the model
+lm_spec <- linear_reg() |>
+  set_engine("lm")
+
+# Step 2: Fit the model (TotalSpend predicted by TotalTransactions)
+lm_simple <- lm_spec |>
+  fit(TotalSpend ~ TotalTransactions, data = fm_train)
+
+# View the coefficients
+tidy(lm_simple)
+```
+
+The `tidy()` function from the `broom` package (part of tidymodels) returns the model results as a clean tibble. Let's read the output:
+
+| Column | Meaning |
+|--------|---------|
+| `term` | Which coefficient (intercept, or the predictor name) |
+| `estimate` | The estimated value of $\beta_0$ or $\beta_1$ |
+| `std.error` | How uncertain we are about that estimate |
+| `statistic` | The t-statistic for the hypothesis test |
+| `p.value` | Is this coefficient statistically different from zero? |
+
+**Reading the output:**
+
+- `(Intercept)` ≈ some value — this is the predicted spend for a customer with zero transactions
+- `TotalTransactions` coefficient ≈ some positive value — for each additional transaction, this is how much more we predict the customer will spend
+
+:::{.callout-note}
+## 📚 Recall: p-values
+From first-year statistics: a **p-value** measures the probability of seeing a result as extreme as we observed, if there were truly no relationship. Convention: if p < 0.05, we say the result is "statistically significant" — i.e., the predictor appears to genuinely influence the outcome (rather than just by random chance).
+:::
+
+### The model equation and predictions
+
+```{webr-r}
+# Extract just the intercept and slope
+coefs <- tidy(lm_simple)
+intercept <- coefs$estimate[coefs$term == "(Intercept)"]
+slope     <- coefs$estimate[coefs$term == "TotalTransactions"]
+
+cat(sprintf("Fitted model:\nTotalSpend = %.2f + %.2f × TotalTransactions\n",
+            intercept, slope))
+
+cat(sprintf("\nInterpretation:\nFor each additional transaction, predicted spend increases by $%.2f\n",
+            slope))
+```
+
+```{webr-r}
+# Visualise the fitted line
+augment(lm_simple, new_data = fm_train) |>
+  ggplot(aes(x = TotalTransactions, y = TotalSpend)) +
+  geom_point(aes(colour = SpendCategory), alpha = 0.4, size = 1.8) +
+  geom_line(aes(y = .pred), colour = "#9B8EC7", linewidth = 1.2) +
+  scale_colour_manual(values = c("Low" = "#94a3b8", "Medium" = "#8FBFCA", "High" = "#9B8EC7")) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "Simple Linear Regression: TotalSpend ~ TotalTransactions",
+    subtitle = "Purple line = model prediction; dots = actual customers",
+    x        = "Number of Transactions",
+    y        = "Total Spend ($AUD)",
+    colour   = "Spend Category"
+  ) +
+  theme_minimal()
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 7.2
+
+**Q1.** In the fitted equation `TotalSpend = 25.60 + 18.40 × TotalTransactions`, what does the slope of 18.40 mean in plain English?
+
+**Q2.** A customer has made 10 transactions. Using the equation above, what is their predicted total spend?
+
+**Q3.** The p-value for `TotalTransactions` is 0.000 (effectively zero). What does this tell you?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** For every additional transaction a customer makes, their predicted total lifetime spend increases by $18.40, on average — holding everything else constant.
+
+**A2.** $25.60 + 18.40 × 10 = $25.60 + $184.00 = **$209.60**
+
+**A3.** A p-value of essentially zero means the probability of seeing a slope this large just by chance (if there were no real relationship) is effectively zero. We have very strong statistical evidence that `TotalTransactions` genuinely predicts `TotalSpend`.
+:::
+
+---
+
+## 7.3 Model Fit: How Good Is Our Line?
+
+### R² — the proportion of variance explained
+
+`glance()` gives overall model statistics:
+
+```{webr-r}
+glance(lm_simple)
+```
+
+The key statistic is **R²** (r-squared): the proportion of variation in `TotalSpend` that is explained by the model. R² ranges from 0 to 1:
+
+- R² = 0: the model explains nothing (no better than guessing the mean every time)
+- R² = 1: the model explains everything perfectly (every prediction is exact)
+- R² = 0.50: the model explains half the variation in TotalSpend
+
+### RMSE — how big are our errors?
+
+R² tells us about *relative* fit. The **Root Mean Squared Error (RMSE)** tells us the average *size* of our errors in the same units as the outcome ($AUD):
+
+$$\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2}$$
+
+```{webr-r}
+# Predictions on test data
+lm_test_preds <- augment(lm_simple, new_data = fm_test)
+
+# Calculate RMSE and R² on the test set
+metrics(lm_test_preds, truth = TotalSpend, estimate = .pred)
+```
+
+An RMSE of, say, $150 means our predictions are off by about $150 on average. Whether that's acceptable depends on the business context — good enough to prioritise customer outreach, perhaps not good enough to set individual credit limits.
+
+### Residual plot
+
+A **residual plot** checks whether the errors are random (good) or have a pattern (bad). We want residuals scattered randomly around zero with no trend.
+
+```{webr-r}
+lm_test_preds |>
+  mutate(residual = TotalSpend - .pred) |>
+  ggplot(aes(x = .pred, y = residual)) +
+  geom_point(alpha = 0.4, colour = "#8FBFCA", size = 1.5) +
+  geom_hline(yintercept = 0, colour = "#9B8EC7", linewidth = 0.8, linetype = "dashed") +
+  scale_x_continuous(labels = scales::dollar) +
+  labs(
+    title    = "Residual Plot — Simple Linear Regression",
+    subtitle = "Points should scatter randomly around the dashed zero line",
+    x        = "Predicted Spend ($AUD)",
+    y        = "Residual (Actual − Predicted)"
+  ) +
+  theme_minimal()
+```
+
+:::{.callout-note}
+**What to look for:** If the residuals fan out as predictions increase (a "funnel" shape), this suggests the model is less accurate for high-spending customers. This is common with right-skewed outcome variables like TotalSpend.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 7.3
+
+**Q1.** R² = 0.52 on the test set. Describe what this means in plain English.
+
+**Q2.** RMSE = $210 and the average TotalSpend is $414. Is this a good result? How would you decide?
+
+**Q3.** You look at the residual plot and see that all the large positive residuals (model under-predicted) are from Melbourne customers. What does this suggest?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The model explains 52% of the variation in customer total spend. The remaining 48% is driven by things our single predictor doesn't capture — city, average transaction value, tenure, or purely random differences between customers.
+
+**A2.** This is contextual. RMSE of $210 on an average spend of $414 means a typical error of about 50% of the average value — quite large. However, for a model with just one predictor, it might be a reasonable starting point. We'd compare against a baseline (e.g., "what if we just always predicted the mean spend?") and against a model with more predictors.
+
+**A3.** It suggests our model is systematically under-predicting spend for Melbourne customers — there's something about Melbourne that our predictor doesn't capture. Adding `City` as a predictor (which we'll do next) should fix this.
+:::
+
+---
+
+## 7.4 Multiple Linear Regression
+
+A model with just one predictor often misses important information. **Multiple regression** uses several predictors simultaneously. The equation becomes:
+
+$$\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 + \ldots$$
+
+Each coefficient $\beta_j$ shows the effect of predictor $x_j$ on the outcome **while holding all other predictors constant**.
+
+### The recipe approach
+
+When we have multiple predictors — especially categorical ones like `City` — we use a **recipe** to preprocess the data before fitting. A recipe describes transformations to apply to the predictors.
+
+`City` is a categorical variable (text). Most statistical models need numeric inputs, so we convert it to **dummy variables**: one binary column per city (1 = that city, 0 = not).
+
+```{webr-r}
+# Define the recipe (preprocessing steps)
+fm_recipe <- recipe(
+  TotalSpend ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City)   # convert City → dummy variables
+
+# Preview what the recipe does to the data
+fm_recipe |>
+  prep() |>
+  bake(new_data = fm_train) |>
+  glimpse()
+```
+
+Notice that `City` has been replaced by several binary columns: `City_Darwin`, `City_Melbourne`, etc. (one city is omitted as the "baseline" to avoid redundancy — this is called the reference category).
+
+### Building the workflow
+
+```{webr-r}
+# Combine the recipe and model spec into a workflow
+lm_workflow <- workflow() |>
+  add_recipe(fm_recipe) |>
+  add_model(lm_spec)   # reusing the linear_reg() spec from earlier
+
+# Fit on training data
+lm_multi <- lm_workflow |>
+  fit(data = fm_train)
+
+# View all coefficients
+tidy(lm_multi) |> print(n = Inf)
+```
+
+```{webr-r}
+# Overall model statistics
+glance(lm_multi)
+```
+
+**Interpreting the coefficients:**
+
+- `TotalTransactions`: for each additional visit, predicted spend increases by $X — *holding all other predictors constant*
+- `DaysSinceFirstPurchase`: for each additional day of tenure, spend increases by $Y
+- `City_Melbourne`: customers in Melbourne spend $Z more (or less if negative) than the reference city — on average, given the same transactions and tenure
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 7.4.1
+
+The `fm_recipe` uses `TotalTransactions`, `AvgTransactionValue`, `DaysSinceFirstPurchase`, and `City` as predictors. Try removing `AvgTransactionValue` from the recipe. Does the model's R² increase or decrease? What does this tell you?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+fm_recipe_v2 <- recipe(
+  TotalSpend ~ TotalTransactions + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City)
+
+lm_v2 <- workflow() |>
+  add_recipe(fm_recipe_v2) |>
+  add_model(lm_spec) |>
+  fit(data = fm_train)
+
+glance(lm_v2)
+```
+
+If R² decreases, it means `AvgTransactionValue` was contributing useful predictive information. If it barely changes, the variable wasn't adding much beyond what `TotalTransactions` already captures.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 7.4
+
+**Q1.** In multiple regression, the coefficient for `TotalTransactions` is interpreted "holding all other predictors constant." Why is this phrase important?
+
+**Q2.** After adding `City` to the model, R² increases from 0.52 to 0.58. Is this extra complexity worth it?
+
+**Q3.** Why do we use dummy variables for `City` rather than coding it as 1=Sydney, 2=Melbourne, 3=Brisbane, etc.?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Without this phrase, we might confuse the individual effect of transactions with the combined effect of transactions and other variables. In multiple regression, each coefficient isolates the effect of one predictor, assuming the others don't change. This is what makes the coefficients interpretable.
+
+**A2.** It depends. An increase of 0.06 in R² is modest — the model explains 6% more variation. Whether this is worth the added complexity (and harder-to-explain coefficients) is a judgement call. In practice, we'd also check whether the improvement holds on the test set, not just training.
+
+**A3.** If we coded Sydney = 1, Melbourne = 2, Brisbane = 3, the model would treat this as a numeric variable — implying that Melbourne is "twice Sydney" and Brisbane is "three times Sydney." That makes no mathematical sense. Dummy variables avoid this by treating each city as a separate binary yes/no.
+:::
+
+---
+
+## 7.5 Making Predictions
+
+Once a model is fitted, we can use it to **predict outcomes for new, unseen customers**.
+
+### Evaluating on the test set
+
+This is the most important evaluation — the test set simulates real "new customers" the model has never seen.
+
+```{webr-r}
+# Predict on the test set
+lm_multi_preds <- augment(lm_multi, new_data = fm_test)
+
+# Evaluation metrics
+metrics(lm_multi_preds, truth = TotalSpend, estimate = .pred)
+```
+
+```{webr-r}
+# Visualise actual vs predicted
+ggplot(lm_multi_preds, aes(x = TotalSpend, y = .pred)) +
+  geom_point(alpha = 0.4, colour = "#8FBFCA", size = 1.5) +
+  geom_abline(colour = "#9B8EC7", linewidth = 1, linetype = "dashed") +
+  scale_x_continuous(labels = scales::dollar) +
+  scale_y_continuous(labels = scales::dollar) +
+  labs(
+    title    = "Actual vs Predicted Total Spend — Test Set",
+    subtitle = "Perfect predictions would fall on the dashed diagonal line",
+    x        = "Actual Spend ($AUD)",
+    y        = "Predicted Spend ($AUD)"
+  ) +
+  theme_minimal()
+```
+
+Points close to the diagonal line are accurate predictions. Points far from the line are cases where our model struggles — notice the high-spending customers (top-right area) where the model tends to under-predict.
+
+### Predicting for new customers
+
+Imagine three new FreshMart sign-ups. What is the model's prediction for each?
+
+```{webr-r}
+new_customers <- tibble(
+  FirstName              = c("Alice", "Bob", "Chloe"),
+  TotalTransactions      = c(3, 18, 8),
+  AvgTransactionValue    = c(45, 60, 120),
+  DaysSinceFirstPurchase = c(60, 400, 180),
+  City                   = c("Brisbane", "Sydney", "Melbourne")
+)
+
+predictions <- predict(lm_multi, new_data = new_customers)
+
+new_customers |>
+  bind_cols(predictions) |>
+  select(FirstName, City, TotalTransactions, .pred) |>
+  rename(PredictedSpend = .pred) |>
+  mutate(PredictedSpend = scales::dollar(round(PredictedSpend, 2)))
+```
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 7.5.1
+
+Add a fourth "new customer" to the `new_customers` tibble: someone from Darwin who has made 25 transactions with an average of $80, and has been a customer for 500 days. What does the model predict their total spend to be?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+new_customers_v2 <- tibble(
+  FirstName              = c("Alice", "Bob", "Chloe", "Dan"),
+  TotalTransactions      = c(3, 18, 8, 25),
+  AvgTransactionValue    = c(45, 60, 120, 80),
+  DaysSinceFirstPurchase = c(60, 400, 180, 500),
+  City                   = c("Brisbane", "Sydney", "Melbourne", "Darwin")
+)
+
+predict(lm_multi, new_data = new_customers_v2) |>
+  bind_cols(new_customers_v2 |> select(FirstName, City)) |>
+  rename(PredictedSpend = .pred)
+```
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — Section 7.5
+
+**Q1.** Why do we evaluate model performance on the *test* set rather than the training set?
+
+**Q2.** The actual-vs-predicted plot shows the model consistently under-predicts for customers with spend above $2,000. What could explain this?
+
+**Q3.** A colleague suggests: "Since the model was trained on all our existing customers, why not just retrain it every week with the latest data?" What is the benefit of this approach?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Because the model was fitted on the training data — it has "seen" those rows. Evaluating on training data would be like giving a student the exam before the test and then measuring how well they do. The test set is genuinely unseen data, giving us an honest estimate of real-world performance.
+
+**A2.** Several possibilities: (1) High spenders may have predictors (like very high transaction frequency or very high avg value) that are outside the range of the training data — the model is "extrapolating." (2) The linear assumption may break down at high spend levels — the relationship may be non-linear. (3) There may be predictor variables we haven't included (like product category preferences) that differentiate high spenders.
+
+**A3.** The benefit is that the model stays up to date with changing customer behaviour. If customer patterns shift (e.g., post-COVID shopping habits change), a model trained on old data will drift — regular retraining keeps it current.
+:::
+
+---
+
+## 7.6 A Word on Model Assumptions
+
+Linear regression makes several assumptions. Violating them doesn't always break the model, but it can make the predictions unreliable or the p-values misleading. Here are the key ones — with FreshMart context:
+
+**1. Linearity.** The relationship between each predictor and the outcome should be (approximately) linear. Our residual plot can reveal non-linearity (a curved pattern in the residuals).
+
+**2. Independence.** Observations should be independent of each other. For FreshMart, this is reasonable — one customer's spend doesn't directly affect another's.
+
+**3. Constant variance (homoscedasticity).** The spread of residuals should be similar across all predicted values. If residuals fan out as predicted values increase (a funnel shape), this is a problem.
+
+**4. Normality of residuals.** The residuals should be approximately normally distributed. This matters most for small samples and for the reliability of p-values.
+
+```{webr-r}
+# Check residual normality with a histogram
+lm_multi_preds |>
+  mutate(residual = TotalSpend - .pred) |>
+  ggplot(aes(x = residual)) +
+  geom_histogram(bins = 30, fill = "#8FBFCA", colour = "white") +
+  geom_vline(xintercept = 0, colour = "#9B8EC7", linewidth = 1, linetype = "dashed") +
+  labs(
+    title    = "Distribution of Residuals — Multiple Regression",
+    subtitle = "Ideally bell-shaped and centred at zero",
+    x        = "Residual ($AUD)",
+    y        = "Count"
+  ) +
+  theme_minimal()
+```
+
+---
+
+## 7.7 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 7.1 — Reading Coefficient Output
+
+Run the multiple regression and look at the `tidy()` output. Find the coefficient for `DaysSinceFirstPurchase`. Write one sentence interpreting it in plain English for a FreshMart manager.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+tidy(lm_multi) |> filter(term == "DaysSinceFirstPurchase")
+```
+
+*Sample interpretation:* "For each additional day that a customer has been with FreshMart, their predicted total lifetime spend increases by approximately $[coefficient value] — holding their visit frequency, average transaction value, and city constant."
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 7.2 — Comparing Simple vs Multiple Regression
+
+Compare the test-set RMSE and R² of the simple regression (TotalSpend ~ TotalTransactions) to the multiple regression. How much did adding more predictors improve performance?
+
+*(Hint: run `metrics()` on the predictions from both models.)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+# Simple model on test set
+lm_simple_preds <- augment(lm_simple, new_data = fm_test)
+metrics(lm_simple_preds, truth = TotalSpend, estimate = .pred)
+
+# Multiple model on test set
+lm_multi_preds <- augment(lm_multi, new_data = fm_test)
+metrics(lm_multi_preds, truth = TotalSpend, estimate = .pred)
+```
+
+Compare R² and RMSE between the two. The multiple regression should have higher R² and lower RMSE, showing that the additional predictors genuinely improve predictions.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 7.3 — A New Recipe
+
+Build a new recipe that uses `LoyaltyPoints` and `DaysSinceFirstPurchase` as predictors (no City, no dummy variables needed). Fit the model and evaluate on the test set. Is it better or worse than the multiple regression from Section 7.4?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+simple_recipe <- recipe(
+  TotalSpend ~ LoyaltyPoints + DaysSinceFirstPurchase,
+  data = fm_train
+)
+
+simple_wf <- workflow() |>
+  add_recipe(simple_recipe) |>
+  add_model(lm_spec) |>
+  fit(data = fm_train)
+
+augment(simple_wf, new_data = fm_test) |>
+  metrics(truth = TotalSpend, estimate = .pred)
+```
+
+Because `LoyaltyPoints` is nearly perfectly correlated with `TotalSpend` (it's earned from spending), this model will appear to perform extremely well — but be careful: this is almost "cheating" because loyalty points are a direct consequence of spend, not something you'd know *before* the customer spends. Discuss this with your class — it illustrates the importance of thinking about **what you can actually know at prediction time**.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 7.4 — Predicting for FreshMart Characters
+
+Use the multiple regression model to predict total spend for:
+
+- **Gary McSnarl**: 1 transaction, $34.90 avg value, 1,026 days tenure, Melbourne
+- **Jake Nguyen**: 7 transactions, $48.57 avg value, 795 days tenure, Melbourne
+- **Amara Diallo**: 14 transactions, $62.86 avg value, 146 days tenure, Perth
+
+Compare the predictions to their *actual* spend (from Chapter 6). Is the model accurate for these customers?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+characters <- tibble(
+  FirstName              = c("Gary", "Jake", "Amara"),
+  TotalTransactions      = c(1, 7, 14),
+  AvgTransactionValue    = c(34.90, 48.57, 62.86),
+  DaysSinceFirstPurchase = c(1026, 795, 146),
+  City                   = c("Melbourne", "Melbourne", "Perth")
+)
+
+predict(lm_multi, new_data = characters) |>
+  bind_cols(characters |> select(FirstName)) |>
+  mutate(
+    ActualSpend = c(34.90, 340.00, 880.00),
+    Error       = round(.pred - ActualSpend, 2)
+  )
+```
+
+The model may under-predict Gary (very atypical, churned customer) and Amara (recent high-spender). This illustrates that linear regression captures average behaviour — it can struggle with unusual customers.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 7.5 — Overfitting Check
+
+You've been asked to compare a "simple" model (TotalTransactions only) vs a "complex" model (all predictors). Calculate both models' R² on the **training** set and the **test** set. Present the results in a small table. Which model overfits more, and how can you tell?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+# Simple model
+s_train <- augment(lm_simple, new_data = fm_train) |>
+  metrics(truth = TotalSpend, estimate = .pred) |>
+  filter(.metric == "rsq") |>
+  mutate(model = "Simple", set = "Train")
+
+s_test <- augment(lm_simple, new_data = fm_test) |>
+  metrics(truth = TotalSpend, estimate = .pred) |>
+  filter(.metric == "rsq") |>
+  mutate(model = "Simple", set = "Test")
+
+# Multiple model
+m_train <- augment(lm_multi, new_data = fm_train) |>
+  metrics(truth = TotalSpend, estimate = .pred) |>
+  filter(.metric == "rsq") |>
+  mutate(model = "Multiple", set = "Train")
+
+m_test <- augment(lm_multi, new_data = fm_test) |>
+  metrics(truth = TotalSpend, estimate = .pred) |>
+  filter(.metric == "rsq") |>
+  mutate(model = "Multiple", set = "Test")
+
+bind_rows(s_train, s_test, m_train, m_test) |>
+  select(model, set, .estimate) |>
+  pivot_wider(names_from = set, values_from = .estimate)
+```
+
+A model that overfits shows a large gap between training and test R². If both gaps are small, the models are generalising well.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 7.6 — Business Communication
+
+Imagine you've just built the multiple regression model and you're presenting to FreshMart's Head of Marketing. She doesn't know what RMSE or R² means.
+
+Write 3–4 sentences explaining: (1) what the model does, (2) how accurate it is, and (3) one important limitation she should be aware of.
+
+*(There's no single correct answer — aim for clarity and honesty.)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+"The model uses a customer's visit frequency, average spend per visit, how long they've been a customer, and their city to estimate their total lifetime spend. In testing on customers the model had never seen, it predicted spend to within about $[RMSE] on average — meaning predictions for most customers will be in the right ballpark, but they won't be exact. The model works best for typical customers; it tends to underestimate spend for our very highest-value customers like Marcus Lee, who behave differently from the average. We'd recommend using it as a guide for customer prioritisation, rather than for setting individual credit limits."
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 7 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">You've built your first predictive model and learned to evaluate it honestly on unseen data. In <strong>Week 8</strong> we tackle a different kind of prediction problem: when the outcome is <em>yes or no</em> rather than a number. That's the world of <strong>logistic regression</strong> and classification.</p>
+</div>
+```

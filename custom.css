@@ -1,0 +1,444 @@
+/* ============================================================
+   ETF2121 · Data Analysis in Business
+   Elegant, clean theme — Navy & Slate
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Palette: cream #F0EBE3 · teal #8FBFCA · lavender #9B8EC7 */
+:root {
+  --navy:        #0f172a;
+  --lavender:    #9B8EC7;
+  --lavender-dk: #7c6db0;
+  --teal:        #8FBFCA;
+  --teal-dk:     #2c6e8a;
+  --cream:       #F0EBE3;
+  --slate:       #475569;
+  --text:        #1e293b;
+  --text-muted:  #64748b;
+  --bg:          #faf9f7;
+  --white:       #ffffff;
+  --border:      #e2e8f0;
+  --shadow:      0 2px 12px rgba(15,23,42,0.08);
+}
+
+/* ── Base ── */
+body {
+  font-family: 'Inter', system-ui, sans-serif !important;
+  color: var(--text) !important;
+  background: var(--bg) !important;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-fill-color: var(--text) !important;
+}
+
+/* ── Navbar ── */
+.navbar {
+  background: var(--navy) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.2) !important;
+  padding: 0 28px !important;
+  min-height: 54px !important;
+}
+
+.navbar-brand,
+.navbar-brand:hover {
+  color: #f1f5f9 !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+.navbar .navbar-nav .nav-link {
+  color: #94a3b8 !important;
+  font-size: 0.88rem !important;
+  font-weight: 500 !important;
+  transition: color 0.15s !important;
+}
+
+.navbar .navbar-nav .nav-link:hover {
+  color: #f1f5f9 !important;
+}
+
+/* ── Sidebar ── */
+#quarto-sidebar {
+  background: var(--white) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+.sidebar-title {
+  font-weight: 700 !important;
+  font-size: 0.78rem !important;
+  color: var(--lavender-dk) !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.sidebar-item .sidebar-item-text {
+  font-size: 0.87rem !important;
+  color: var(--slate) !important;
+  transition: color 0.15s !important;
+}
+
+.sidebar-item:hover .sidebar-item-text {
+  color: var(--lavender-dk) !important;
+}
+
+.sidebar-item.active .sidebar-item-text {
+  color: var(--lavender-dk) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--lavender) !important;
+  padding-left: 10px !important;
+}
+
+/* ── Headings ── */
+h1.title, .quarto-title h1 {
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: var(--navy) !important;
+  line-height: 1.25 !important;
+}
+
+h1:not(.title) {
+  font-size: 1.75rem !important;
+  font-weight: 800 !important;
+  color: var(--navy) !important;
+  border-bottom: 2px solid var(--lavender) !important;
+  padding-bottom: 8px !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+h2 {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--navy) !important;
+  margin-top: 2rem !important;
+  margin-bottom: 0.75rem !important;
+  padding-left: 10px !important;
+  border-left: 3px solid var(--teal) !important;
+}
+
+h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ── Body Text ── */
+p {
+  line-height: 1.8 !important;
+  color: #334155 !important;
+  font-size: 0.97rem !important;
+}
+
+/* ── Links ── */
+a {
+  color: var(--lavender-dk) !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+
+a:hover {
+  color: var(--lavender) !important;
+  text-decoration: underline !important;
+}
+
+/* ── Inline Code ── */
+code:not(pre code) {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.83rem !important;
+  background: #f4f2f9 !important;
+  color: var(--lavender-dk) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4cef0 !important;
+}
+
+/* ── Code Blocks ── */
+pre, pre.sourceCode {
+  background: #0f172a !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  box-shadow: var(--shadow) !important;
+}
+
+pre code {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.87rem !important;
+  color: #e2e8f0 !important;
+  background: transparent !important;
+  -webkit-text-fill-color: #e2e8f0 !important; /* default: white for non-keyword text */
+}
+
+/* ── Dracula Syntax Highlighting Tokens ──────────────────────────
+   Pandoc emits <span class="kw">, <span class="st">, etc.
+   We must set BOTH color and -webkit-text-fill-color to override
+   any inherited value from the dark code block container.
+   ──────────────────────────────────────────────────────────────── */
+
+/* Keywords: SELECT, FROM, WHERE, INSERT, UPDATE, DELETE, CREATE … */
+pre code span.kw {
+  color: #ff79c6 !important;
+  -webkit-text-fill-color: #ff79c6 !important;
+  font-weight: 600 !important;
+}
+
+/* Operators: =, >, <, *, AND, OR, NOT … */
+pre code span.op {
+  color: #ff79c6 !important;
+  -webkit-text-fill-color: #ff79c6 !important;
+}
+
+/* Built-in functions: COUNT, SUM, AVG, MIN, MAX … */
+pre code span.bu,
+pre code span.fu {
+  color: #50fa7b !important;
+  -webkit-text-fill-color: #50fa7b !important;
+}
+
+/* String literals: 'Melbourne', 'Captain Nap' … */
+pre code span.st,
+pre code span.vs,
+pre code span.ss {
+  color: #f1fa8c !important;
+  -webkit-text-fill-color: #f1fa8c !important;
+}
+
+/* Numbers: 45000, 3, 2019 … */
+pre code span.dv,
+pre code span.bn,
+pre code span.fl,
+pre code span.cn {
+  color: #bd93f9 !important;
+  -webkit-text-fill-color: #bd93f9 !important;
+}
+
+/* Comments: -- this is a comment */
+pre code span.co {
+  color: #6272a4 !important;
+  -webkit-text-fill-color: #6272a4 !important;
+  font-style: italic !important;
+}
+
+/* Data types: INT, VARCHAR, DATE … */
+pre code span.dt {
+  color: #8be9fd !important;
+  -webkit-text-fill-color: #8be9fd !important;
+}
+
+/* Other tokens */
+pre code span.ot,
+pre code span.at {
+  color: #ffb86c !important;
+  -webkit-text-fill-color: #ffb86c !important;
+}
+
+/* Alert / special */
+pre code span.al {
+  color: #ff5555 !important;
+  -webkit-text-fill-color: #ff5555 !important;
+}
+
+/* ── Tables ── */
+
+/* Scrollable container — wide tables scroll inside their own box */
+.table, table {
+  display: block !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-width: 100% !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 8px rgba(15,23,42,0.07) !important;
+}
+
+.table thead tr, table thead tr {
+  background: var(--navy) !important;
+  color: #f1f5f9 !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+}
+
+.table thead th, table thead th {
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  padding: 12px 14px !important;
+  border: none !important;
+  color: #f1f5f9 !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  white-space: nowrap !important;
+}
+
+.table tbody tr:nth-child(even), table tbody tr:nth-child(even) {
+  background: #f8fafc !important;
+}
+
+.table tbody tr:hover, table tbody tr:hover {
+  background: #eff6ff !important;
+}
+
+.table td, table td {
+  padding: 10px 14px !important;
+  border-color: var(--border) !important;
+  vertical-align: middle !important;
+  white-space: nowrap !important;
+}
+
+/* ── Callout Boxes ── */
+.callout {
+  border-radius: 8px !important;
+  border-left-width: 4px !important;
+  box-shadow: none !important;
+  margin: 20px 0 !important;
+}
+
+.callout-note    { background: #eff6ff !important; border-left-color: var(--blue) !important; }
+.callout-tip     { background: #f0fdf4 !important; border-left-color: #16a34a !important; }
+.callout-warning { background: #fffbeb !important; border-left-color: #d97706 !important; }
+.callout-important { background: #fdf4ff !important; border-left-color: #9333ea !important; }
+
+/* ── TOC ── */
+#TOC .toc-title {
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--lavender-dk) !important;
+}
+
+#TOC ul li a {
+  font-size: 0.84rem !important;
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+}
+
+#TOC ul li a:hover,
+#TOC ul li a.active {
+  color: var(--lavender-dk) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+/* ── Page navigation ── */
+.page-navigation a {
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 10px 18px !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  color: var(--blue) !important;
+  background: var(--white) !important;
+  transition: all 0.15s !important;
+}
+
+.page-navigation a:hover {
+  background: var(--lavender) !important;
+  color: var(--white) !important;
+  text-decoration: none !important;
+}
+
+/* ── Blockquotes ── */
+blockquote {
+  border-left: 3px solid var(--lavender) !important;
+  background: #f4f2f9 !important;
+  border-radius: 0 6px 6px 0 !important;
+  padding: 14px 18px !important;
+  color: var(--text) !important;
+  font-style: normal !important;
+}
+
+/* ── Footer ── */
+.nav-footer {
+  background: var(--navy) !important;
+  color: #94a3b8 !important;
+  font-size: 0.82rem !important;
+  border-top: none !important;
+  padding: 14px 28px !important;
+}
+
+.nav-footer a { color: #94a3b8 !important; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ── Selection ── */
+::selection {
+  background: rgba(37,99,235,0.15) !important;
+  color: var(--navy) !important;
+}
+
+/* ============================================================
+   WebR — Interactive Editor (Monaco)
+   Syntax highlighting is handled by Monaco Editor's built-in
+   token engine via the 'dracula-etf2121' theme defined in
+   qwebr-monaco-editor-element.js  (monaco.editor.defineTheme).
+
+   CRITICAL: body { -webkit-text-fill-color } cascades into Monaco
+   and overrides the inline color: styles Monaco sets on each token
+   span, making everything appear black/invisible. The rule below
+   resets -webkit-text-fill-color to currentColor inside Monaco so
+   that Monaco's own color values take effect.
+   ============================================================ */
+
+/* Let Monaco control its own token colours */
+.monaco-editor,
+.monaco-editor .view-line span,
+.monaco-editor .view-line span span {
+  -webkit-text-fill-color: currentColor !important;
+}
+
+/* ── WebR output / result area ── */
+.cell-output pre,
+.cell-output-stdout pre,
+.cell-output-display pre,
+div[class*="output"] pre,
+.webr-output-container pre {
+  background: #1a2540 !important;
+  color: #e2e8f0 !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+  border: 1px solid #2d3f5e !important;
+  border-top: none !important;
+  border-radius: 0 0 6px 6px !important;
+  margin-top: 0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.84rem !important;
+  padding: 14px 18px !important;
+}
+
+/* ── WebR status / run button bar ── */
+.webr-run-button-container,
+.webr-editor-header,
+div[class*="webr-toolbar"],
+div[class*="webr-header"] {
+  background: #1e293b !important;
+  border-bottom: 1px solid #2d3f5e !important;
+  border-radius: 6px 6px 0 0 !important;
+}
+
+/* Run button */
+button.webr-run-button,
+button[class*="run-button"] {
+  background: var(--lavender) !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+  border: none !important;
+  border-radius: 5px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  padding: 4px 14px !important;
+  cursor: pointer !important;
+  transition: background 0.15s !important;
+}
+
+button.webr-run-button:hover,
+button[class*="run-button"]:hover {
+  background: var(--lavender-dk) !important;
+}

@@ -1,4 +1,4 @@
-# Power BI {.unnumbered}
+# Power BI
 
 ## Why Power BI?
 

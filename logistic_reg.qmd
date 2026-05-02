@@ -1,0 +1,525 @@
+---
+title: "Logistic Regression"
+webr:
+  packages: ['tidyverse', 'tidymodels']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 8</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">Logistic Regression</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    Last week we predicted <em style="-webkit-text-fill-color:#cbd5e1;">how much</em> a customer would spend — a number. This week the marketing team needs a yes/no answer: will this customer become a high-value customer? That shift from predicting a number to predicting a category is what logistic regression is built for.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+  </div>
+</div>
+```
+
+:::{.callout-note}
+## 🔁 Recap — What we built last week
+In Chapter 7 we used **linear regression** to predict `TotalSpend` — a continuous dollar amount. We learned the tidymodels workflow (`specify → recipe → workflow → fit → evaluate`), and assessed model quality using **R²** and **RMSE** on a held-out test set.
+
+This week: same tidymodels structure, different type of outcome — a category instead of a number.
+:::
+
+---
+
+## 8.1 When the Outcome Is a Category
+
+The Head of FreshMart's loyalty team has a new question: **"Can we predict whether a new customer will become high-value, based on their early behaviour?"**
+
+If we can flag likely high-value customers early, we can send them a targeted welcome offer before they lose interest. The answer isn't a dollar amount — it's one of two options: **Yes (High Value)** or **No**. This is a **classification** problem.
+
+Our target variable is `IsHighValue` — TRUE if lifetime `TotalSpend > $500`, FALSE otherwise.
+
+### Why not use linear regression for this?
+
+You might think: fit linear regression where the outcome is 1 (TRUE) or 0 (FALSE). The problem is that a straight line can produce predictions outside the 0–1 range — such as a "probability" of −0.3 or 1.7 — which is mathematically meaningless.
+
+Logistic regression solves this by using a special S-shaped curve called the **sigmoid function** that squeezes all outputs into the range 0–1.
+
+```{webr-r}
+library(tidyverse)
+
+# Visualise the sigmoid function
+tibble(x = seq(-6, 6, by = 0.1)) |>
+  mutate(probability = 1 / (1 + exp(-x))) |>
+  ggplot(aes(x = x, y = probability)) +
+  geom_line(colour = "#9B8EC7", linewidth = 1.3) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = "#8FBFCA") +
+  annotate("text", x = 3.6, y = 0.54, label = "Default threshold (0.5)",
+           colour = "#2c6e8a", size = 3.5) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title    = "The Sigmoid Function",
+    subtitle = "Any real number → a probability between 0% and 100%",
+    x        = "Linear combination of predictors",
+    y        = "Predicted probability of High Value"
+  ) +
+  theme_minimal()
+```
+
+The model outputs a probability for each customer (e.g., 78% likely to be high value). We then apply a **decision threshold** — by default 0.5 — to convert that probability into a class label: ≥ 0.5 → predict TRUE, < 0.5 → predict FALSE.
+
+### The model equation and log-odds
+
+The sigmoid is not an arbitrary choice — it emerges from the model structure. Logistic regression assumes the **log-odds** of the outcome is a linear function of the predictors:
+
+$$\log\!\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots$$
+
+The left side is the *logit* (log of the odds ratio). Solving for $p$ gives the sigmoid directly:
+
+$$p = P(\text{High Value} = 1 \mid \mathbf{x}) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots)}}$$
+
+So the same linear combination as linear regression is happening inside the exponent — logistic regression is a linear model in disguise, transformed to keep outputs between 0 and 1.
+
+**Reading the coefficients:** Each $\beta_j$ is on the log-odds scale. The more practical interpretation uses the **odds ratio** $e^{\beta_j}$:
+
+| $\beta_j$ | Odds ratio $e^{\beta_j}$ | Meaning |
+|---|---|---|
+| Positive | > 1 | Higher $x_j$ increases the probability of TRUE |
+| Negative | < 1 | Higher $x_j$ decreases the probability of TRUE |
+| ≈ 0 | ≈ 1 | $x_j$ has negligible effect |
+
+For example, if the coefficient for `TotalTransactions` is 0.40, each additional transaction multiplies the odds of being High Value by $e^{0.40} \approx 1.49$ — a 49% increase in odds, holding all other predictors constant.
+
+**How are coefficients estimated?** Logistic regression uses **maximum likelihood estimation (MLE)**, not OLS. The algorithm finds the $\beta$ values that make the observed outcomes most probable:
+
+$$\hat{\boldsymbol{\beta}} = \arg\max_{\boldsymbol{\beta}} \prod_{i:\,y_i=1} p_i \;\times\; \prod_{i:\,y_i=0}(1 - p_i)$$
+
+In plain English: choose coefficients so the model assigns high probability to customers who *actually were* High Value, and low probability to those who weren't. There is no closed-form solution — R's `glm()` solves this iteratively via Newton-Raphson.
+
+The animation below shows how shifting the threshold changes which customers are classified as High Value — and how accuracy, sensitivity, and specificity trade off against each other.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(plotly)
+
+set.seed(42)
+n <- 80
+x <- sort(runif(n, -5, 5))
+pred_prob <- 1 / (1 + exp(-x))
+y <- rbinom(n, 1, pred_prob)
+
+x_curve <- seq(-5.5, 5.5, length.out = 300)
+y_curve  <- 1 / (1 + exp(-x_curve))
+
+thresholds <- round(seq(0.1, 0.9, by = 0.05), 2)
+
+frames <- lapply(seq_along(thresholds), function(i) {
+  t   <- thresholds[i]
+  cls <- as.integer(pred_prob >= t)
+  tp  <- sum(cls == 1 & y == 1); tn <- sum(cls == 0 & y == 0)
+  fp  <- sum(cls == 1 & y == 0); fn <- sum(cls == 0 & y == 1)
+  acc  <- round((tp + tn) / n * 100, 1)
+  sens <- if ((tp + fn) > 0) round(tp / (tp + fn) * 100, 1) else 0
+  spec <- if ((tn + fp) > 0) round(tn / (tn + fp) * 100, 1) else 0
+  list(
+    name = as.character(i),
+    group = "sweep",
+    data = list(list(x = c(-5.5, 5.5), y = c(t, t))),
+    traces = c(3L),
+    layout = list(title = list(
+      text = paste0("Threshold = ", t,
+        "  |  Accuracy = ", acc, "%",
+        "  |  Sensitivity = ", sens, "%",
+        "  |  Specificity = ", spec, "%"),
+      font = list(size = 12, color = "#0f172a")
+    ))
+  )
+})
+
+slider_steps <- lapply(seq_along(thresholds), function(i) {
+  list(method = "animate",
+       args = list(list(as.character(i)),
+                   list(mode = "immediate",
+                        frame = list(duration = 0, redraw = FALSE),
+                        transition = list(duration = 0))),
+       label = as.character(thresholds[i]))
+})
+
+t0   <- thresholds[1]
+cls0 <- as.integer(pred_prob >= t0)
+tp0  <- sum(cls0 == 1 & y == 1); tn0 <- sum(cls0 == 0 & y == 0)
+fp0  <- sum(cls0 == 1 & y == 0); fn0 <- sum(cls0 == 0 & y == 1)
+acc0  <- round((tp0 + tn0) / n * 100, 1)
+sens0 <- if ((tp0 + fn0) > 0) round(tp0 / (tp0 + fn0) * 100, 1) else 0
+spec0 <- if ((tn0 + fp0) > 0) round(tn0 / (tn0 + fp0) * 100, 1) else 0
+
+fig <- plot_ly() |>
+  add_trace(x = x[y == 0], y = pred_prob[y == 0],
+            type = "scatter", mode = "markers",
+            marker = list(color = "#8FBFCA", size = 8, opacity = 0.8),
+            name = "Actual: Not High Value") |>
+  add_trace(x = x[y == 1], y = pred_prob[y == 1],
+            type = "scatter", mode = "markers",
+            marker = list(color = "#9B8EC7", size = 8, opacity = 0.8, symbol = "diamond"),
+            name = "Actual: High Value") |>
+  add_trace(x = x_curve, y = y_curve,
+            type = "scatter", mode = "lines",
+            line = list(color = "#0f172a", width = 2),
+            name = "Sigmoid curve") |>
+  add_trace(x = c(-5.5, 5.5), y = c(t0, t0),
+            type = "scatter", mode = "lines",
+            line = list(color = "#ef4444", width = 2.5, dash = "dash"),
+            name = "Decision threshold")
+
+fig$x$frames <- frames
+
+fig |>
+  layout(
+    title = list(
+      text = paste0("Threshold = ", t0,
+        "  |  Accuracy = ", acc0, "%",
+        "  |  Sensitivity = ", sens0, "%",
+        "  |  Specificity = ", spec0, "%"),
+      font = list(size = 12, color = "#0f172a"), x = 0.5, xanchor = "center"
+    ),
+    xaxis = list(title = "Linear combination of predictors", zeroline = FALSE,
+                 gridcolor = "#f1f5f9", range = c(-5.8, 5.8)),
+    yaxis = list(title = "Predicted probability", zeroline = FALSE,
+                 gridcolor = "#f1f5f9", range = c(-0.05, 1.05),
+                 tickformat = ".0%"),
+    plot_bgcolor = "white", paper_bgcolor = "white",
+    legend = list(orientation = "h", x = 0.5, xanchor = "center", y = -0.18, yanchor = "top"),
+    margin = list(t = 55, b = 130, l = 70, r = 20),
+    font = list(family = "system-ui, sans-serif"),
+    updatemenus = list(list(
+      type = "buttons", showactive = FALSE,
+      x = 0.05, xanchor = "left", y = -0.12, yanchor = "top",
+      buttons = list(
+        list(label = "▶  Play", method = "animate",
+             args = list("sweep", list(fromcurrent = TRUE, mode = "immediate",
+               frame = list(duration = 350, redraw = FALSE),
+               transition = list(duration = 150, easing = "linear")))),
+        list(label = "⏸  Pause", method = "animate",
+             args = list(list(), list(mode = "immediate",
+               frame = list(duration = 0, redraw = FALSE),
+               transition = list(duration = 0))))
+      )
+    )),
+    sliders = list(list(
+      active = 0,
+      currentvalue = list(prefix = "Threshold: ", font = list(size = 11, color = "#64748b")),
+      pad = list(t = 55, b = 10),
+      steps = slider_steps
+    ))
+  )
+```
+
+:::{.callout-important}
+## ✏️ Concept Check — 8.1
+
+**Q1.** A logistic model outputs 0.72 for a customer. Using the default threshold, what class do we predict?
+
+**Q2.** Why can't linear regression be used directly when the outcome is TRUE/FALSE?
+
+**Q3.** Looking at the sigmoid curve: as the linear combination gets very large (far right), what does the predicted probability approach?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** 0.72 > 0.5, so we predict **TRUE** (High Value).
+
+**A2.** A straight line can produce predictions outside 0–1 (e.g., −0.3 or 1.4). These cannot be interpreted as probabilities. The logistic function guarantees valid probability outputs.
+
+**A3.** It approaches **1.0** (100%) — the model becomes increasingly confident the customer is high-value as the predictors indicate stronger purchasing behaviour.
+:::
+
+---
+
+## 8.2 Fitting Logistic Regression in R
+
+The tidymodels workflow is nearly identical to Chapter 7 — we swap `linear_reg()` for `logistic_reg()` and add `set_mode("classification")`.
+
+### Setup
+
+```{webr-r}
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+) |>
+  mutate(IsHighValue = as.factor(IsHighValue))  # must be a factor for classification
+
+set.seed(42)
+fm_split <- initial_split(freshmart, prop = 0.75, strata = IsHighValue)
+fm_train <- training(fm_split)
+fm_test  <- testing(fm_split)
+
+cat("Training set — High Value:", sum(fm_train$IsHighValue == "TRUE"),
+    "| Regular:", sum(fm_train$IsHighValue == "FALSE"), "\n")
+```
+
+:::{.callout-note}
+## `strata = IsHighValue`
+Stratified splitting ensures the training and test sets have roughly the same proportion of high-value customers. Without it, random chance might leave almost all high-value customers in one set.
+:::
+
+### Specify → Recipe → Workflow → Fit
+
+```{webr-r}
+# Specify the model (only change from Ch 7: logistic_reg + classification mode)
+lr_spec <- logistic_reg() |>
+  set_engine("glm") |>
+  set_mode("classification")
+
+# Recipe: same predictors as last week
+lr_recipe <- recipe(
+  IsHighValue ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City) |>
+  step_normalize(all_numeric_predictors())  # scale inputs for logistic regression
+
+lr_workflow <- workflow() |>
+  add_recipe(lr_recipe) |>
+  add_model(lr_spec)
+
+lr_fit <- lr_workflow |> fit(data = fm_train)
+
+tidy(lr_fit)
+```
+
+**Reading the output:** The `estimate` column shows **log-odds coefficients**. You don't need to work with log-odds directly — what matters is:
+
+- **Positive coefficient** → higher values of that predictor increase the probability of TRUE (High Value)
+- **Negative coefficient** → higher values decrease it
+- **Small p-value (< 0.05)** → that predictor is statistically significant
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 8.2.1
+
+Look at the `tidy()` output. Which predictor has the largest positive coefficient? What does this tell you about which variable most strongly predicts whether a customer becomes high-value?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+Find the row with the largest positive `estimate`. Because we used `step_normalize()`, the coefficients are on a comparable scale — the largest coefficient corresponds to the most influential predictor. Typically `TotalTransactions` or `AvgTransactionValue` will rank highest, meaning these best distinguish high-value from regular customers.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 8.2
+
+**Q1.** What is the only line that changed between the Chapter 7 linear regression workflow and this logistic regression workflow?
+
+**Q2.** We used `step_normalize()` in the recipe. What does this do, and why does it matter here?
+
+**Q3.** The coefficient for `DaysSinceFirstPurchase` is positive. What does this mean in plain English?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The model specification changed from `linear_reg()` to `logistic_reg() |> set_mode("classification")`. The recipe, workflow, and `fit()` are structurally identical. This is the key benefit of tidymodels — swap one line to change the model type.
+
+**A2.** `step_normalize()` rescales each numeric variable to have mean = 0 and SD = 1. This puts predictors measured in different units (e.g., days vs. dollars) on a comparable scale, so their coefficients can be meaningfully compared.
+
+**A3.** Customers who have been with FreshMart longer are more likely to be classified as High Value — holding other predictors constant. This makes intuitive sense: longer tenure gives more time to accumulate spend.
+:::
+
+---
+
+## 8.3 Evaluating a Classifier: The Confusion Matrix
+
+A single accuracy number can be deceiving. If 75% of customers are *not* high-value, a model that always predicts FALSE achieves 75% accuracy — without learning anything. We need to look inside the errors.
+
+```{webr-r}
+# Generate predictions on the test set
+lr_preds <- augment(lr_fit, new_data = fm_test)
+
+# Confusion matrix
+conf_mat(lr_preds, truth = IsHighValue, estimate = .pred_class)
+```
+
+```{webr-r}
+# Visual heatmap version
+conf_mat(lr_preds, truth = IsHighValue, estimate = .pred_class) |>
+  autoplot(type = "heatmap") +
+  scale_fill_gradient(low = "#F0EBE3", high = "#9B8EC7") +
+  labs(title = "Confusion Matrix — Logistic Regression on Test Set") +
+  theme_minimal()
+```
+
+The four cells:
+
+| | **Predicted: Not High Value** | **Predicted: High Value** |
+|---|---|---|
+| **Actual: Not High Value** | ✅ True Negative | ❌ False Positive |
+| **Actual: High Value** | ❌ False Negative | ✅ True Positive |
+
+For FreshMart's goal (nurture high-value customers early), **False Negatives are the costlier error** — we miss a valuable customer. We'd prefer to occasionally send an offer to a regular customer (False Positive) than miss a future loyal one.
+
+### Accuracy, sensitivity, and specificity
+
+```{webr-r}
+my_metrics <- metric_set(accuracy, sensitivity, specificity)
+my_metrics(lr_preds, truth = IsHighValue, estimate = .pred_class)
+```
+
+| Metric | Meaning |
+|--------|---------|
+| **Accuracy** | Overall fraction of correct predictions |
+| **Sensitivity** | Of all actual High-Value customers, what fraction did we catch? |
+| **Specificity** | Of all actual regular customers, what fraction did we correctly identify? |
+
+### Adjusting the threshold and the ROC curve
+
+By lowering the threshold below 0.5 we catch more high-value customers (higher sensitivity), at the cost of more false positives (lower specificity). The **ROC curve** shows this trade-off across every possible threshold at once.
+
+```{webr-r}
+lr_preds |>
+  roc_curve(truth = IsHighValue, .pred_TRUE) |>
+  autoplot() +
+  labs(
+    title    = "ROC Curve — Logistic Regression",
+    subtitle = "Top-left = best; diagonal = random guessing"
+  ) +
+  theme_minimal()
+```
+
+```{webr-r}
+# AUC: single number summary of the ROC curve
+roc_auc(lr_preds, truth = IsHighValue, .pred_TRUE)
+```
+
+AUC of 1.0 is perfect; 0.5 is random. Values above 0.80 are generally considered good.
+
+:::{.callout-important}
+## ✏️ Concept Check — 8.3
+
+**Q1.** Our model has accuracy = 0.84 and the test set is 75% negative. What is the "naive baseline" accuracy, and how much better is our model?
+
+**Q2.** We lower the threshold from 0.5 to 0.3 to catch more high-value customers. What happens to the number of False Positives?
+
+**Q3.** What does AUC = 0.50 tell you about a model?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The naive baseline (always predict FALSE) achieves 75% accuracy. Our model at 84% beats it by 9 percentage points. Context makes a difference — 84% isn't as impressive if we forget what the baseline is.
+
+**A2.** **False Positives increase**. Lowering the threshold means more customers are flagged as High Value — including some regular customers who are misclassified. This is the sensitivity-specificity trade-off in action.
+
+**A3.** A model with AUC = 0.50 is **no better than random guessing** — it has learned nothing useful from the predictors.
+:::
+
+---
+
+## 8.4 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 8.1 — Predict for FreshMart Characters
+
+Use the fitted model to predict `IsHighValue` for Marcus Lee, Gary McSnarl, Jake Nguyen, and Amara Diallo. Compare the model's prediction to their actual `IsHighValue` status (from the dataset).
+
+```r
+characters <- tibble(
+  TotalTransactions      = c(48,    1,     7,     14),
+  AvgTransactionValue    = c(256.25, 34.90, 48.57, 62.86),
+  DaysSinceFirstPurchase = c(1868,  1026,  795,   146),
+  City                   = c("Sydney", "Melbourne", "Melbourne", "Perth")
+)
+```
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+augment(lr_fit, new_data = characters) |>
+  bind_cols(tibble(Name = c("Marcus Lee", "Gary McSnarl", "Jake Nguyen", "Amara Diallo"),
+                  Actual = c("TRUE", "FALSE", "FALSE", "TRUE"))) |>
+  select(Name, Actual, .pred_class, .pred_TRUE) |>
+  rename(Predicted = .pred_class, Prob_HighValue = .pred_TRUE)
+```
+
+Marcus Lee (48 visits, high avg value, long tenure) should confidently predict TRUE. Gary McSnarl (1 visit, very low spend) should predict FALSE. Amara Diallo (recent but 14 visits already) is an interesting case — the model has to decide whether short tenure or high transaction count wins.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 8.2 — Threshold Analysis
+
+Calculate sensitivity and specificity at thresholds of 0.30, 0.50, and 0.70. Present the results in a table. Which threshold would you recommend for FreshMart's loyalty campaign, and why?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+map(c(0.30, 0.50, 0.70), function(t) {
+  lr_preds |>
+    mutate(.pred_adj = as.factor(if_else(.pred_TRUE >= t, "TRUE", "FALSE"))) |>
+    metric_set(sensitivity, specificity)(truth = IsHighValue, estimate = .pred_adj) |>
+    mutate(threshold = t)
+}) |>
+  list_rbind() |>
+  select(threshold, .metric, .estimate) |>
+  pivot_wider(names_from = .metric, values_from = .estimate)
+```
+
+For a loyalty campaign where missing a high-value customer is costly, a threshold of 0.30 maximises sensitivity. The cost is more false positives — offers sent to regular customers — which FreshMart may consider acceptable if the campaign cost per customer is low.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 8.3 — The Naive Baseline
+
+The simplest possible classifier always predicts FALSE (the majority class). Calculate its accuracy, sensitivity, and specificity on the test set. How does logistic regression compare?
+
+*(Hint: create a column `.pred_naive = factor("FALSE", levels = c("FALSE", "TRUE"))` and run `metric_set(accuracy, sensitivity, specificity)` on it.)*
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+naive_preds <- lr_preds |>
+  mutate(.pred_naive = factor("FALSE", levels = c("FALSE", "TRUE")))
+
+metric_set(accuracy, sensitivity, specificity)(
+  naive_preds, truth = IsHighValue, estimate = .pred_naive
+)
+```
+
+The naive classifier has **sensitivity = 0** — it catches none of the high-value customers. Despite potentially high accuracy, it is completely useless for the loyalty team's purpose. Logistic regression dramatically improves sensitivity.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 8.4 — Business Communication
+
+Write 3–4 sentences for the FreshMart loyalty manager explaining what the model does, how well it works, and what one metric she should focus on when evaluating it. Avoid the words "logistic regression," "AUC," or "coefficient."
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answer
+
+"The model uses each customer's visit frequency, average spend per visit, time with FreshMart, and their city to estimate the probability they'll become a high-value customer. We tested it on 125 customers whose outcomes were already known, and it correctly flagged [TP out of all actual positives] of the genuinely high-value customers before they crossed the spending threshold. The metric that matters most for the loyalty team is **sensitivity** — the percentage of actual high-value customers we successfully identify. A threshold of 0.35 instead of 0.50 would catch more of them, at the cost of a few extra offers going to regular customers."
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 8 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">You've built a classifier and understood the confusion matrix, sensitivity, and the ROC curve. In <strong>Week 9</strong> we revisit the spend-prediction problem from Chapter 7 — but this time, instead of an equation, we'll produce a set of if-then rules that even a non-technical manager can read and understand. Meet the <strong>decision tree</strong>.</p>
+</div>
+```

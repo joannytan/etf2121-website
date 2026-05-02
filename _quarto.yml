@@ -4,7 +4,7 @@ project:
 book:
   title: "Data Analysis in Business (First edition)"
   reader-mode: true
-  cover-image: images/cover.png
+  cover-image: images/cover.svg
   description: "A beginner guide to SQL, Power BI, data analysis, and data visualization."
   author: "Dr. Joan Tan"
   date: today
@@ -21,19 +21,23 @@ book:
         - dbms.qmd
         - sql_basics.qmd
         - sql_advanced.qmd
-    - part: Data Analysis
-      chapters:
-        - introR.qmd
-        - desc_stat.qmd
+        - sql_bonus.qmd
     - part: Communication and Story Telling
-      chapters: 
+      chapters:
         - powerbi.qmd
-
-
-    - part: Data Visualization
-
-
+        - powerbi1.qmd
+        - powerbi2.qmd
+    - part: Statistical Modelling with R
+      chapters:
+        - mod_eda.qmd
+        - linear_reg.qmd
+        - logistic_reg.qmd
+        - reg_trees.qmd
+        - knn.qmd
+        - clustering.qmd
+        - ai_analytics.qmd
     - part: Conclusion
+
 
 
 #     # - summary.qmd
@@ -44,6 +48,19 @@ book:
 format:
   html:
     theme: cosmo
+    css: custom.css
+    mainfont: "Inter, system-ui, sans-serif"
+    monofont: "JetBrains Mono, Fira Code, monospace"
+    fontsize: 1rem
+    linestretch: 1.8
+    highlight-style: dracula
+    code-block-border-left: "#2563eb"
+    code-block-bg: "#0f172a"
+    grid:
+      sidebar-width: 280px
+      body-width: 1000px
+      margin-width: 220px
+      gutter-width: 2rem
     
 webr: 
   show-startup-message: false     # Display status of webR initialization

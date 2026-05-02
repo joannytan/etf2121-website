@@ -1,0 +1,582 @@
+---
+title: "Regression Trees"
+webr:
+  packages: ['tidyverse', 'tidymodels', 'rpart.plot']
+---
+
+```{=html}
+<div style="background:#0f172a;border-radius:12px;padding:28px 32px 22px;margin-bottom:32px;">
+  <p style="font-size:0.75rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#8FBFCA !important;-webkit-text-fill-color:#8FBFCA;margin:0 0 8px;">Part 3 · Week 9</p>
+  <h2 style="color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;font-size:1.6rem;margin:0 0 12px;">Regression Trees</h2>
+  <p style="color:#cbd5e1 !important;-webkit-text-fill-color:#cbd5e1;font-size:0.95rem;line-height:1.7;margin:0 0 18px;">
+    The linear regression in Week 7 gave us an equation. This week we get something the marketing team can pin on the wall: a flowchart of yes/no questions leading to a spend prediction. Decision trees trade mathematical precision for human interpretability — and that trade is often worth making.
+  </p>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidyverse</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 tidymodels</span>
+    <span style="background:rgba(143,191,202,0.2);border:1px solid rgba(143,191,202,0.4);color:#F0EBE3 !important;-webkit-text-fill-color:#F0EBE3;padding:4px 14px;border-radius:999px;font-size:0.8rem;">📦 rpart.plot</span>
+  </div>
+</div>
+```
+
+:::{.callout-note}
+## 🔁 Recap — Where we are so far
+
+| Chapter | Problem type | Target | Model |
+|---------|-------------|--------|-------|
+| Week 7 | Regression | TotalSpend ($) | Linear Regression |
+| Week 8 | Classification | IsHighValue (T/F) | Logistic Regression |
+| **Week 9** | **Regression** | **TotalSpend ($)** | **Decision Tree** |
+
+This week we revisit the **same regression problem as Chapter 7** — predicting `TotalSpend` — but use a completely different model. At the end of the chapter we'll compare them head-to-head.
+:::
+
+---
+
+## 9.1 How a Decision Tree Thinks
+
+A decision tree makes predictions by asking a series of yes/no questions about the data. It's the model equivalent of the flowcharts you might draw on a whiteboard.
+
+Here's a simple example of what a FreshMart spending tree might look like:
+
+```{=html}
+<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px 24px;margin:16px 0;font-family:monospace;font-size:0.88rem;line-height:1.8;">
+  <strong style="font-family:inherit;">Is TotalTransactions &gt; 12?</strong><br>
+  &nbsp;&nbsp;├─ <strong>Yes</strong> → Is AvgTransactionValue &gt; $80?<br>
+  &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;├─ <strong>Yes</strong> → Predict: <span style="color:#7c3aed;font-weight:600;">$1,450</span><br>
+  &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;└─ <strong>No &nbsp;</strong> → Predict: <span style="color:#7c3aed;font-weight:600;">$640</span><br>
+  &nbsp;&nbsp;└─ <strong>No &nbsp;</strong> → Is DaysSinceFirstPurchase &gt; 400?<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ <strong>Yes</strong> → Predict: <span style="color:#7c3aed;font-weight:600;">$195</span><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ <strong>No &nbsp;</strong> → Predict: <span style="color:#7c3aed;font-weight:600;">$72</span>
+</div>
+```
+
+Each path from the top to a leaf gives the model's prediction for that group of customers. The prediction at each leaf is the **average TotalSpend** of the training customers who fell into that group.
+
+### How does the tree choose where to split?
+
+At each node, the tree tries every possible split on every predictor and picks the one that most reduces the **variance** of the outcome within each resulting group. Splitting on "TotalTransactions > 12" is useful if it separates high-spending from low-spending customers more cleanly than any other cut. The goal is to create groups (leaves) where customers are as similar to each other as possible in terms of spend.
+
+**The splitting criterion — variance reduction:**
+
+For a candidate split that divides $n$ observations into a left group (size $n_L$) and right group (size $n_R$):
+
+$$\text{Variance Reduction} = \underbrace{\text{Var}(\text{parent})}_{\text{before the split}} - \left[\frac{n_L}{n}\cdot\text{Var}(\text{left}) + \frac{n_R}{n}\cdot\text{Var}(\text{right})\right]$$
+
+The tree evaluates this for *every* predictor and *every* possible cutpoint, then picks the combination that gives the largest reduction. A good split creates two groups where TotalSpend values are tightly packed — low internal variance. The weights $n_L/n$ and $n_R/n$ ensure that large, homogeneous groups are rewarded more than tiny ones.
+
+**Leaf predictions:** When a node can no longer be split (depth limit or minimum-size constraint reached), it becomes a **leaf**. The prediction is the **mean TotalSpend** of all training customers who fell into that node. A deeper tree produces more, smaller leaves — more precise on training data, but more sensitive to noise.
+
+**Stopping rules:** The `tree_depth` and `min_n` parameters control this. `tree_depth = 4` allows at most 4 consecutive splits; `min_n = 10` stops splitting when fewer than 10 training customers remain in a node. Both prevent the tree from memorising individual customers rather than learning general patterns.
+
+:::{.callout-important}
+## ✏️ Concept Check — 9.1
+
+**Q1.** In a regression tree, what value does the model predict at each leaf?
+
+**Q2.** A tree splits on "TotalTransactions > 5." After the split, one group has very similar spend values and the other has very diverse spend values. Was this a good split? Why?
+
+**Q3.** What is one advantage a decision tree has over a linear regression equation, from a business communication standpoint?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The **mean** of the outcome (TotalSpend) for all training observations that fell into that leaf.
+
+**A2.** Not ideal — we'd prefer both groups to have low variance after the split (each group's customers are similar to each other). A good split creates two homogeneous groups. If one group is still very diverse, the tree will need more splits to capture it.
+
+**A3.** A decision tree produces a set of explicit if-then rules that any manager can read and understand without statistical training. An equation like `TotalSpend = 25 + 18×Transactions + 0.4×Days...` requires interpretation; a tree flowchart is self-explanatory.
+:::
+
+The animation below shows how tree predictions (green/orange/red curve) change as depth increases. A shallow tree underfits — it's too simple. A deep tree overfits — it memorises training noise and performs worse on test data. Watch the test RMSE (title) rise even as the curve gets more complex.
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(plotly)
+library(rpart)
+
+set.seed(42)
+n_tr <- 60
+x_tr <- sort(runif(n_tr, 0, 10))
+y_tr <- sin(x_tr) * 4 + rnorm(n_tr, 0, 1.2)
+
+set.seed(99)
+x_te <- sort(runif(40, 0, 10))
+y_te <- sin(x_te) * 4 + rnorm(40, 0, 1.2)
+
+x_seq  <- seq(0, 10, length.out = 500)
+depths <- 1:10
+
+results <- lapply(depths, function(d) {
+  fit <- rpart(y ~ x, data.frame(x = x_tr, y = y_tr),
+               control = rpart.control(maxdepth = d, minsplit = 2, cp = 0))
+  list(
+    curve      = predict(fit, data.frame(x = x_seq)),
+    rmse_train = round(sqrt(mean((y_tr - predict(fit, data.frame(x = x_tr)))^2)), 2),
+    rmse_test  = round(sqrt(mean((y_te - predict(fit, data.frame(x = x_te)))^2)), 2)
+  )
+})
+
+frames <- lapply(seq_along(depths), function(i) {
+  r     <- results[[i]]
+  ratio <- r$rmse_test / r$rmse_train
+  lc    <- if (ratio > 1.5) "#ef4444" else if (ratio > 1.2) "#f59e0b" else "#22c55e"
+  sfx   <- if (ratio > 1.5) "  ← Overfitting!" else if (ratio > 1.2) "  ← Starting to overfit" else ""
+  list(
+    name = as.character(i),
+    group = "sweep",
+    data = list(list(x = x_seq, y = r$curve, line = list(color = lc, width = 2.5))),
+    traces = c(2L),
+    layout = list(title = list(
+      text = paste0("Depth = ", depths[i],
+        "  |  Train RMSE = ", r$rmse_train,
+        "  |  Test RMSE = ", r$rmse_test, sfx),
+      font = list(size = 12, color = "#0f172a")
+    ))
+  )
+})
+
+slider_steps <- lapply(seq_along(depths), function(i) {
+  list(method = "animate",
+       args = list(list(as.character(i)),
+                   list(mode = "immediate",
+                        frame = list(duration = 0, redraw = FALSE),
+                        transition = list(duration = 0))),
+       label = paste0("Depth ", depths[i]))
+})
+
+r0 <- results[[1]]
+
+fig <- plot_ly() |>
+  add_trace(x = x_tr, y = y_tr, type = "scatter", mode = "markers",
+            marker = list(color = "#8FBFCA", size = 7, opacity = 0.8),
+            name = "Training data") |>
+  add_trace(x = x_te, y = y_te, type = "scatter", mode = "markers",
+            marker = list(color = "#f59e0b", size = 7, opacity = 0.8, symbol = "square"),
+            name = "Test data") |>
+  add_trace(x = x_seq, y = r0$curve, type = "scatter", mode = "lines",
+            line = list(color = "#22c55e", width = 2.5),
+            name = "Tree predictions")
+
+fig$x$frames <- frames
+
+fig |>
+  layout(
+    title = list(
+      text = paste0("Depth = 1  |  Train RMSE = ", r0$rmse_train,
+                    "  |  Test RMSE = ", r0$rmse_test),
+      font = list(size = 12, color = "#0f172a"), x = 0.5, xanchor = "center"
+    ),
+    xaxis = list(title = "Predictor (x)", zeroline = FALSE, gridcolor = "#f1f5f9"),
+    yaxis = list(title = "Outcome (y)",   zeroline = FALSE, gridcolor = "#f1f5f9"),
+    plot_bgcolor = "white", paper_bgcolor = "white",
+    legend = list(orientation = "h", x = 0.5, xanchor = "center", y = -0.18, yanchor = "top"),
+    margin = list(t = 55, b = 130, l = 55, r = 20),
+    font = list(family = "system-ui, sans-serif"),
+    updatemenus = list(list(
+      type = "buttons", showactive = FALSE,
+      x = 0.05, xanchor = "left", y = -0.12, yanchor = "top",
+      buttons = list(
+        list(label = "▶  Play", method = "animate",
+             args = list("sweep", list(fromcurrent = TRUE, mode = "immediate",
+               frame = list(duration = 700, redraw = FALSE),
+               transition = list(duration = 300, easing = "linear")))),
+        list(label = "⏸  Pause", method = "animate",
+             args = list(list(), list(mode = "immediate",
+               frame = list(duration = 0, redraw = FALSE),
+               transition = list(duration = 0))))
+      )
+    )),
+    sliders = list(list(
+      active = 0,
+      currentvalue = list(prefix = "Tree: ", font = list(size = 11, color = "#64748b")),
+      pad = list(t = 55, b = 10),
+      steps = slider_steps
+    ))
+  )
+```
+
+---
+
+## 9.2 Fitting a Decision Tree in R
+
+The tidymodels workflow stays the same — we just swap `linear_reg()` for `decision_tree()`.
+
+### Setup
+
+```{webr-r}
+library(tidyverse)
+library(tidymodels)
+
+freshmart <- read_csv(
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  show_col_types = FALSE
+)
+
+set.seed(42)
+fm_split <- initial_split(freshmart, prop = 0.75)
+fm_train <- training(fm_split)
+fm_test  <- testing(fm_split)
+```
+
+### Specify and fit
+
+```{webr-r}
+# Specify: decision_tree for regression, rpart engine
+tree_spec <- decision_tree(tree_depth = 4, min_n = 10) |>
+  set_engine("rpart") |>
+  set_mode("regression")
+
+# Recipe: same predictors as Chapter 7
+tree_recipe <- recipe(
+  TotalSpend ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City)
+
+tree_workflow <- workflow() |>
+  add_recipe(tree_recipe) |>
+  add_model(tree_spec)
+
+tree_fit <- tree_workflow |> fit(data = fm_train)
+```
+
+### Visualising the tree
+
+```{webr-r}
+library(rpart.plot)
+
+tree_fit |>
+  extract_fit_engine() |>
+  rpart.plot(
+    roundint = FALSE,
+    type     = 4,
+    extra    = 101,
+    box.palette = "BuPu",
+    main     = "FreshMart Spend Prediction Tree (depth = 4)"
+  )
+```
+
+Reading the tree: start at the top and follow the yes/no branches. Each internal node shows the split condition. Each leaf (terminal node) shows the predicted spend and the percentage of training data that ended up there.
+
+:::{.callout-note}
+## 📦 R Practice — Exercise 9.2.1
+
+Look at the tree diagram. Find the leaf that predicts the highest average spend. What path of yes/no decisions leads to that leaf? Write it out as a business rule in plain English (e.g., "Customers who visited more than X times AND had average transaction value above $Y are predicted to spend...").
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+Trace the path from the root to the rightmost high-value leaf. It will typically be something like:
+
+"Customers who made more than [X] visits **and** whose average transaction value exceeds $[Y] are predicted to spend approximately $[Z] lifetime."
+
+The exact numbers come from your tree diagram.
+:::
+
+:::{.callout-important}
+## ✏️ Concept Check — 9.2
+
+**Q1.** `tree_depth = 4` means the tree can ask at most 4 questions in sequence. What does `tree_depth = 1` produce?
+
+**Q2.** `min_n = 10` means a node must have at least 10 observations to split further. What would happen if we set `min_n = 1`?
+
+**Q3.** Compare the top split in your tree to the strongest predictor from the linear regression (Chapter 7). Are they the same variable?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** A single yes/no question — the simplest possible tree with just two leaves. Sometimes called a "stump."
+
+**A2.** The tree would keep splitting until every leaf contained only a single observation. It would perfectly predict the training data but would be terrible on new data — pure overfitting.
+
+**A3.** Typically yes — the variable the tree first splits on is the most powerful predictor of spend, just as the largest coefficient in linear regression indicates the most important predictor. Both methods tend to agree on which variables matter most.
+:::
+
+---
+
+## 9.3 Overfitting and Tree Depth
+
+A deep tree can memorise the training data almost perfectly — but fail badly on new data. This is called **overfitting**: the model has learned the noise in the training data, not the true underlying pattern.
+
+We can see this by comparing training vs test RMSE across different tree depths.
+
+```{webr-r}
+# Compare RMSE at different depths for training and test sets
+depths <- c(1, 2, 3, 4, 5, 7, 10)
+
+depth_results <- map(depths, function(d) {
+  spec <- decision_tree(tree_depth = d, min_n = 5) |>
+    set_engine("rpart") |> set_mode("regression")
+
+  wf <- workflow() |>
+    add_recipe(tree_recipe) |>
+    add_model(spec)
+
+  fit <- wf |> fit(data = fm_train)
+
+  bind_rows(
+    augment(fit, new_data = fm_train) |>
+      rmse(truth = TotalSpend, estimate = .pred) |>
+      mutate(set = "Training", depth = d),
+    augment(fit, new_data = fm_test) |>
+      rmse(truth = TotalSpend, estimate = .pred) |>
+      mutate(set = "Test", depth = d)
+  )
+}) |> list_rbind()
+
+ggplot(depth_results, aes(x = depth, y = .estimate, colour = set, group = set)) +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 3) +
+  scale_colour_manual(values = c("Training" = "#8FBFCA", "Test" = "#9B8EC7")) +
+  labs(
+    title    = "Overfitting in Decision Trees",
+    subtitle = "Training RMSE keeps falling; Test RMSE eventually rises — that gap is overfitting",
+    x        = "Tree Depth",
+    y        = "RMSE ($AUD)",
+    colour   = NULL
+  ) +
+  theme_minimal()
+```
+
+**What to look for:**
+
+- As depth increases, **training RMSE always falls** (the tree memorises more detail)
+- **Test RMSE falls at first**, then levels off or rises — this is where overfitting begins
+- The "sweet spot" is the depth where test RMSE is lowest before it starts increasing
+
+:::{.callout-important}
+## ✏️ Concept Check — 9.3
+
+**Q1.** At depth = 10, training RMSE is much lower than test RMSE. What is happening?
+
+**Q2.** At depth = 1, both training and test RMSE are high. What does this mean?
+
+**Q3.** How is the overfitting problem in trees similar to the concept of using the test set (not the training set) for evaluation that we discussed in Chapter 7?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** The tree has memorised the training data — it knows exactly which leaf each training customer lands in. But those very specific rules don't generalise; new customers don't match those precise patterns, so test errors are much larger. This is overfitting.
+
+**A2.** A depth-1 tree asks only one question. It's too simple to capture the real pattern in the data — both training and test errors are high. This is **underfitting** — the opposite problem.
+
+**A3.** Both reflect the same core idea: evaluating a model on the data it was trained on gives an overly optimistic picture. We always need to test on held-out data to see how the model truly performs on new, unseen observations.
+:::
+
+---
+
+## 9.4 Trees vs Linear Regression
+
+Now let's compare our best decision tree directly against the linear regression model from Chapter 7, using the same test set.
+
+```{webr-r}
+# Fit the Chapter 7 linear regression for comparison
+lm_spec <- linear_reg() |> set_engine("lm")
+
+lm_recipe <- recipe(
+  TotalSpend ~ TotalTransactions + AvgTransactionValue + DaysSinceFirstPurchase + City,
+  data = fm_train
+) |>
+  step_dummy(City)
+
+lm_fit <- workflow() |>
+  add_recipe(lm_recipe) |>
+  add_model(lm_spec) |>
+  fit(data = fm_train)
+
+# Best tree (use depth = 4 based on overfitting plot)
+best_tree_fit <- workflow() |>
+  add_recipe(tree_recipe) |>
+  add_model(decision_tree(tree_depth = 4, min_n = 10) |>
+              set_engine("rpart") |> set_mode("regression")) |>
+  fit(data = fm_train)
+
+# Compare test-set metrics
+bind_rows(
+  augment(lm_fit, new_data = fm_test) |>
+    metrics(truth = TotalSpend, estimate = .pred) |>
+    mutate(model = "Linear Regression"),
+  augment(best_tree_fit, new_data = fm_test) |>
+    metrics(truth = TotalSpend, estimate = .pred) |>
+    mutate(model = "Decision Tree (depth 4)")
+) |>
+  select(model, .metric, .estimate) |>
+  filter(.metric %in% c("rmse", "rsq")) |>
+  pivot_wider(names_from = .metric, values_from = .estimate)
+```
+
+```{webr-r}
+# Visualise: actual vs predicted for both models
+lm_test  <- augment(lm_fit, new_data = fm_test) |> mutate(model = "Linear Regression")
+tree_test <- augment(best_tree_fit, new_data = fm_test) |> mutate(model = "Decision Tree")
+
+bind_rows(lm_test, tree_test) |>
+  ggplot(aes(x = TotalSpend, y = .pred, colour = model)) +
+  geom_point(alpha = 0.4, size = 1.5) +
+  geom_abline(linetype = "dashed", colour = "#475569") +
+  scale_colour_manual(values = c("Linear Regression" = "#8FBFCA", "Decision Tree" = "#9B8EC7")) +
+  scale_x_continuous(labels = scales::dollar) +
+  scale_y_continuous(labels = scales::dollar) +
+  facet_wrap(~ model) +
+  labs(
+    title    = "Actual vs Predicted — Linear Regression vs Decision Tree",
+    subtitle = "Points close to the diagonal = accurate predictions",
+    x = "Actual Spend", y = "Predicted Spend"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+**Key difference in predictions:** The tree produces predictions that cluster at distinct values (the leaf averages), creating horizontal bands in the actual-vs-predicted plot. Linear regression produces a smooth spread of predictions. Trees tend to struggle more with very high-spend outliers like Marcus Lee — they can only predict within the range of their training leaf averages.
+
+:::{.callout-important}
+## ✏️ Concept Check — 9.4
+
+**Q1.** In the actual-vs-predicted plot, why does the decision tree show horizontal "stripes" while linear regression shows a smoother diagonal?
+
+**Q2.** Linear regression gives slightly better RMSE. Does this mean we should always use linear regression? What might favour choosing a tree?
+
+**Q3.** Name one type of FreshMart business audience that would prefer seeing a decision tree over a regression equation.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Answers
+
+**A1.** Because a tree can only predict the average spend of the training customers in each leaf — there are a limited number of distinct prediction values (one per leaf). Linear regression can output a unique value for every set of inputs.
+
+**A2.** Not necessarily. A tree is far easier for non-technical stakeholders to understand and audit. If FreshMart needs to explain to store managers *why* a customer is being targeted, a tree's rules are much clearer than a regression equation. Interpretability has real business value.
+
+**A3.** Store managers, field sales teams, or customer service staff who need to apply rules manually would strongly prefer a tree. They can follow the flowchart without understanding regression.
+:::
+
+---
+
+## 9.5 Chapter Exercises
+
+---
+
+:::{.callout-note}
+## Exercise 9.1 — Reading the Tree
+
+Look at the `rpart.plot` diagram from Section 9.2. Without running any code, answer:
+
+1. What is the very first question the tree asks (the root node split)?
+2. What is the predicted spend for a customer who has made 5 transactions and has been with FreshMart for 200 days?
+3. What percentage of training customers end up in the highest-spend leaf?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+Trace through the tree manually from the root. Your tree diagram shows all the information needed:
+
+1. The root split is shown at the top node.
+2. Follow the path: Is TotalTransactions ≤ [split value]? → Yes. Then check DaysSinceFirstPurchase. Follow each branch based on the values given.
+3. Read the percentage shown in the leaf node with the highest predicted value.
+
+This exercise trains the skill of reading a model output without running code — an important practical skill when reviewing someone else's model.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 9.2 — Depth Tuning
+
+From the overfitting plot in Section 9.3, identify the optimal tree depth (lowest test RMSE). Fit a final tree at that depth and report its test RMSE and R².
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+# Identify best depth from the depth_results tibble
+best_depth <- depth_results |>
+  filter(set == "Test") |>
+  slice_min(.estimate) |>
+  pull(depth)
+
+cat("Optimal depth:", best_depth, "\n")
+
+# Fit final tree at optimal depth
+final_tree <- workflow() |>
+  add_recipe(tree_recipe) |>
+  add_model(decision_tree(tree_depth = best_depth, min_n = 10) |>
+              set_engine("rpart") |> set_mode("regression")) |>
+  fit(data = fm_train)
+
+augment(final_tree, new_data = fm_test) |>
+  metrics(truth = TotalSpend, estimate = .pred) |>
+  filter(.metric %in% c("rmse", "rsq"))
+```
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 9.3 — Predicting with the Tree
+
+Use your fitted tree to predict the total spend for Marcus Lee, Gary McSnarl, and Amara Diallo (same customer tibble as Exercise 8.1). Compare the predictions to the linear regression predictions from Chapter 7. Which model is closer to the actual spend for each character?
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Solution
+
+```r
+characters <- tibble(
+  TotalTransactions      = c(48,    1,     14),
+  AvgTransactionValue    = c(256.25, 34.90, 62.86),
+  DaysSinceFirstPurchase = c(1868,  1026,  146),
+  City                   = c("Sydney", "Melbourne", "Perth")
+)
+
+tree_preds <- predict(best_tree_fit, new_data = characters)
+lm_preds   <- predict(lm_fit, new_data = characters)
+
+tibble(
+  Name   = c("Marcus Lee", "Gary McSnarl", "Amara Diallo"),
+  Actual = c(12300, 34.90, 880),
+  Tree   = round(tree_preds$.pred, 2),
+  LM     = round(lm_preds$.pred, 2)
+)
+```
+
+Marcus Lee ($12,300 actual) will likely be under-predicted by both models — he's an extreme outlier. But compare which model gets closer and discuss why.
+:::
+
+---
+
+:::{.callout-note}
+## Exercise 9.4 — When to Use Each Model
+
+For each scenario below, decide whether you'd recommend a **linear regression** or a **decision tree**, and briefly justify your choice:
+
+1. FreshMart wants to predict customer lifetime spend for internal forecasting. The predictions will be used in a financial spreadsheet.
+2. FreshMart's store managers want to understand which customers to approach for a loyalty upgrade. The rules need to be explainable in a 30-second conversation.
+3. FreshMart is building an automated email targeting system where the model runs 10,000 predictions per day with no human review.
+:::
+
+:::{.callout-tip collapse="true"}
+## ✅ Sample Answers
+
+1. **Linear regression** — the predictions are continuous and the finance team cares about accuracy. R² and RMSE are familiar metrics in that context.
+2. **Decision tree** — store managers need rules they can explain to customers. "We're reaching out because you've visited more than 10 times and your average spend is over $50" is a clear tree-derived rule.
+3. **Either** — in an automated system, interpretability matters less. Choose based on which has lower test RMSE. If both are similar, the linear regression may be preferable for its speed and simplicity.
+:::
+
+---
+
+```{=html}
+<div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:20px 24px;margin-top:32px;">
+  <p style="font-weight:700;color:#166534;margin:0 0 6px;">✅ Week 9 Complete</p>
+  <p style="color:#166534;margin:0;font-size:0.93rem;">You can now compare two approaches to the same problem — equations vs rules. In <strong>Week 10</strong> we return to classification (Chapter 8's problem: predicting High Value customers), but with a fundamentally different philosophy: instead of learning a decision boundary, KNN simply asks <em>"who are the most similar customers to this person, and what did they do?"</em></p>
+</div>
+```

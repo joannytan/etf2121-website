@@ -1,0 +1,625 @@
+# Advanced SQL II
+
+Congratulations — you have made it through SQL Basics and Advanced SQL. You can query a single table, join multiple tables, classify data with CASE WHEN, nest queries inside queries, and work with strings and dates. That is the toolkit of a working data analyst.
+
+This bonus chapter covers two more powerful techniques that you will encounter as your SQL skills grow:
+
+- **CTEs (Common Table Expressions)** — a cleaner, more readable alternative to subqueries
+- **Window Functions** — calculations across rows without collapsing them, used for rankings, running totals, and comparisons between adjacent rows
+
+These topics are optional for the core course but are widely used in industry and will make you significantly more effective when queries start getting complex.
+
+We continue with the same **FreshMart database**: `Customers`, `Products`, `Stores`, and `Transactions`.
+
+---
+
+## Common Table Expressions (CTEs)
+
+### The Problem with Nested Subqueries
+
+In the Advanced SQL chapter, we used subqueries in `FROM` to build temporary derived tables. They work, but they get hard to read fast. Here is a moderately complex subquery example:
+
+```sql
+SELECT SpendTier, COUNT(*) AS CustomerCount, AVG(TotalSpend) AS AvgSpend
+FROM (
+    SELECT CustomerID, TotalSpend,
+           CASE
+               WHEN TotalSpend = 0        THEN 'No Activity'
+               WHEN TotalSpend < 500      THEN 'Low Spender'
+               WHEN TotalSpend < 5000     THEN 'Mid Spender'
+               ELSE 'High Spender'
+           END AS SpendTier
+    FROM Customers
+) AS CustomerTiers
+GROUP BY SpendTier;
+```
+
+This is fine. But imagine five of these nested inside each other. You would need a map, a torch, and emotional support.
+
+A **CTE** lets you give the inner query a name and write the outer query against it cleanly. The query above becomes:
+
+```sql
+WITH CustomerTiers AS (
+    SELECT CustomerID, TotalSpend,
+           CASE
+               WHEN TotalSpend = 0        THEN 'No Activity'
+               WHEN TotalSpend < 500      THEN 'Low Spender'
+               WHEN TotalSpend < 5000     THEN 'Mid Spender'
+               ELSE 'High Spender'
+           END AS SpendTier
+    FROM Customers
+)
+SELECT SpendTier, COUNT(*) AS CustomerCount, AVG(TotalSpend) AS AvgSpend
+FROM CustomerTiers
+GROUP BY SpendTier;
+```
+
+Same result. Much easier to read — you define what `CustomerTiers` is first, then use it as if it were a real table.
+
+### CTE Syntax
+
+```sql
+WITH cte_name AS (
+    -- your inner query goes here
+    SELECT ...
+    FROM ...
+    WHERE ...
+)
+SELECT ...
+FROM cte_name
+WHERE ...;
+```
+
+The CTE is defined once with `WITH`, given a name, and then referenced by that name in the main query that follows. The CTE only exists for the duration of that one query — it is not saved anywhere permanently.
+
+### Example: Enriched Transaction Report
+
+Let us build a readable transaction report that shows the customer name, store name, transaction date, and total amount — without burying the join logic inside the main `SELECT`.
+
+```sql
+WITH TransactionDetails AS (
+    SELECT T.TransactionID,
+           C.FirstName + ' ' + C.LastName AS CustomerName,
+           S.StoreName,
+           T.TransactionDate,
+           T.TotalAmount,
+           T.NumItems
+    FROM Transactions AS T
+    INNER JOIN Customers AS C
+      ON T.CustomerID = C.CustomerID
+    INNER JOIN Stores AS S
+      ON T.StoreID = S.StoreID
+)
+SELECT CustomerName, StoreName, TransactionDate, TotalAmount
+FROM TransactionDetails
+WHERE TotalAmount > 100
+ORDER BY TotalAmount DESC;
+```
+
+The CTE handles the joins. The main query focuses on filtering and ordering. Each part does one job.
+
+### Multiple CTEs
+
+You can chain multiple CTEs together, separating them with commas. Each CTE can reference the ones defined before it.
+
+```sql
+WITH
+-- Step 1: enrich transactions with customer and store details
+TransactionDetails AS (
+    SELECT T.TransactionID,
+           C.CustomerID,
+           C.FirstName + ' ' + C.LastName AS CustomerName,
+           C.MembershipTier,
+           S.State,
+           T.TotalAmount,
+           T.NumItems
+    FROM Transactions AS T
+    INNER JOIN Customers AS C ON T.CustomerID = C.CustomerID
+    INNER JOIN Stores    AS S ON T.StoreID    = S.StoreID
+),
+-- Step 2: summarise by customer
+CustomerSummary AS (
+    SELECT CustomerID,
+           CustomerName,
+           MembershipTier,
+           COUNT(*)          AS TotalTransactions,
+           SUM(TotalAmount)  AS TotalSpentInPeriod,
+           AVG(TotalAmount)  AS AvgBasketSize
+    FROM TransactionDetails
+    GROUP BY CustomerID, CustomerName, MembershipTier
+)
+-- Final query: find high-value customers
+SELECT CustomerName, MembershipTier, TotalTransactions,
+       TotalSpentInPeriod, AvgBasketSize
+FROM CustomerSummary
+WHERE TotalSpentInPeriod > 100
+ORDER BY TotalSpentInPeriod DESC;
+```
+
+Read this query like a recipe:
+1. First, I build `TransactionDetails` — all transactions with real customer and store names.
+2. Then I build `CustomerSummary` — aggregate stats per customer using `TransactionDetails`.
+3. Finally, I query `CustomerSummary` for the customers who have spent more than $100 in the period.
+
+Each step is named, readable, and testable on its own. This is the main reason analysts love CTEs.
+
+::: {.callout-tip}
+## CTE vs Subquery — When to Use Which
+
+Both CTEs and subqueries in `FROM` produce the same result. Choose based on readability:
+
+- Use a **subquery** when the inner query is short and self-contained (one or two lines).
+- Use a **CTE** when the inner query is long, or when you need to reference the same derived table more than once in a query.
+- Use **multiple CTEs** when you are building up a result in logical steps — think of it like writing a calculation step by step rather than all at once.
+:::
+
+#### Exercises
+
+1. Write a CTE called `StoreTransactions` that joins `Transactions` and `Stores` to show each transaction's store name, state, total amount, and number of items. Then query it to find all transactions from VIC stores.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+WITH StoreTransactions AS (
+    SELECT T.TransactionID,
+           S.StoreName,
+           S.State,
+           T.TotalAmount,
+           T.NumItems
+    FROM Transactions AS T
+    INNER JOIN Stores AS S
+      ON T.StoreID = S.StoreID
+)
+SELECT StoreName, TotalAmount, NumItems
+FROM StoreTransactions
+WHERE State = 'VIC';
+```
+:::
+
+2. Write a CTE called `CustomerStats` that calculates the total number of transactions and total amount spent for each customer. Then query it to return only customers with more than one transaction.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+WITH CustomerStats AS (
+    SELECT C.CustomerID,
+           C.FirstName + ' ' + C.LastName AS CustomerName,
+           COUNT(T.TransactionID)   AS TotalTransactions,
+           SUM(T.TotalAmount)       AS TotalSpent
+    FROM Customers AS C
+    LEFT JOIN Transactions AS T
+      ON C.CustomerID = T.CustomerID
+    GROUP BY C.CustomerID, C.FirstName, C.LastName
+)
+SELECT CustomerName, TotalTransactions, TotalSpent
+FROM CustomerStats
+WHERE TotalTransactions > 1;
+```
+:::
+
+3. Write two chained CTEs:
+   - `FullTransactions`: enriches transactions with customer name and store state
+   - `StateSummary`: counts the number of transactions and total revenue for each state
+
+   Then query `StateSummary` to find states with more than two transactions.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+WITH
+FullTransactions AS (
+    SELECT T.TransactionID,
+           C.FirstName + ' ' + C.LastName AS CustomerName,
+           S.State,
+           T.TotalAmount
+    FROM Transactions AS T
+    INNER JOIN Customers AS C ON T.CustomerID = C.CustomerID
+    INNER JOIN Stores    AS S ON T.StoreID    = S.StoreID
+),
+StateSummary AS (
+    SELECT State,
+           COUNT(TransactionID)  AS NumTransactions,
+           SUM(TotalAmount)      AS TotalRevenue
+    FROM FullTransactions
+    GROUP BY State
+)
+SELECT State, NumTransactions, TotalRevenue
+FROM StateSummary
+WHERE NumTransactions > 2
+ORDER BY TotalRevenue DESC;
+```
+:::
+
+---
+
+## Window Functions
+
+### What Makes Window Functions Different
+
+Aggregate functions like `SUM()` and `COUNT()` collapse many rows into a single result. `GROUP BY` forces you to choose: either keep the detail rows, or see the aggregated numbers — not both at once.
+
+**Window functions** break this trade-off. They perform calculations across a set of rows and return a value for **each row individually**, without collapsing anything. The detail rows stay intact; the calculated value is simply added alongside them.
+
+The key ingredient is the `OVER()` clause, which defines the "window" — the set of rows the function should operate on for each row.
+
+```sql
+SELECT column1, column2,
+       some_function() OVER (ORDER BY column3) AS new_column
+FROM table_name;
+```
+
+The best way to understand this is through examples.
+
+---
+
+### `ROW_NUMBER()`
+
+Assigns a unique sequential number to each row based on an ordering. No ties — every row gets a distinct number.
+
+Rank every customer from highest to lowest total spend, with a row number:
+
+```sql
+SELECT FirstName + ' ' + LastName AS CustomerName,
+       TotalSpend,
+       ROW_NUMBER() OVER (ORDER BY TotalSpend DESC) AS SpendRank
+FROM Customers;
+```
+
+| CustomerName | TotalSpend | SpendRank |
+|---|---|---|
+| Marcus Lee | 12300.00 | 1 |
+| Priya Sharma | 8420.50 | 2 |
+| Bev O'Brien | 3150.75 | 3 |
+| Amara Diallo | 1890.25 | 4 |
+| Gary McSnarl | 520.00 | 5 |
+| Jake Nguyen | 340.00 | 6 |
+| Nina Patel | 0.00 | 7 |
+
+Every customer still appears as their own row. No collapsing. The spend amount is still there alongside the rank. This is the fundamental difference from `GROUP BY`.
+
+Use `ROW_NUMBER()` to retrieve the top N rows without using `SELECT TOP`. A common pattern is to wrap it in a CTE:
+
+```sql
+WITH RankedCustomers AS (
+    SELECT FirstName + ' ' + LastName AS CustomerName,
+           TotalSpend,
+           ROW_NUMBER() OVER (ORDER BY TotalSpend DESC) AS SpendRank
+    FROM Customers
+)
+SELECT CustomerName, TotalSpend
+FROM RankedCustomers
+WHERE SpendRank <= 3;
+```
+
+This is functionally equivalent to `SELECT TOP 3 ... ORDER BY TotalSpend DESC`, but the CTE approach is more flexible — you can filter on rank, combine it with other conditions, or reuse the ranked table multiple times.
+
+---
+
+### `RANK()` and `DENSE_RANK()`
+
+These are like `ROW_NUMBER()` but handle ties differently.
+
+| Function | Behaviour on ties |
+|---|---|
+| `ROW_NUMBER()` | Always unique — tied rows get different numbers (arbitrary order between them) |
+| `RANK()` | Tied rows share the same rank; the next rank is skipped |
+| `DENSE_RANK()` | Tied rows share the same rank; the next rank is **not** skipped |
+
+To illustrate, suppose Bev O'Brien and Amara Diallo had the same `TotalSpend` of $3,150.75:
+
+```sql
+SELECT FirstName + ' ' + LastName AS CustomerName,
+       TotalSpend,
+       ROW_NUMBER()  OVER (ORDER BY TotalSpend DESC) AS RowNum,
+       RANK()        OVER (ORDER BY TotalSpend DESC) AS Rnk,
+       DENSE_RANK()  OVER (ORDER BY TotalSpend DESC) AS DenseRnk
+FROM Customers;
+```
+
+If Bev O'Brien and Amara Diallo both had a `TotalSpend` of $3,150.75, the output would look like:
+
+| CustomerName | TotalSpend | RowNum | Rnk | DenseRnk |
+|---|---|---|---|---|
+| Marcus Lee | 12300.00 | 1 | 1 | 1 |
+| Priya Sharma | 8420.50 | 2 | 2 | 2 |
+| Bev O'Brien | 3150.75 | 3 | 3 | 3 |
+| Amara Diallo | 3150.75 | 4 | 3 | 3 |
+| Gary McSnarl | 520.00 | 5 | 5 | 4 |
+| Jake Nguyen | 340.00 | 6 | 6 | 5 |
+| Nina Patel | 0.00 | 7 | 7 | 6 |
+
+`RANK()` skips rank 4 after the tie at 3. `DENSE_RANK()` does not — the next rank after 3 is still 4. In practice, use `DENSE_RANK()` when you want clean consecutive rankings (e.g., "2nd highest, 3rd highest") and `RANK()` when you want to reflect that two people share a position (e.g., "joint 3rd, so no one is 4th").
+
+---
+
+### `PARTITION BY`
+
+`PARTITION BY` inside `OVER()` divides the rows into groups and restarts the window function calculation within each group — similar to `GROUP BY` but without collapsing the rows.
+
+Rank transactions by `TotalAmount` **within each state** (joining `Transactions` to `Customers` to get the customer's state):
+
+```sql
+SELECT T.TransactionID,
+       C.FirstName + ' ' + C.LastName AS CustomerName,
+       C.State,
+       T.TotalAmount,
+       RANK() OVER (
+           PARTITION BY C.State
+           ORDER BY T.TotalAmount DESC
+       ) AS RankWithinState
+FROM Transactions AS T
+INNER JOIN Customers AS C
+  ON T.CustomerID = C.CustomerID;
+```
+
+| TransactionID | CustomerName | State | TotalAmount | RankWithinState |
+|---|---|---|---|---|
+| 1002 | Marcus Lee | VIC | 210.30 | 1 |
+| 1008 | Marcus Lee | VIC | 189.75 | 2 |
+| 1005 | Priya Sharma | VIC | 142.60 | 3 |
+| 1001 | Priya Sharma | VIC | 87.40 | 4 |
+| 1009 | Amara Diallo | NSW | 112.00 | 1 |
+| 1004 | Amara Diallo | NSW | 65.90 | 2 |
+| 1003 | Jake Nguyen | NSW | 34.20 | 3 |
+| 1010 | Jake Nguyen | NSW | 18.90 | 4 |
+| 1006 | Bev O'Brien | QLD | 28.50 | 1 |
+| 1007 | Gary McSnarl | SA | 45.00 | 1 |
+
+The ranking resets to 1 for each state. `PARTITION BY` answers questions like "who made the biggest single purchase among all NSW customers?" naturally and without any complex self-joins.
+
+---
+
+### `LAG()` and `LEAD()`
+
+`LAG()` retrieves the value from the **previous** row. `LEAD()` retrieves the value from the **next** row. Both are defined relative to the ordering you specify in `OVER()`.
+
+These are used to calculate changes between consecutive records — month-on-month growth, differences between successive transactions, comparing a current row to the one before it.
+
+Show each transaction alongside the amount from the previous transaction (ordered by date):
+
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       LAG(TotalAmount)  OVER (ORDER BY TransactionDate) AS PrevTransactionAmount,
+       TotalAmount - LAG(TotalAmount) OVER (ORDER BY TransactionDate) AS AmountChange
+FROM Transactions;
+```
+
+| TransactionID | TransactionDate | TotalAmount | PrevTransactionAmount | AmountChange |
+|---|---|---|---|---|
+| 1001 | 2024-01-15 | 87.40 | NULL | NULL |
+| 1002 | 2024-01-18 | 210.30 | 87.40 | 122.90 |
+| 1003 | 2024-02-03 | 34.20 | 210.30 | -176.10 |
+| 1004 | 2024-02-14 | 65.90 | 34.20 | 31.70 |
+| 1005 | 2024-03-02 | 142.60 | 65.90 | 76.70 |
+| 1006 | 2024-03-20 | 28.50 | 142.60 | -114.10 |
+| 1007 | 2024-04-05 | 45.00 | 28.50 | 16.50 |
+| 1008 | 2024-04-22 | 189.75 | 45.00 | 144.75 |
+| 1009 | 2024-05-10 | 112.00 | 189.75 | -77.75 |
+| 1010 | 2024-05-28 | 18.90 | 112.00 | -93.10 |
+
+The first row has `NULL` for `PrevTransactionAmount` because there is no earlier row to look back at. That is expected — `LAG()` on the first row always returns `NULL` by default.
+
+`LEAD()` works the same way but looks **forward**:
+
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       LEAD(TotalAmount) OVER (ORDER BY TransactionDate) AS NextTransactionAmount
+FROM Transactions;
+```
+
+Both functions accept an optional second argument to look more than one row back or forward — `LAG(TotalAmount, 2)` retrieves the value from two rows back.
+
+---
+
+### Running Totals with `SUM() OVER()`
+
+Any aggregate function can be used as a window function by adding `OVER()`. The most common use is a **running total** — a cumulative sum that grows with each successive row.
+
+Calculate the running total of transaction amounts across all transactions in chronological order:
+
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       SUM(TotalAmount) OVER (ORDER BY TransactionDate) AS CumulativeRevenue
+FROM Transactions;
+```
+
+| TransactionID | TransactionDate | TotalAmount | CumulativeRevenue |
+|---|---|---|---|
+| 1001 | 2024-01-15 | 87.40 | 87.40 |
+| 1002 | 2024-01-18 | 210.30 | 297.70 |
+| 1003 | 2024-02-03 | 34.20 | 331.90 |
+| 1004 | 2024-02-14 | 65.90 | 397.80 |
+| 1005 | 2024-03-02 | 142.60 | 540.40 |
+| 1006 | 2024-03-20 | 28.50 | 568.90 |
+| 1007 | 2024-04-05 | 45.00 | 613.90 |
+| 1008 | 2024-04-22 | 189.75 | 803.65 |
+| 1009 | 2024-05-10 | 112.00 | 915.65 |
+| 1010 | 2024-05-28 | 18.90 | 934.55 |
+
+Each row still shows its individual `TotalAmount` value. The `CumulativeRevenue` column simply adds up all amounts up to and including that row. This is something `GROUP BY` cannot produce while keeping the individual row detail.
+
+You can combine `PARTITION BY` with `SUM() OVER()` to get a running total that **resets for each group**. For example, a running total of spend per customer (joining `Transactions` to `Customers`):
+
+```sql
+SELECT T.TransactionID,
+       C.FirstName + ' ' + C.LastName AS CustomerName,
+       T.TransactionDate,
+       T.TotalAmount,
+       SUM(T.TotalAmount) OVER (
+           PARTITION BY T.CustomerID
+           ORDER BY T.TransactionDate
+       ) AS CumulativeSpendByCustomer
+FROM Transactions AS T
+INNER JOIN Customers AS C
+  ON T.CustomerID = C.CustomerID;
+```
+
+The running total resets to zero when the customer changes — you get a separate running spend total for Priya Sharma, a separate one for Jake Nguyen, and so on.
+
+---
+
+### Window Function Summary
+
+| Function | What it does |
+|---|---|
+| `ROW_NUMBER()` | Unique sequential number per row |
+| `RANK()` | Rank with gaps after ties |
+| `DENSE_RANK()` | Rank without gaps after ties |
+| `LAG(col, n)` | Value from n rows **before** the current row |
+| `LEAD(col, n)` | Value from n rows **after** the current row |
+| `SUM(col) OVER()` | Running or partitioned cumulative sum |
+| `AVG(col) OVER()` | Running or partitioned moving average |
+
+All window functions follow the same pattern:
+
+```sql
+function_name() OVER (
+    PARTITION BY grouping_column   -- optional: restart within each group
+    ORDER BY ordering_column       -- defines the row sequence
+)
+```
+
+#### Exercises
+
+1. Write a query to rank all customers by `TotalSpend` in descending order using `DENSE_RANK()`. Include the customer's full name, their total spend, and their rank.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT FirstName + ' ' + LastName AS CustomerName,
+       TotalSpend,
+       DENSE_RANK() OVER (ORDER BY TotalSpend DESC) AS SpendRank
+FROM Customers;
+```
+:::
+
+2. Write a query to show each transaction in chronological order, along with the `TotalAmount` from the previous transaction and the difference. Name the columns clearly.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       LAG(TotalAmount) OVER (ORDER BY TransactionDate) AS PrevAmount,
+       TotalAmount - LAG(TotalAmount) OVER (ORDER BY TransactionDate) AS AmountChange
+FROM Transactions;
+```
+:::
+
+3. Write a query to show each transaction with a running total of `TotalAmount` ordered by `TransactionDate`. Call the running total column `CumulativeRevenue`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       SUM(TotalAmount) OVER (ORDER BY TransactionDate) AS CumulativeRevenue
+FROM Transactions;
+```
+:::
+
+4. Write a query to rank transactions by `TotalAmount` within each `StoreID` using `RANK()`. Show the transaction ID, store ID, total amount, and the within-store rank.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID,
+       StoreID,
+       TotalAmount,
+       RANK() OVER (
+           PARTITION BY StoreID
+           ORDER BY TotalAmount DESC
+       ) AS AmountRankByStore
+FROM Transactions;
+```
+:::
+
+5. Using a CTE and `ROW_NUMBER()`, write a query to return the single transaction with the highest `TotalAmount`. *(Do not use `SELECT TOP`.)*
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+WITH RankedTransactions AS (
+    SELECT TransactionID, CustomerID, TotalAmount,
+           ROW_NUMBER() OVER (ORDER BY TotalAmount DESC) AS AmountRank
+    FROM Transactions
+)
+SELECT TransactionID, CustomerID, TotalAmount
+FROM RankedTransactions
+WHERE AmountRank = 1;
+-- Transaction 1002: Marcus Lee at FreshMart Carlton. $210.30 and 28 items.
+-- Someone did a very thorough shop.
+```
+:::
+
+6. Write a query that uses `LEAD()` to show each transaction alongside the date of the **next** transaction, ordered chronologically. Name the column `NextTransactionDate`.
+
+::: {.callout-note collapse="true" title="Solution" icon="false"}
+```sql
+SELECT TransactionID,
+       TransactionDate,
+       TotalAmount,
+       LEAD(TransactionDate) OVER (ORDER BY TransactionDate) AS NextTransactionDate
+FROM Transactions;
+```
+:::
+
+---
+
+## Putting It All Together
+
+Here is a query that combines CTEs, window functions, and techniques from previous chapters to produce a comprehensive customer performance report.
+
+**Question:** For each customer who has made at least one transaction, show their name, membership tier, total transactions, total amount spent in the period, their spend tier classification, their rank by total spend (1 = highest), and whether their lifetime `TotalSpend` is above or below the average across all customers.
+
+```sql
+WITH
+-- Step 1: aggregate transactions per customer
+TransactionSummary AS (
+    SELECT C.CustomerID,
+           C.FirstName + ' ' + C.LastName AS CustomerName,
+           C.MembershipTier,
+           C.TotalSpend,
+           COUNT(T.TransactionID)    AS TotalTransactions,
+           SUM(T.TotalAmount)        AS PeriodSpend,
+           AVG(T.TotalAmount)        AS AvgBasketSize
+    FROM Customers AS C
+    INNER JOIN Transactions AS T ON C.CustomerID = T.CustomerID
+    GROUP BY C.CustomerID, C.FirstName, C.LastName,
+             C.MembershipTier, C.TotalSpend
+),
+-- Step 2: add spend tier classification and rankings
+CustomerReport AS (
+    SELECT CustomerName,
+           MembershipTier,
+           TotalTransactions,
+           PeriodSpend,
+           AvgBasketSize,
+           CASE
+               WHEN TotalSpend = 0       THEN 'No Activity'
+               WHEN TotalSpend < 500     THEN 'Low Spender'
+               WHEN TotalSpend < 5000    THEN 'Mid Spender'
+               ELSE 'High Spender'
+           END AS SpendTier,
+           RANK() OVER (ORDER BY PeriodSpend DESC) AS PeriodSpendRank,
+           CASE
+               WHEN TotalSpend > (SELECT AVG(TotalSpend) FROM Customers)
+               THEN 'Above Average'
+               ELSE 'Below Average'
+           END AS LifetimeSpendBand
+    FROM TransactionSummary
+)
+SELECT CustomerName, MembershipTier, SpendTier,
+       TotalTransactions, PeriodSpend, PeriodSpendRank,
+       AvgBasketSize, LifetimeSpendBand
+FROM CustomerReport
+ORDER BY PeriodSpendRank;
+```
+
+This query builds the result in two named steps. Anyone reading it can follow the logic clearly — no six-layer nesting, no wondering what the anonymous inner query on line 14 is supposed to be doing.
+
+---
+
+You now have the full toolkit. CTEs keep complex queries readable. Window functions unlock calculations — rankings, running totals, row-to-row comparisons — that are impossible to express cleanly with standard aggregation. Between SQL Basics, Advanced SQL, and this chapter, you have everything you need to work confidently with real business data.
+
+Next up: **Power BI**, where we take this data out of the query editor and start turning it into dashboards and reports that stakeholders can actually look at without their eyes glazing over.
