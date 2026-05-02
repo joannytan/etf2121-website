@@ -2,6 +2,8 @@
 title: "AI in Business Analytics"
 webr:
   packages: ['tidyverse', 'tidymodels', 'tidyclust']
+  resources:
+    - data/freshmart_customers.csv
 ---
 
 ```{=html}
@@ -99,7 +101,7 @@ library(tidymodels)
 library(tidyclust)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -385,7 +387,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -442,7 +444,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -538,7 +540,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -693,7 +695,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -810,7 +812,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -998,7 +1000,7 @@ library(tidymodels)
 library(tidyclust)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 )
 

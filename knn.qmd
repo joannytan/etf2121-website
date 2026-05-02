@@ -2,6 +2,8 @@
 title: "K-Nearest Neighbours"
 webr:
   packages: ['tidyverse', 'tidymodels', 'kknn']
+  resources:
+    - data/freshmart_customers.csv
 ---
 
 ```{=html}
@@ -284,7 +286,7 @@ $$d = \sqrt{(x_1 - y_1)^2 + (x_2 - y_2)^2}$$
 library(tidymodels)
 
 freshmart <- read_csv(
-  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = as.factor(IsHighValue))
