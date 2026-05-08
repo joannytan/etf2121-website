@@ -207,7 +207,7 @@ Most data analysts write `SELECT` queries every single day, and rarely touch `CR
 
 Theory only takes you so far. The fastest way to get comfortable with SQL is to start writing it. Best of all, you do not need to install anything heavy on your laptop.
 
-In this course, we will use [**FreeSQL**](https://www.freesql.com/) — a free, browser-based SQL editor. You sign up once, log in, and can start writing real queries against a real database immediately.
+In this course, we will use [**Oracle FreeSQL**](https://freesql.com/) — a free, browser-based SQL editor from Oracle. You can start running queries the moment you land on the page, and a free Oracle account lets you save your work and get your own personal schema to build tables in.
 
 ::: {.callout-tip}
 ## Try it later: open-source alternatives
@@ -220,15 +220,21 @@ If you want to keep learning beyond this course, two excellent free, open-source
 The SQL skills you build here will work, almost unchanged, on either.
 :::
 
-### Setting up FreeSQL (5 minutes)
+### Setting up Oracle FreeSQL (5 minutes)
 
-1. Go to [freesql.com](https://www.freesql.com/).
-2. Click **Sign Up** in the top-right corner.
-3. Enter your name, email, and a password, then click **Create Account**.
-4. Log in. You will land in an editor with a sample database ready to query.
-5. Type a query, click **Run** (or press `Ctrl + Enter`), and watch the results appear.
+1. Go to [freesql.com](https://freesql.com/). You can already browse community scripts and run read-only queries (like `SELECT` statements) without an account.
+2. To save your work and create your own tables, click **Sign In** in the top-right corner.
+3. If you do not already have an Oracle account, click **Create Account** and sign up at [profile.oracle.com](https://profile.oracle.com/) — entering a company name is optional, so feel free to leave it blank or write "Monash University".
+4. Verify your email, then return to [freesql.com](https://freesql.com/) and sign in.
+5. You will land in the SQL editor with your own personal schema attached. Type a query, click **Run** (or press `Ctrl + Enter` / `Cmd + Enter`), and watch the results appear.
 
-That is it. You now have a real SQL playground.
+That is it. You now have a real Oracle SQL playground.
+
+### Video walkthrough
+
+The short video below walks through signing up and writing your first queries. It was recorded on Oracle's older **LiveSQL** platform, which is the direct predecessor to FreeSQL — the sign-up flow (using a free Oracle account) and the editor layout are essentially the same, just with a refreshed look on `freesql.com`.
+
+{{< video https://www.youtube.com/watch?v=VQTUdrAhaWU >}}
 
 ## Quick check: are you ready for the next chapter?
 
