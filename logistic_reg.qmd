@@ -245,8 +245,13 @@ The tidymodels workflow is nearly identical to Chapter 7 — we swap `linear_reg
 ```{webr-r}
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = as.factor(IsHighValue))  # must be a factor for classification

@@ -98,8 +98,13 @@ library(tidyverse)
 library(tidymodels)
 library(tidyclust)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -384,8 +389,13 @@ The block below demonstrates one concrete application — using R to auto-genera
 library(tidyverse)
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -441,8 +451,13 @@ Using the model fitted above, run `augment()` on the test set and compute a full
 library(tidyverse)
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -537,8 +552,13 @@ The key practice is **disaggregated evaluation**: checking model performance not
 library(tidyverse)
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -692,8 +712,13 @@ The block below demonstrates one specific limitation: the model produces confide
 library(tidyverse)
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -809,8 +834,13 @@ The block below poses three different FreshMart business questions. Each calls f
 library(tidyverse)
 library(tidymodels)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 ) |>
   mutate(IsHighValue = factor(IsHighValue, levels = c("False", "True")))
@@ -997,8 +1027,13 @@ library(tidyverse)
 library(tidymodels)
 library(tidyclust)
 
-freshmart <- read_csv(
+download.file(
   "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
+  "freshmart_customers.csv"
+)
+
+freshmart <- read_csv(
+  "freshmart_customers.csv",
   show_col_types = FALSE
 )
 
