@@ -338,7 +338,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#a-first-look-at-sql-commands" id="toc-a-first-look-at-sql-commands" class="nav-link" data-scroll-target="#a-first-look-at-sql-commands"><span class="header-section-number">1.7</span> A first look at SQL commands</a></li>
   <li><a href="#getting-your-hands-dirty-practising-sql-for-free" id="toc-getting-your-hands-dirty-practising-sql-for-free" class="nav-link" data-scroll-target="#getting-your-hands-dirty-practising-sql-for-free"><span class="header-section-number">1.8</span> Getting your hands dirty: practising SQL for free</a>
   <ul class="collapse">
-  <li><a href="#setting-up-freesql-5-minutes" id="toc-setting-up-freesql-5-minutes" class="nav-link" data-scroll-target="#setting-up-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up FreeSQL (5 minutes)</a></li>
+  <li><a href="#setting-up-oracle-freesql-5-minutes" id="toc-setting-up-oracle-freesql-5-minutes" class="nav-link" data-scroll-target="#setting-up-oracle-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up Oracle FreeSQL (5 minutes)</a></li>
+  <li><a href="#video-walkthrough" id="toc-video-walkthrough" class="nav-link" data-scroll-target="#video-walkthrough"><span class="header-section-number">1.8.2</span> Video walkthrough</a></li>
   </ul></li>
   <li><a href="#quick-check-are-you-ready-for-the-next-chapter" id="toc-quick-check-are-you-ready-for-the-next-chapter" class="nav-link" data-scroll-target="#quick-check-are-you-ready-for-the-next-chapter"><span class="header-section-number">1.9</span> Quick check: are you ready for the next chapter?</a></li>
   <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">1.10</span> What’s next</a></li>
@@ -634,7 +635,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="getting-your-hands-dirty-practising-sql-for-free" class="level2" data-number="1.8">
 <h2 data-number="1.8" class="anchored" data-anchor-id="getting-your-hands-dirty-practising-sql-for-free"><span class="header-section-number">1.8</span> Getting your hands dirty: practising SQL for free</h2>
 <p>Theory only takes you so far. The fastest way to get comfortable with SQL is to start writing it. Best of all, you do not need to install anything heavy on your laptop.</p>
-<p>In this course, we will use <a href="https://www.freesql.com/"><strong>FreeSQL</strong></a> — a free, browser-based SQL editor. You sign up once, log in, and can start writing real queries against a real database immediately.</p>
+<p>In this course, we will use <a href="https://freesql.com/"><strong>Oracle FreeSQL</strong></a> — a free, browser-based SQL editor from Oracle. You can start running queries the moment you land on the page, and a free Oracle account lets you save your work and get your own personal schema to build tables in.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -653,16 +654,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The SQL skills you build here will work, almost unchanged, on either.</p>
 </div>
 </div>
-<section id="setting-up-freesql-5-minutes" class="level3" data-number="1.8.1">
-<h3 data-number="1.8.1" class="anchored" data-anchor-id="setting-up-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up FreeSQL (5 minutes)</h3>
+<section id="setting-up-oracle-freesql-5-minutes" class="level3" data-number="1.8.1">
+<h3 data-number="1.8.1" class="anchored" data-anchor-id="setting-up-oracle-freesql-5-minutes"><span class="header-section-number">1.8.1</span> Setting up Oracle FreeSQL (5 minutes)</h3>
 <ol type="1">
-<li>Go to <a href="https://www.freesql.com/">freesql.com</a>.</li>
-<li>Click <strong>Sign Up</strong> in the top-right corner.</li>
-<li>Enter your name, email, and a password, then click <strong>Create Account</strong>.</li>
-<li>Log in. You will land in an editor with a sample database ready to query.</li>
-<li>Type a query, click <strong>Run</strong> (or press <code>Ctrl + Enter</code>), and watch the results appear.</li>
+<li>Go to <a href="https://freesql.com/">freesql.com</a>. You can already browse community scripts and run read-only queries (like <code>SELECT</code> statements) without an account.</li>
+<li>To save your work and create your own tables, click <strong>Sign In</strong> in the top-right corner.</li>
+<li>If you do not already have an Oracle account, click <strong>Create Account</strong> and sign up at <a href="https://profile.oracle.com/">profile.oracle.com</a> — entering a company name is optional, so feel free to leave it blank or write “Monash University”.</li>
+<li>Verify your email, then return to <a href="https://freesql.com/">freesql.com</a> and sign in.</li>
+<li>You will land in the SQL editor with your own personal schema attached. Type a query, click <strong>Run</strong> (or press <code>Ctrl + Enter</code> / <code>Cmd + Enter</code>), and watch the results appear.</li>
 </ol>
-<p>That is it. You now have a real SQL playground.</p>
+<p>That is it. You now have a real Oracle SQL playground.</p>
+</section>
+<section id="video-walkthrough" class="level3" data-number="1.8.2">
+<h3 data-number="1.8.2" class="anchored" data-anchor-id="video-walkthrough"><span class="header-section-number">1.8.2</span> Video walkthrough</h3>
+<p>The short video below walks through signing up and writing your first queries. It was recorded on Oracle’s older <strong>LiveSQL</strong> platform, which is the direct predecessor to FreeSQL — the sign-up flow (using a free Oracle account) and the editor layout are essentially the same, just with a refreshed look on <code>freesql.com</code>.</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/VQTUdrAhaWU" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 </section>
 </section>
 <section id="quick-check-are-you-ready-for-the-next-chapter" class="level2" data-number="1.9">
