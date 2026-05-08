@@ -2,8 +2,6 @@
 title: "Introduction to R & Exploratory Data Analysis"
 webr:
   packages: ['tidyverse', 'GGally', 'corrr']
-  resources:
-    - data/freshmart_customers.csv
 ---
 
 ```{=html}
@@ -82,7 +80,7 @@ Run this block first. It loads the tidyverse and reads in the FreshMart dataset.
 library(tidyverse)
 
 freshmart <- read_csv(
-  "freshmart_customers.csv",
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
   show_col_types = FALSE
 )
 

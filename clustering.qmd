@@ -2,8 +2,6 @@
 title: "Clustering"
 webr:
   packages: ['tidyverse', 'tidymodels', 'tidyclust']
-  resources:
-    - data/freshmart_customers.csv
 ---
 
 ```{=html}
@@ -272,7 +270,7 @@ library(tidymodels)
 library(tidyclust)
 
 freshmart <- read_csv(
-  "freshmart_customers.csv",
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
   show_col_types = FALSE
 )
 

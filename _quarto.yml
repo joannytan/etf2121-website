@@ -1,5 +1,7 @@
 project:
   type: book
+  resources:
+    - data/freshmart_customers.csv
 
 book:
   title: "Data Analysis in Business (First edition)"

@@ -2,8 +2,6 @@
 title: "Linear Regression"
 webr:
   packages: ['tidyverse', 'tidymodels']
-  resources:
-    - data/freshmart_customers.csv
 ---
 
 ```{=html}
@@ -231,7 +229,7 @@ library(tidyverse)
 library(tidymodels)
 
 freshmart <- read_csv(
-  "freshmart_customers.csv",
+  "https://raw.githubusercontent.com/joannytan/etf2121-website/main/data/freshmart_customers.csv",
   show_col_types = FALSE
 )
 
